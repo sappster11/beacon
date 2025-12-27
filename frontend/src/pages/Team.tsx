@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import Avatar from '../components/Avatar';
 import EmployeeDetailModal from '../components/EmployeeDetailModal';
+import { TeamSkeleton } from '../components/Skeleton';
 
 export default function Team() {
   const { user: currentUser } = useAuth();
@@ -75,12 +76,7 @@ export default function Team() {
   };
 
   if (isLoadingEmployees || isLoadingStats) {
-    return (
-      <div style={{ padding: '48px' }}>
-        <h1>Team</h1>
-        <p>Loading team data...</p>
-      </div>
-    );
+    return <TeamSkeleton />;
   }
 
   return (

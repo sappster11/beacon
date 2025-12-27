@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { reviews, reviewCycles } from '../lib/api';
 import type { Review, ReviewCycle } from '../types';
+import { ReviewsSkeleton } from '../components/Skeleton';
 
 export default function Reviews() {
   const { user } = useAuth();
@@ -198,12 +199,7 @@ export default function Reviews() {
   };
 
   if (isLoading) {
-    return (
-      <div style={{ padding: '20px' }}>
-        <h1>Performance Reviews</h1>
-        <p>Loading reviews...</p>
-      </div>
-    );
+    return <ReviewsSkeleton />;
   }
 
   const activeCycle = cycles.find((c) => c.status === 'active');

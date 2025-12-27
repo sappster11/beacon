@@ -7,6 +7,7 @@ import BulkImportUsersModal from './BulkImportUsersModal';
 import InviteUserModal from './InviteUserModal';
 import UserStatusBadge from './UserStatusBadge';
 import Avatar from '../Avatar';
+import { SkeletonTable } from '../Skeleton';
 import api from '../../lib/api';
 
 interface Invitation {
@@ -178,7 +179,15 @@ export default function AdminUsersTab() {
   });
 
   if (loading) {
-    return <div style={{ textAlign: 'center', padding: '40px' }}>Loading users...</div>;
+    return (
+      <div>
+        <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
+          <div style={{ width: '120px', height: '40px', background: '#f0f0f0', borderRadius: '8px' }} />
+          <div style={{ width: '120px', height: '40px', background: '#f0f0f0', borderRadius: '8px' }} />
+        </div>
+        <SkeletonTable rows={8} columns={6} />
+      </div>
+    );
   }
 
   const pendingInvitations = invitations.filter(i => i.status === 'PENDING');
