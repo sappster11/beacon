@@ -358,6 +358,75 @@ body {
   .admin-users-table td[data-label="Title"] {
     display: none;
   }
+
+  /* Reviews page mobile styles */
+  .reviews-tabs {
+    gap: 8px !important;
+  }
+
+  .reviews-tabs button {
+    padding: 10px 14px !important;
+    font-size: 13px !important;
+  }
+
+  .review-card {
+    padding: 16px !important;
+  }
+
+  .review-card-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .review-card-header > span {
+    align-self: flex-start;
+  }
+
+  .review-card h3 {
+    font-size: 16px !important;
+  }
+
+  .review-card button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hr-admin-banner {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    text-align: center;
+  }
+
+  .hr-admin-banner button {
+    width: 100%;
+    justify-content: center;
+    margin-top: 8px;
+  }
+
+  /* Review detail page/modal mobile styles */
+  .review-detail-page,
+  .review-detail-modal {
+    border-radius: 8px !important;
+  }
+
+  .review-detail-header {
+    padding: 16px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .review-detail-header h2 {
+    font-size: 20px !important;
+  }
+
+  .review-detail-page > div:last-child,
+  .review-detail-modal > div:last-child {
+    padding: 16px !important;
+  }
+
+  .performance-summary-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 /* Tablet and up */

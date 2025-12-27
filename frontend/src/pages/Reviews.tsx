@@ -101,6 +101,7 @@ export default function Reviews() {
     return (
       <div
         key={review.id}
+        className="review-card"
         style={{
           border: '1px solid #e5e7eb',
           borderRadius: '12px',
@@ -110,7 +111,7 @@ export default function Reviews() {
           transition: 'all 0.2s',
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '12px' }}>
+        <div className="review-card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '12px', gap: '12px', flexWrap: 'wrap' }}>
           <div style={{ flex: 1 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
               <h3 style={{ margin: '0', fontSize: '18px', fontWeight: '600', color: '#111827' }}>{review.cycle.name}</h3>
@@ -241,6 +242,7 @@ export default function Reviews() {
 
       {(user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN') && (
         <div
+          className="hr-admin-banner"
           style={{
             background: '#fef3c7',
             border: '1px solid #fbbf24',
@@ -250,15 +252,15 @@ export default function Reviews() {
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
+            flexWrap: 'wrap',
           }}
         >
-          <span style={{ fontSize: '14px', color: '#92400e', fontWeight: '500' }}>
-            ℹ️ HR Admin View: Showing all reviews in the system
+          <span style={{ fontSize: '14px', color: '#92400e', fontWeight: '500', flex: 1, minWidth: '200px' }}>
+            ℹ️ HR Admin View: Showing all reviews
           </span>
           <button
             onClick={() => navigate('/review-management')}
             style={{
-              marginLeft: 'auto',
               padding: '6px 12px',
               background: '#3b82f6',
               color: '#ffffff',
@@ -276,14 +278,14 @@ export default function Reviews() {
               e.currentTarget.style.background = '#3b82f6';
             }}
           >
-            Review Management
+            Manage Reviews
           </button>
         </div>
       )}
 
       {/* Filter Tabs */}
       <div style={{ marginBottom: '24px' }}>
-        <div style={{ display: 'flex', gap: '16px', marginBottom: '16px', borderBottom: '2px solid #e5e7eb' }}>
+        <div className="reviews-tabs" style={{ display: 'flex', gap: '16px', marginBottom: '16px', borderBottom: '2px solid #e5e7eb', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
           {/* Status Filter Tabs */}
           <button
             onClick={() => setStatusFilter('current')}
@@ -298,9 +300,10 @@ export default function Reviews() {
               fontWeight: statusFilter === 'current' ? '600' : '500',
               color: statusFilter === 'current' ? '#3b82f6' : '#6b7280',
               transition: 'all 0.15s',
+              whiteSpace: 'nowrap',
             }}
           >
-            Current Reviews
+            Current
           </button>
           <button
             onClick={() => setStatusFilter('completed')}
@@ -315,9 +318,10 @@ export default function Reviews() {
               fontWeight: statusFilter === 'completed' ? '600' : '500',
               color: statusFilter === 'completed' ? '#3b82f6' : '#6b7280',
               transition: 'all 0.15s',
+              whiteSpace: 'nowrap',
             }}
           >
-            Completed Reviews
+            Completed
           </button>
           <button
             onClick={() => setStatusFilter('all')}
@@ -332,15 +336,16 @@ export default function Reviews() {
               fontWeight: statusFilter === 'all' ? '600' : '500',
               color: statusFilter === 'all' ? '#3b82f6' : '#6b7280',
               transition: 'all 0.15s',
+              whiteSpace: 'nowrap',
             }}
           >
-            All Reviews
+            All
           </button>
         </div>
 
         {/* Role Filter Pills (Only show if user is a manager) */}
         {isManager && (
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div className="reviews-role-filter" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             <button
               onClick={() => setRoleFilter('all')}
               style={{

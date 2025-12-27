@@ -375,16 +375,21 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
         flexDirection: 'column' as 'column',
       };
 
+  const contentClassName = isPage ? 'review-detail-page' : 'review-detail-modal modal-content';
+
   const content = (
-    <div style={contentStyle} onClick={isPage ? undefined : (e) => e.stopPropagation()}>
+    <div className={contentClassName} style={contentStyle} onClick={isPage ? undefined : (e) => e.stopPropagation()}>
       {/* Header */}
       <div
+        className="review-detail-header"
         style={{
           padding: '24px 32px',
           borderBottom: '1px solid #e5e7eb',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+          gap: '16px',
+          flexWrap: 'wrap',
         }}
       >
         <div>
@@ -1219,7 +1224,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                   </h3>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div className="performance-summary-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
                   {/* Self Assessment Summary */}
                   <div style={{
                     padding: '20px',
