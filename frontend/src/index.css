@@ -46,6 +46,11 @@ body {
     padding-bottom: env(safe-area-inset-bottom, 0);
   }
 
+  /* Offset logo to not overlap with hamburger/X button */
+  .sidebar > div:first-child {
+    padding-left: 56px !important;
+  }
+
   main {
     margin-left: 0 !important;
     padding-top: 60px !important;
