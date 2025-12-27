@@ -16,7 +16,9 @@ body {
 /* Mobile responsive styles */
 @media (max-width: 768px) {
   .mobile-menu-button {
-    display: block !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
   }
 
   .mobile-overlay {
@@ -24,20 +26,22 @@ body {
   }
 
   .sidebar {
-    transform: translateX(-100%) !important;
+    transform: translateX(-100%);
   }
 
-  .sidebar[style*="translateX(0)"] {
+  .sidebar.open {
     transform: translateX(0) !important;
   }
 
   main {
     margin-left: 0 !important;
+    padding-top: 60px !important;
   }
 
   /* Reduce padding on mobile */
   main > div {
-    padding: 24px 16px !important;
+    padding: 16px !important;
+    padding-top: 8px !important;
   }
 }
 

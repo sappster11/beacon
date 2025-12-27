@@ -88,10 +88,9 @@ export default function Layout() {
           left: 0,
           top: 0,
           zIndex: 1000,
-          transform: isMobileMenuOpen ? 'translateX(0)' : undefined,
           transition: 'transform 0.3s ease',
         }}
-        className="sidebar"
+        className={`sidebar ${isMobileMenuOpen ? 'open' : ''}`}
       >
         {/* Logo */}
         <div
