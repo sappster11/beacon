@@ -144,7 +144,7 @@ export default function AdminUsersTab() {
   return (
     <div>
       {/* Action Bar */}
-      <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', alignItems: 'center', flexWrap: 'wrap' }}>
+      <div className="admin-action-bar" style={{ display: 'flex', gap: '12px', marginBottom: '24px', alignItems: 'center', flexWrap: 'wrap' }}>
         <button
           onClick={() => setShowCreateModal(true)}
           style={{
@@ -247,7 +247,7 @@ export default function AdminUsersTab() {
       </div>
 
       {/* Filters */}
-      <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
+      <div className="admin-filters" style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
         <div style={{ flex: '1', minWidth: '200px', position: 'relative' }}>
           <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
           <input
@@ -319,7 +319,7 @@ export default function AdminUsersTab() {
 
       {/* Users Table */}
       <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', overflow: 'hidden' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <table className="responsive-table admin-users-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ background: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
               <th style={{ padding: '12px 16px', width: '48px' }}>
@@ -350,7 +350,7 @@ export default function AdminUsersTab() {
 
               return (
                 <tr key={user.id} style={{ borderBottom: '1px solid #e5e7eb' }}>
-                  <td style={{ padding: '12px 16px' }}>
+                  <td className="checkbox-cell" style={{ padding: '12px 16px' }}>
                     <input
                       type="checkbox"
                       checked={selectedUserIds.has(user.id)}
@@ -363,7 +363,7 @@ export default function AdminUsersTab() {
                       }}
                     />
                   </td>
-                  <td style={{ padding: '12px 16px' }}>
+                  <td data-label="User" style={{ padding: '12px 16px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                       <Avatar user={{ name: user.name, profilePicture: user.profilePicture }} size="sm" />
                       <div>
@@ -372,9 +372,9 @@ export default function AdminUsersTab() {
                       </div>
                     </div>
                   </td>
-                  <td style={{ padding: '12px 16px', fontSize: '14px', color: '#6b7280' }}>{user.title || '-'}</td>
-                  <td style={{ padding: '12px 16px', fontSize: '14px', color: '#6b7280' }}>{department?.name || '-'}</td>
-                  <td style={{ padding: '12px 16px', fontSize: '14px' }}>
+                  <td data-label="Title" style={{ padding: '12px 16px', fontSize: '14px', color: '#6b7280' }}>{user.title || '-'}</td>
+                  <td data-label="Department" style={{ padding: '12px 16px', fontSize: '14px', color: '#6b7280' }}>{department?.name || '-'}</td>
+                  <td data-label="Role" style={{ padding: '12px 16px', fontSize: '14px' }}>
                     <span style={{
                       padding: '4px 8px',
                       borderRadius: '6px',
@@ -386,10 +386,10 @@ export default function AdminUsersTab() {
                       {user.role.replace('_', ' ')}
                     </span>
                   </td>
-                  <td style={{ padding: '12px 16px' }}>
+                  <td data-label="Status" style={{ padding: '12px 16px' }}>
                     <UserStatusBadge isActive={isActive} />
                   </td>
-                  <td style={{ padding: '12px 16px', textAlign: 'center' }}>
+                  <td data-label="Actions" className="actions-cell" style={{ padding: '12px 16px', textAlign: 'center' }}>
                     <div style={{ position: 'relative', display: 'inline-block' }} ref={openDropdownId === user.id ? dropdownRef : null}>
                       <button
                         onClick={() => setOpenDropdownId(openDropdownId === user.id ? null : user.id)}
@@ -629,6 +629,7 @@ function BulkEditModal({
       onClick={onClose}
     >
       <div
+        className="modal-content"
         style={{
           background: 'white',
           borderRadius: '12px',
@@ -751,7 +752,7 @@ function BulkEditModal({
             </div>
           )}
 
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '24px' }}>
+          <div className="modal-actions" style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '24px' }}>
             <button
               type="button"
               onClick={onClose}

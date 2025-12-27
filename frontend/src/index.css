@@ -236,6 +236,128 @@ body {
     width: 100%;
     justify-content: center;
   }
+
+  /* Admin page styles */
+  .admin-tabs-container {
+    margin-bottom: 20px !important;
+    margin-left: -16px;
+    margin-right: -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .admin-tabs-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .admin-action-bar {
+    gap: 8px !important;
+  }
+
+  .admin-action-bar > button {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+  }
+
+  .admin-action-bar > button span {
+    display: none;
+  }
+
+  .admin-filters {
+    flex-direction: column !important;
+  }
+
+  .admin-filters > div,
+  .admin-filters > select {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .admin-departments-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Admin users table - convert to cards */
+  .admin-users-table thead {
+    display: none;
+  }
+
+  .admin-users-table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .admin-users-table tr {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 12px;
+    padding: 16px;
+    gap: 12px;
+    position: relative;
+  }
+
+  .admin-users-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 !important;
+    border: none !important;
+  }
+
+  .admin-users-table td::before {
+    content: attr(data-label);
+    font-weight: 500;
+    font-size: 13px;
+    color: #6b7280;
+    min-width: 80px;
+  }
+
+  /* User cell - make it the card header */
+  .admin-users-table td[data-label="User"] {
+    border-bottom: 1px solid #f3f4f6 !important;
+    padding-bottom: 12px !important;
+  }
+
+  .admin-users-table td[data-label="User"]::before {
+    display: none;
+  }
+
+  .admin-users-table td[data-label="User"] > div {
+    width: 100%;
+  }
+
+  /* Checkbox - position in top right of card */
+  .admin-users-table .checkbox-cell {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 0 !important;
+  }
+
+  .admin-users-table .checkbox-cell::before {
+    display: none;
+  }
+
+  /* Actions cell */
+  .admin-users-table .actions-cell {
+    border-top: 1px solid #f3f4f6 !important;
+    padding-top: 12px !important;
+    justify-content: flex-end !important;
+  }
+
+  .admin-users-table .actions-cell::before {
+    display: none;
+  }
+
+  /* Hide title column on mobile */
+  .admin-users-table td[data-label="Title"] {
+    display: none;
+  }
 }
 
 /* Tablet and up */

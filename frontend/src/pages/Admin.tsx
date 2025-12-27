@@ -41,8 +41,8 @@ export default function Admin() {
       </div>
 
       {/* Tab Navigation */}
-      <div style={{ borderBottom: '1px solid #e5e7eb', marginBottom: '32px' }}>
-        <div style={{ display: 'flex', gap: '8px' }}>
+      <div className="admin-tabs-container" style={{ borderBottom: '1px solid #e5e7eb', marginBottom: '32px', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+        <div className="admin-tabs" style={{ display: 'flex', gap: '8px', minWidth: 'max-content' }}>
           {tabs.map(tab => (
             <button
               key={tab.id}
@@ -58,7 +58,8 @@ export default function Admin() {
                 borderBottom: activeTab === tab.id ? '2px solid #3b82f6' : '2px solid transparent',
                 transition: 'all 0.2s',
                 position: 'relative',
-                bottom: '-1px'
+                bottom: '-1px',
+                whiteSpace: 'nowrap'
               }}
               onMouseEnter={(e) => {
                 if (activeTab !== tab.id) {

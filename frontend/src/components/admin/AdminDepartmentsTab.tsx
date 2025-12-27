@@ -93,7 +93,7 @@ export default function AdminDepartmentsTab() {
       </div>
 
       {/* Departments Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '16px' }}>
+      <div className="admin-departments-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '16px' }}>
         {topLevelDepartments.map(topDept => {
           const subDepts = getSubDepartments(topDept.id);
 
@@ -434,12 +434,14 @@ function DepartmentModal({ department, departments, onClose, onSuccess }: Depart
       onClick={onClose}
     >
       <div
+        className="modal-content"
         style={{
           background: 'white',
           borderRadius: '12px',
           width: '100%',
           maxWidth: '400px',
-          padding: '24px'
+          padding: '24px',
+          margin: '20px'
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -497,7 +499,7 @@ function DepartmentModal({ department, departments, onClose, onSuccess }: Depart
             </select>
           </div>
 
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+          <div className="modal-actions" style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
             <button
               type="button"
               onClick={onClose}
