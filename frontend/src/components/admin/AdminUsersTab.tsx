@@ -1,12 +1,25 @@
 import { useState, useEffect, useRef } from 'react';
 import type { User, Department } from '../../types/index';
-import { UserPlus, Upload, Search, Edit2, Power, PowerOff, MoreVertical } from 'lucide-react';
+import { UserPlus, Upload, Search, Edit2, Power, PowerOff, MoreVertical, Mail, RefreshCw, X, Clock } from 'lucide-react';
 import CreateUserModal from './CreateUserModal';
 import EditUserModal from './EditUserModal';
 import BulkImportUsersModal from './BulkImportUsersModal';
+import InviteUserModal from './InviteUserModal';
 import UserStatusBadge from './UserStatusBadge';
 import Avatar from '../Avatar';
 import api from '../../lib/api';
+
+interface Invitation {
+  id: string;
+  email: string;
+  name: string;
+  role: string;
+  status: string;
+  expiresAt: string;
+  createdAt: string;
+  invitedBy: { name: string };
+  department?: { name: string };
+}
 
 export default function AdminUsersTab() {
   const [users, setUsers] = useState<User[]>([]);
@@ -21,10 +34,13 @@ export default function AdminUsersTab() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
   const [showBulkEditModal, setShowBulkEditModal] = useState(false);
+  const [showInviteModal, setShowInviteModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [selectedUserIds, setSelectedUserIds] = useState<Set<string>>(new Set());
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [invitations, setInvitations] = useState<Invitation[]>([]);
+  const [activeTab, setActiveTab] = useState<'users' | 'invitations'>('users');
 
   useEffect(() => {
     loadData();
@@ -44,16 +60,40 @@ export default function AdminUsersTab() {
   const loadData = async () => {
     try {
       setLoading(true);
-      const [usersData, deptData] = await Promise.all([
+      const [usersData, deptData, invitesData] = await Promise.all([
         api.get('/users'),
-        api.get('/departments')
+        api.get('/departments'),
+        api.get('/users/invitations').catch(() => ({ data: [] }))
       ]);
       setUsers(usersData.data);
       setDepartments(deptData.data);
+      setInvitations(invitesData.data);
     } catch (error) {
       console.error('Failed to load data:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResendInvite = async (inviteId: string) => {
+    try {
+      await api.post(`/users/invitations/${inviteId}/resend`);
+      alert('Invitation resent successfully');
+    } catch (error) {
+      console.error('Failed to resend invitation:', error);
+      alert('Failed to resend invitation');
+    }
+  };
+
+  const handleCancelInvite = async (inviteId: string) => {
+    if (!confirm('Are you sure you want to cancel this invitation?')) return;
+
+    try {
+      await api.delete(`/users/invitations/${inviteId}`);
+      setInvitations(invitations.filter(i => i.id !== inviteId));
+    } catch (error) {
+      console.error('Failed to cancel invitation:', error);
+      alert('Failed to cancel invitation');
     }
   };
 
@@ -141,12 +181,65 @@ export default function AdminUsersTab() {
     return <div style={{ textAlign: 'center', padding: '40px' }}>Loading users...</div>;
   }
 
+  const pendingInvitations = invitations.filter(i => i.status === 'PENDING');
+
   return (
     <div>
+      {/* Tabs */}
+      <div style={{ display: 'flex', gap: '4px', marginBottom: '24px', borderBottom: '1px solid #e5e7eb', paddingBottom: '0' }}>
+        <button
+          onClick={() => setActiveTab('users')}
+          style={{
+            padding: '12px 20px',
+            background: 'transparent',
+            border: 'none',
+            borderBottom: activeTab === 'users' ? '2px solid #3b82f6' : '2px solid transparent',
+            color: activeTab === 'users' ? '#3b82f6' : '#6b7280',
+            fontSize: '14px',
+            fontWeight: '500',
+            cursor: 'pointer',
+            marginBottom: '-1px',
+          }}
+        >
+          Users ({users.length})
+        </button>
+        <button
+          onClick={() => setActiveTab('invitations')}
+          style={{
+            padding: '12px 20px',
+            background: 'transparent',
+            border: 'none',
+            borderBottom: activeTab === 'invitations' ? '2px solid #3b82f6' : '2px solid transparent',
+            color: activeTab === 'invitations' ? '#3b82f6' : '#6b7280',
+            fontSize: '14px',
+            fontWeight: '500',
+            cursor: 'pointer',
+            marginBottom: '-1px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+          }}
+        >
+          Pending Invitations
+          {pendingInvitations.length > 0 && (
+            <span style={{
+              background: '#fef3c7',
+              color: '#92400e',
+              padding: '2px 8px',
+              borderRadius: '10px',
+              fontSize: '12px',
+              fontWeight: '600',
+            }}>
+              {pendingInvitations.length}
+            </span>
+          )}
+        </button>
+      </div>
+
       {/* Action Bar */}
       <div className="admin-action-bar" style={{ display: 'flex', gap: '12px', marginBottom: '24px', alignItems: 'center', flexWrap: 'wrap' }}>
         <button
-          onClick={() => setShowCreateModal(true)}
+          onClick={() => setShowInviteModal(true)}
           style={{
             padding: '10px 16px',
             background: '#3b82f6',
@@ -161,17 +254,37 @@ export default function AdminUsersTab() {
             gap: '8px'
           }}
         >
+          <Mail size={18} />
+          Invite User
+        </button>
+
+        <button
+          onClick={() => setShowCreateModal(true)}
+          style={{
+            padding: '10px 16px',
+            background: 'white',
+            color: '#374151',
+            border: '1px solid #e5e7eb',
+            borderRadius: '8px',
+            fontSize: '14px',
+            fontWeight: '500',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}
+        >
           <UserPlus size={18} />
-          Add User
+          Add User Manually
         </button>
 
         <button
           onClick={() => setShowImportModal(true)}
           style={{
             padding: '10px 16px',
-            background: '#10b981',
-            color: 'white',
-            border: 'none',
+            background: 'white',
+            color: '#374151',
+            border: '1px solid #e5e7eb',
             borderRadius: '8px',
             fontSize: '14px',
             fontWeight: '500',
@@ -246,6 +359,8 @@ export default function AdminUsersTab() {
         )}
       </div>
 
+      {activeTab === 'users' && (
+      <>
       {/* Filters */}
       <div className="admin-filters" style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
         <div style={{ flex: '1', minWidth: '200px', position: 'relative' }}>
@@ -513,6 +628,133 @@ export default function AdminUsersTab() {
           </div>
         )}
       </div>
+      </>
+      )}
+
+      {activeTab === 'invitations' && (
+        <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', overflow: 'hidden' }}>
+          {pendingInvitations.length === 0 ? (
+            <div style={{ padding: '60px 40px', textAlign: 'center' }}>
+              <Mail size={48} color="#d1d5db" style={{ marginBottom: '16px' }} />
+              <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#374151', marginBottom: '8px' }}>
+                No pending invitations
+              </h3>
+              <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '24px' }}>
+                When you invite users, they'll appear here until they accept.
+              </p>
+              <button
+                onClick={() => setShowInviteModal(true)}
+                style={{
+                  padding: '10px 20px',
+                  background: '#3b82f6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+              >
+                <Mail size={16} />
+                Invite Your First User
+              </button>
+            </div>
+          ) : (
+            <table className="responsive-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ background: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>Invitee</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>Role</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>Invited By</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>Expires</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'center', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', width: '120px' }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pendingInvitations.map(invite => {
+                  const isExpired = new Date(invite.expiresAt) < new Date();
+                  const expiresDate = new Date(invite.expiresAt);
+                  const daysLeft = Math.ceil((expiresDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+
+                  return (
+                    <tr key={invite.id} style={{ borderBottom: '1px solid #e5e7eb' }}>
+                      <td data-label="Invitee" style={{ padding: '12px 16px' }}>
+                        <div>
+                          <div style={{ fontWeight: '500', color: '#111827', fontSize: '14px' }}>{invite.name}</div>
+                          <div style={{ fontSize: '12px', color: '#6b7280' }}>{invite.email}</div>
+                        </div>
+                      </td>
+                      <td data-label="Role" style={{ padding: '12px 16px', fontSize: '14px' }}>
+                        <span style={{
+                          padding: '4px 8px',
+                          borderRadius: '6px',
+                          fontSize: '12px',
+                          fontWeight: '500',
+                          background: invite.role === 'SUPER_ADMIN' ? '#fef3c7' : invite.role === 'HR_ADMIN' ? '#dbeafe' : '#f3f4f6',
+                          color: invite.role === 'SUPER_ADMIN' ? '#92400e' : invite.role === 'HR_ADMIN' ? '#1e40af' : '#374151'
+                        }}>
+                          {invite.role.replace('_', ' ')}
+                        </span>
+                      </td>
+                      <td data-label="Invited By" style={{ padding: '12px 16px', fontSize: '14px', color: '#6b7280' }}>
+                        {invite.invitedBy.name}
+                      </td>
+                      <td data-label="Expires" style={{ padding: '12px 16px' }}>
+                        {isExpired ? (
+                          <span style={{ color: '#dc2626', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <Clock size={14} />
+                            Expired
+                          </span>
+                        ) : (
+                          <span style={{ color: daysLeft <= 2 ? '#f59e0b' : '#6b7280', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <Clock size={14} />
+                            {daysLeft} day{daysLeft !== 1 ? 's' : ''} left
+                          </span>
+                        )}
+                      </td>
+                      <td data-label="Actions" style={{ padding: '12px 16px', textAlign: 'center' }}>
+                        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                          <button
+                            onClick={() => handleResendInvite(invite.id)}
+                            title="Resend invitation"
+                            style={{
+                              padding: '6px',
+                              background: '#dbeafe',
+                              border: 'none',
+                              borderRadius: '6px',
+                              cursor: 'pointer',
+                              color: '#3b82f6',
+                            }}
+                          >
+                            <RefreshCw size={16} />
+                          </button>
+                          <button
+                            onClick={() => handleCancelInvite(invite.id)}
+                            title="Cancel invitation"
+                            style={{
+                              padding: '6px',
+                              background: '#fee2e2',
+                              border: 'none',
+                              borderRadius: '6px',
+                              cursor: 'pointer',
+                              color: '#dc2626',
+                            }}
+                          >
+                            <X size={16} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
+        </div>
+      )}
 
       {/* Modals */}
       {showCreateModal && (
@@ -562,6 +804,19 @@ export default function AdminUsersTab() {
             setShowBulkEditModal(false);
             setSelectedUserIds(new Set());
             loadData();
+          }}
+          departments={departments}
+          users={users}
+        />
+      )}
+
+      {showInviteModal && (
+        <InviteUserModal
+          onClose={() => setShowInviteModal(false)}
+          onSuccess={() => {
+            setShowInviteModal(false);
+            loadData();
+            setActiveTab('invitations');
           }}
           departments={departments}
           users={users}

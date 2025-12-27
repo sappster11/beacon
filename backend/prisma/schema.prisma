@@ -96,7 +96,8 @@ model Department {
   parentDepartment   Department? @relation("DepartmentHierarchy", fields: [parentDepartmentId], references: [id], onDelete: SetNull)
   subDepartments     Department[] @relation("DepartmentHierarchy")
 
-  users     User[]
+  users       User[]
+  invitations Invitation[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -444,10 +445,15 @@ model Invitation {
   id             String   @id @default(uuid())
   token          String   @unique
   email          String
+  name           String   // Pre-filled name for the new user
+  title          String?  // Optional job title
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   invitedById    String
   invitedBy      User     @relation(fields: [invitedById], references: [id], onDelete: Cascade)
+  departmentId   String?
+  department     Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  managerId      String?  // Manager ID for the new user
   role           String   @default("EMPLOYEE")
   status         String   @default("PENDING") // PENDING, ACCEPTED, EXPIRED
   expiresAt      DateTime
