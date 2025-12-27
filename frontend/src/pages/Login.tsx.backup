@@ -1,0 +1,87 @@
+import { useState, FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+
+export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
+    try {
+      await login({ email, password });
+      navigate('/');
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Login failed');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div style={{ maxWidth: '400px', margin: '100px auto', padding: '20px' }}>
+      <h1>Beacon</h1>
+      <h2>Performance Management</h2>
+
+      <form onSubmit={handleSubmit} style={{ marginTop: '40px' }}>
+        <div style={{ marginBottom: '20px' }}>
+          <label htmlFor="email" style={{ display: 'block', marginBottom: '5px' }}>
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            style={{ width: '100%', padding: '8px', fontSize: '16px' }}
+          />
+        </div>
+
+        <div style={{ marginBottom: '20px' }}>
+          <label htmlFor="password" style={{ display: 'block', marginBottom: '5px' }}>
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            style={{ width: '100%', padding: '8px', fontSize: '16px' }}
+          />
+        </div>
+
+        {error && (
+          <div style={{ color: 'red', marginBottom: '15px', padding: '10px', background: '#fee' }}>
+            {error}
+          </div>
+        )}
+
+        <button
+          type="submit"
+          disabled={isLoading}
+          style={{
+            width: '100%',
+            padding: '12px',
+            fontSize: '16px',
+            background: '#007bff',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: isLoading ? 'not-allowed' : 'pointer',
+          }}
+        >
+          {isLoading ? 'Logging in...' : 'Log In'}
+        </button>
+      </form>
+    </div>
+  );
+}

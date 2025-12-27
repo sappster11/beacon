@@ -1,0 +1,366 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"  // Use postgresql for production, change to sqlite for local dev
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String?  // Hashed password
+  name      String
+  title     String?
+  role      String   @default("EMPLOYEE") // EMPLOYEE, MANAGER, HR_ADMIN, SUPER_ADMIN
+  hireDate  DateTime?
+
+  // Profile information
+  profilePicture String?  // URL path to uploaded profile image
+  bio            String?  // About me / bio text
+  phoneNumber    String?  // Contact phone number
+  location       String?  // Office location or city
+
+  // Org hierarchy
+  managerId    String?
+  manager      User?   @relation("ManagerReports", fields: [managerId], references: [id], onDelete: SetNull)
+  directReports User[] @relation("ManagerReports")
+
+  departmentId String?
+  department   Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+
+  // Gusto sync
+  gustoId   String? @unique
+
+  // Activity tracking
+  isActive     Boolean  @default(true)
+  lastLoginAt  DateTime?
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  reviewsGiven      Review[]       @relation("ReviewerReviews")
+  reviewsReceived   Review[]       @relation("RevieweeReviews")
+  goals             Goal[]
+  oneOnOnesAsManager OneOnOne[]    @relation("ManagerOneOnOnes")
+  oneOnOnesAsEmployee OneOnOne[]   @relation("EmployeeOneOnOnes")
+  developmentPlans  DevelopmentPlan[]
+  peerFeedbackGiven PeerFeedback[] @relation("FeedbackGiver")
+  peerFeedbackReceived PeerFeedback[] @relation("FeedbackReceiver")
+  competencyComments CompetencyComment[]
+  goalComments GoalComment[]
+  oauthTokens       UserOAuthToken[]
+  auditLogs        AuditLog[]
+}
+
+model Department {
+  id        String   @id @default(uuid())
+  name      String
+
+  parentDepartmentId String?
+  parentDepartment   Department? @relation("DepartmentHierarchy", fields: [parentDepartmentId], references: [id], onDelete: SetNull)
+  subDepartments     Department[] @relation("DepartmentHierarchy")
+
+  users     User[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ReviewCycle {
+  id        String   @id @default(uuid())
+  name      String
+  type      String   // QUARTERLY, SEMI_ANNUAL, ANNUAL
+  startDate DateTime
+  endDate   DateTime
+  status    String   @default("active")
+
+  reviews   Review[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Review {
+  id        String   @id @default(uuid())
+
+  revieweeId String
+  reviewee   User    @relation("RevieweeReviews", fields: [revieweeId], references: [id], onDelete: Cascade)
+
+  reviewerId String
+  reviewer   User    @relation("ReviewerReviews", fields: [reviewerId], references: [id], onDelete: Cascade)
+
+  cycleId    String
+  cycle      ReviewCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+
+  // Competencies: JSON array of { name, description, selfRating (1-4), managerRating (1-4) }
+  competencies       String? // JSON array
+
+  // Self-reflection: JSON array of { question, answer }
+  selfReflections    String? // JSON array
+
+  // Assigned goals: JSON array of goal IDs or goal objects
+  assignedGoals      String? // JSON array
+
+  // Overall ratings (1-4 scale: 1=Not effective, 2=Minimally effective, 3=Effective, 4=Highly effective)
+  overallSelfRating     Int?
+  overallManagerRating  Int?
+
+  // Legacy fields - keeping for backwards compatibility
+  selfAssessment     String?
+  managerAssessment  String?
+
+  // Summary comments: JSON object { employeeComment, managerComment }
+  summaryComments    String?
+
+  status    String @default("NOT_STARTED") // NOT_STARTED, IN_PROGRESS, COMPLETED, CALIBRATED
+
+  // Relations
+  peerFeedback PeerFeedback[]
+  competencyComments CompetencyComment[]
+  goalComments GoalComment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PeerFeedback {
+  id        String   @id @default(uuid())
+
+  reviewId  String
+  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  giverId   String
+  giver     User     @relation("FeedbackGiver", fields: [giverId], references: [id], onDelete: Cascade)
+
+  receiverId String
+  receiver   User    @relation("FeedbackReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  // Anonymous feedback - giver name hidden from receiver
+  feedback  String
+  rating    Int?     // 1-4 scale
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Goal {
+  id          String   @id @default(uuid())
+
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  // Goal hierarchy (OKR alignment)
+  parentGoalId String?
+  parentGoal   Goal?    @relation("GoalAlignment", fields: [parentGoalId], references: [id], onDelete: SetNull)
+  childGoals   Goal[]   @relation("GoalAlignment")
+
+  title       String
+  description String
+
+  // Metrics
+  targetValue  Float?
+  currentValue Float?   @default(0)
+  unit         String?  // e.g., "sales", "users", "%"
+
+  dueDate     DateTime?
+  status      String   @default("DRAFT") // DRAFT, ACTIVE, COMPLETED, CANCELLED
+  visibility  String   @default("PRIVATE") // PRIVATE, TEAM, COMPANY
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model GoalTemplate {
+  id          String   @id @default(uuid())
+
+  title       String
+  description String
+  category    String   // e.g., "Sales", "Engineering", "Customer Success", "Leadership"
+
+  // Default metrics (can be overridden when using template)
+  targetValue  Float?
+  unit         String?  // e.g., "sales", "users", "%"
+
+  // Suggested duration in days
+  suggestedDuration Int? // e.g., 90 for quarterly goals
+
+  visibility  String   @default("TEAM") // TEAM, COMPANY
+  isActive    Boolean  @default(true)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model OneOnOne {
+  id          String   @id @default(uuid())
+
+  managerId   String
+  manager     User     @relation("ManagerOneOnOnes", fields: [managerId], references: [id], onDelete: Cascade)
+
+  employeeId  String
+  employee    User     @relation("EmployeeOneOnOnes", fields: [employeeId], references: [id], onDelete: Cascade)
+
+  scheduledAt DateTime
+
+  // Notes
+  agenda          String?
+  managerNotes    String?  // Private to manager
+  sharedNotes     String?  // Visible to both
+  actionItems     String?  // JSON array of action items
+
+  status      String   @default("scheduled") // scheduled, completed, cancelled
+
+  // Transcript fields
+  transcript        String?  // Pasted transcript text
+  transcriptFileUrl String?  // Path to uploaded file
+
+  // Document linking
+  documentUrl       String?  // Google Doc or any URL (deprecated - use OneOnOneDocument)
+  documents         OneOnOneDocument[]
+
+  // Calendar integration
+  googleEventId String?
+  outlookEventId String?
+  googleCalendarSynced Boolean @default(false)
+  googleEventUrl       String?  // Direct link to calendar event
+  lastSyncedAt         DateTime?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model OneOnOneDocument {
+  id          String   @id @default(uuid())
+
+  oneOnOneId  String
+  oneOnOne    OneOnOne @relation(fields: [oneOnOneId], references: [id], onDelete: Cascade)
+
+  title       String
+  url         String
+
+  // Recurring documents show up in all future 1:1s between these two people
+  isRecurring Boolean  @default(false)
+  managerId   String   // For recurring lookup
+  employeeId  String   // For recurring lookup
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model DevelopmentPlan {
+  id          String   @id @default(uuid())
+
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  careerGoals String
+  skillsToAdd String   // JSON array of skills
+  milestones  String   // JSON array of milestones
+
+  progress    Int      @default(0) // 0-100
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model CompetencyComment {
+  id             String   @id @default(uuid())
+
+  reviewId       String
+  review         Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  competencyName String   // Links to specific competency in JSON array
+
+  authorId       String
+  author         User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  authorRole     String   // "EMPLOYEE" or "MANAGER"
+  content        String
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model GoalComment {
+  id             String   @id @default(uuid())
+
+  reviewId       String
+  review         Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  goalId         String   // Links to specific goal in JSON array
+
+  authorId       String
+  author         User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  authorRole     String   // "EMPLOYEE" or "MANAGER"
+  content        String
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model UserOAuthToken {
+  id           String   @id @default(uuid())
+
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  provider     String   // "google"
+  accessToken  String   // Encrypted
+  refreshToken String?  // Encrypted
+  tokenType    String   @default("Bearer")
+  expiresAt    DateTime?
+  scope        String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([userId, provider])
+}
+
+model SystemSettings {
+  id        String   @id @default(uuid())
+  category  String   // 'review', 'notifications', 'company', 'features'
+  settings  String   // JSON object with settings
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([category])
+}
+
+model Integration {
+  id           String   @id @default(uuid())
+  type         String   @unique // 'gusto', 'google_calendar', 'hris'
+  isConnected  Boolean  @default(false)
+  config       String?  // Encrypted JSON with credentials
+  lastSyncAt   DateTime?
+  syncStatus   String?  // 'success', 'failed', 'pending'
+  syncError    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model AuditLog {
+  id           String   @id @default(uuid())
+  userId       String?
+  user         User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action       String   // 'CREATE', 'UPDATE', 'DELETE'
+  resourceType String   // 'User', 'Department', 'Review', etc.
+  resourceId   String   // ID of affected resource
+  changes      String?  // JSON: { before: {...}, after: {...} }
+  metadata     String?  // JSON: Additional context (IP, user agent)
+  status       String   @default("success") // 'success' or 'failed'
+  errorMessage String?  // Error details for failed operations
+  description  String?  // Human-readable description
+  createdAt    DateTime @default(now())
+
+  @@index([userId])
+  @@index([resourceType])
+  @@index([createdAt])
+  @@index([action])
+  @@index([status])
+}
