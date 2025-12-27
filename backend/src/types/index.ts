@@ -1,11 +1,12 @@
 // User roles
-export type UserRole = 'EMPLOYEE' | 'MANAGER' | 'HR_ADMIN' | 'SUPER_ADMIN';
+export type UserRole = 'EMPLOYEE' | 'MANAGER' | 'HR_ADMIN' | 'SUPER_ADMIN' | 'PLATFORM_ADMIN';
 
 export const UserRole = {
   EMPLOYEE: 'EMPLOYEE' as UserRole,
   MANAGER: 'MANAGER' as UserRole,
   HR_ADMIN: 'HR_ADMIN' as UserRole,
   SUPER_ADMIN: 'SUPER_ADMIN' as UserRole,
+  PLATFORM_ADMIN: 'PLATFORM_ADMIN' as UserRole,
 };
 
 // Review types

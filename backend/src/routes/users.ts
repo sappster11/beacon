@@ -10,6 +10,14 @@ import { sendInvitationEmail, sendWelcomeEmail } from '../services/email.service
 
 const router = Router();
 
+// Helper to get organizationId with type safety (only for org-scoped routes)
+const getOrgId = (req: AuthRequest): string => {
+  if (!req.user?.organizationId) {
+    throw new Error('Organization ID required for this operation');
+  }
+  return req.user.organizationId;
+};
+
 // Get all users (Managers and above can view)
 router.get(
   '/',
@@ -18,7 +26,7 @@ router.get(
   async (req: AuthRequest, res) => {
     try {
       const users = await prisma.user.findMany({
-        where: { organizationId: req.user!.organizationId },
+        where: { organizationId: getOrgId(req) },
         include: {
           department: true,
           manager: {
@@ -54,7 +62,7 @@ router.get('/:id', authenticateToken, async (req: AuthRequest, res) => {
     }
 
     // Verify user belongs to same organization
-    if (user.organizationId !== req.user!.organizationId) {
+    if (user.organizationId !== getOrgId(req)) {
       return res.status(404).json({ error: 'User not found' });
     }
 
@@ -69,7 +77,7 @@ router.get('/org/chart', authenticateToken, async (req: AuthRequest, res) => {
   try {
     // Get all users with their reporting relationships (scoped to organization)
     const users = await prisma.user.findMany({
-      where: { organizationId: req.user!.organizationId },
+      where: { organizationId: getOrgId(req) },
       include: {
         directReports: {
           select: { id: true, name: true, title: true },
@@ -95,7 +103,7 @@ router.get('/:id/reports', authenticateToken, async (req: AuthRequest, res) => {
     const reports = await prisma.user.findMany({
       where: {
         managerId: id,
-        organizationId: req.user!.organizationId,
+        organizationId: getOrgId(req),
       },
       include: {
         department: true,
@@ -127,7 +135,7 @@ router.post(
           managerId,
           departmentId,
           hireDate: hireDate ? new Date(hireDate) : null,
-          organizationId: req.user!.organizationId,
+          organizationId: getOrgId(req),
         },
       });
 
@@ -152,7 +160,7 @@ router.patch(
 
       // Verify user belongs to same organization
       const existingUser = await prisma.user.findUnique({ where: { id } });
-      if (!existingUser || existingUser.organizationId !== req.user!.organizationId) {
+      if (!existingUser || existingUser.organizationId !== getOrgId(req)) {
         return res.status(404).json({ error: 'User not found' });
       }
 
@@ -243,7 +251,7 @@ router.post(
           title: title || null,
           departmentId: departmentId || null,
           managerId: managerId || null,
-          organizationId: req.user!.organizationId,
+          organizationId: getOrgId(req),
           invitedById: req.user!.id,
           expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
         },
@@ -289,7 +297,7 @@ router.get(
     try {
       const invitations = await prisma.invitation.findMany({
         where: {
-          organizationId: req.user!.organizationId,
+          organizationId: getOrgId(req),
         },
         include: {
           invitedBy: {
@@ -329,7 +337,7 @@ router.post(
         return res.status(404).json({ error: 'Invitation not found' });
       }
 
-      if (invitation.organizationId !== req.user!.organizationId) {
+      if (invitation.organizationId !== getOrgId(req)) {
         return res.status(404).json({ error: 'Invitation not found' });
       }
 
@@ -387,7 +395,7 @@ router.delete(
         return res.status(404).json({ error: 'Invitation not found' });
       }
 
-      if (invitation.organizationId !== req.user!.organizationId) {
+      if (invitation.organizationId !== getOrgId(req)) {
         return res.status(404).json({ error: 'Invitation not found' });
       }
 

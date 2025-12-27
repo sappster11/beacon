@@ -610,4 +610,127 @@ export const manager = {
   },
 };
 
+// Data Export API (GDPR)
+export const dataExport = {
+  getSummary: async (): Promise<{
+    goals: number;
+    reviews: number;
+    oneOnOnes: number;
+    developmentPlans: number;
+  }> => {
+    const { data } = await api.get('/data-export/summary');
+    return data;
+  },
+  downloadMyData: async (): Promise<Blob> => {
+    const response = await api.get('/data-export/my-data', {
+      responseType: 'blob',
+    });
+    return response.data;
+  },
+  deleteAccount: async (confirmEmail: string): Promise<void> => {
+    await api.post('/data-export/delete-account', { confirmEmail });
+  },
+};
+
+// Platform Admin API
+export const platformAdmin = {
+  getMetrics: async (): Promise<{
+    totalOrganizations: number;
+    activeOrganizations: number;
+    totalUsers: number;
+    activeUsers: number;
+    newOrgsThisMonth: number;
+    newUsersThisMonth: number;
+  }> => {
+    const { data } = await api.get('/platform-admin/metrics');
+    return data;
+  },
+  getOrganizations: async (params?: {
+    search?: string;
+    status?: 'active' | 'inactive';
+    page?: number;
+    limit?: number;
+  }): Promise<{
+    organizations: Array<{
+      id: string;
+      name: string;
+      slug: string;
+      logo: string | null;
+      isActive: boolean;
+      createdAt: string;
+      userCount: number;
+    }>;
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPages: number;
+    };
+  }> => {
+    const { data } = await api.get('/platform-admin/organizations', { params });
+    return data;
+  },
+  getOrganization: async (id: string): Promise<{
+    id: string;
+    name: string;
+    slug: string;
+    logo: string | null;
+    isActive: boolean;
+    createdAt: string;
+    updatedAt: string;
+    stats: {
+      users: number;
+      departments: number;
+      reviewCycles: number;
+      goals: number;
+    };
+  }> => {
+    const { data } = await api.get(`/platform-admin/organizations/${id}`);
+    return data;
+  },
+  getOrganizationStats: async (id: string): Promise<{
+    organizationId: string;
+    organizationName: string;
+    users: { total: number; activeLastMonth: number };
+    reviews: { total: number; completed: number };
+    goals: { total: number; active: number };
+    oneOnOnes: { total: number };
+  }> => {
+    const { data } = await api.get(`/platform-admin/organizations/${id}/stats`);
+    return data;
+  },
+  getOrganizationUsers: async (id: string, params?: {
+    page?: number;
+    limit?: number;
+  }): Promise<{
+    users: Array<{
+      id: string;
+      name: string;
+      email: string;
+      role: string;
+      title: string | null;
+      isActive: boolean;
+      lastLoginAt: string | null;
+      createdAt: string;
+    }>;
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPages: number;
+    };
+  }> => {
+    const { data } = await api.get(`/platform-admin/organizations/${id}/users`, { params });
+    return data;
+  },
+  updateOrganizationStatus: async (id: string, isActive: boolean): Promise<{
+    id: string;
+    name: string;
+    isActive: boolean;
+  }> => {
+    const { data } = await api.patch(`/platform-admin/organizations/${id}/status`, { isActive });
+    return data;
+  },
+};
+
 export default api;

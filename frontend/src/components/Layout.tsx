@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { Home, Target, ClipboardList, Users, TrendingUp, LogOut, Menu, X, Building2, UsersRound, Settings } from 'lucide-react';
+import { Home, Target, ClipboardList, Users, TrendingUp, LogOut, Menu, X, Building2, UsersRound, Settings, Globe } from 'lucide-react';
 import Avatar from './Avatar';
 
 export default function Layout() {
@@ -33,6 +33,7 @@ export default function Layout() {
 
   const isManager = user?.role === 'MANAGER' || user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
   const isAdmin = user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
+  const isPlatformAdmin = user?.role === 'PLATFORM_ADMIN';
 
   const managementItems = [];
   if (isManager) {
@@ -41,6 +42,11 @@ export default function Layout() {
   if (isAdmin) {
     managementItems.push({ path: '/review-management', label: 'Review Management', icon: ClipboardList });
     managementItems.push({ path: '/admin', label: 'Admin', icon: Settings });
+  }
+
+  const platformItems = [];
+  if (isPlatformAdmin) {
+    platformItems.push({ path: '/platform-admin', label: 'Platform Admin', icon: Globe });
   }
 
   const isActive = (path: string) => {
@@ -230,6 +236,77 @@ export default function Layout() {
                       marginBottom: '4px',
                       border: 'none',
                       background: active ? '#10b981' : 'transparent',
+                      color: active ? '#ffffff' : '#6b7280',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      fontSize: '14px',
+                      fontWeight: active ? '500' : '400',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      transition: 'all 0.15s',
+                      textAlign: 'left',
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!active) {
+                        e.currentTarget.style.background = '#f3f4f6';
+                        e.currentTarget.style.color = '#111827';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!active) {
+                        e.currentTarget.style.background = 'transparent';
+                        e.currentTarget.style.color = '#6b7280';
+                      }
+                    }}
+                  >
+                    <Icon size={18} />
+                    <span>{item.label}</span>
+                  </button>
+                );
+              })}
+            </>
+          )}
+
+          {/* Platform Section (Platform Admins only) */}
+          {platformItems.length > 0 && (
+            <>
+              <div
+                style={{
+                  padding: '16px 8px 8px 8px',
+                  marginTop: '8px',
+                  borderTop: '1px solid #e5e7eb',
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: '11px',
+                    fontWeight: '600',
+                    color: '#9ca3af',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                  }}
+                >
+                  Platform
+                </div>
+              </div>
+              {platformItems.map((item) => {
+                const Icon = item.icon;
+                const active = isActive(item.path);
+
+                return (
+                  <button
+                    key={item.path}
+                    onClick={() => {
+                      navigate(item.path);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    style={{
+                      width: '100%',
+                      padding: '12px 16px',
+                      marginBottom: '4px',
+                      border: 'none',
+                      background: active ? '#8b5cf6' : 'transparent',
                       color: active ? '#ffffff' : '#6b7280',
                       borderRadius: '8px',
                       cursor: 'pointer',

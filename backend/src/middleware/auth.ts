@@ -7,7 +7,7 @@ export interface AuthRequest extends Request {
     id: string;
     email: string;
     role: UserRole;
-    organizationId: string;
+    organizationId: string | null; // null for PLATFORM_ADMIN
   };
 }
 
@@ -28,7 +28,7 @@ export const authenticateToken = (
       id: string;
       email: string;
       role: UserRole;
-      organizationId: string;
+      organizationId: string | null;
     };
     req.user = decoded;
     next();
@@ -49,4 +49,20 @@ export const requireRole = (allowedRoles: UserRole[]) => {
 
     next();
   };
+};
+
+export const requirePlatformAdmin = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  if (req.user.role !== 'PLATFORM_ADMIN') {
+    return res.status(403).json({ error: 'Platform admin access required' });
+  }
+
+  next();
 };

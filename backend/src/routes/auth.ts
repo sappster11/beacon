@@ -48,7 +48,8 @@ router.post('/login', loginRateLimiter, async (req: Request, res: Response) => {
       return res.status(401).json({ error: 'Password not set for this user' });
     }
 
-    if (!user.organizationId) {
+    // Platform admins don't need an organization
+    if (!user.organizationId && user.role !== 'PLATFORM_ADMIN') {
       return res.status(401).json({ error: 'User is not associated with an organization' });
     }
 
@@ -121,7 +122,8 @@ router.post('/refresh', async (req: Request, res: Response) => {
       return res.status(401).json({ error: 'User not found or inactive' });
     }
 
-    if (!user.organizationId) {
+    // Platform admins don't need an organization
+    if (!user.organizationId && user.role !== 'PLATFORM_ADMIN') {
       return res.status(401).json({ error: 'User is not associated with an organization' });
     }
 

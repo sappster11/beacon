@@ -10,6 +10,7 @@ export default function Register() {
   const [adminEmail, setAdminEmail] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -53,6 +54,11 @@ export default function Register() {
 
     if (!passwordsMatch) {
       setError('Passwords do not match');
+      return;
+    }
+
+    if (!acceptedTerms) {
+      setError('You must accept the Terms of Service and Privacy Policy');
       return;
     }
 
@@ -398,6 +404,49 @@ export default function Register() {
               )}
             </div>
 
+            {/* Terms Acceptance */}
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '12px',
+                cursor: 'pointer',
+              }}>
+                <input
+                  type="checkbox"
+                  checked={acceptedTerms}
+                  onChange={(e) => setAcceptedTerms(e.target.checked)}
+                  style={{
+                    width: '18px',
+                    height: '18px',
+                    marginTop: '2px',
+                    cursor: 'pointer',
+                    accentColor: '#667eea',
+                  }}
+                />
+                <span style={{ fontSize: '14px', color: '#4b5563', lineHeight: '1.5' }}>
+                  I agree to the{' '}
+                  <Link
+                    to="/terms"
+                    target="_blank"
+                    style={{ color: '#667eea', textDecoration: 'underline' }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Terms of Service
+                  </Link>{' '}
+                  and{' '}
+                  <Link
+                    to="/privacy"
+                    target="_blank"
+                    style={{ color: '#667eea', textDecoration: 'underline' }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Privacy Policy
+                  </Link>
+                </span>
+              </label>
+            </div>
+
             {error && (
               <div style={{
                 color: '#991b1b',
@@ -435,30 +484,30 @@ export default function Register() {
               </button>
               <button
                 type="submit"
-                disabled={isLoading || !allPasswordRequirementsMet || !passwordsMatch}
+                disabled={isLoading || !allPasswordRequirementsMet || !passwordsMatch || !acceptedTerms}
                 style={{
                   flex: 1,
                   padding: '14px',
                   fontSize: '16px',
                   fontWeight: '600',
-                  background: isLoading || !allPasswordRequirementsMet || !passwordsMatch
+                  background: isLoading || !allPasswordRequirementsMet || !passwordsMatch || !acceptedTerms
                     ? '#9ca3af'
                     : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                   color: 'white',
                   border: 'none',
                   borderRadius: '8px',
-                  cursor: isLoading || !allPasswordRequirementsMet || !passwordsMatch ? 'not-allowed' : 'pointer',
+                  cursor: isLoading || !allPasswordRequirementsMet || !passwordsMatch || !acceptedTerms ? 'not-allowed' : 'pointer',
                   transition: 'transform 0.2s, box-shadow 0.2s',
                   boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
                 }}
                 onMouseEnter={(e) => {
-                  if (!isLoading && allPasswordRequirementsMet && passwordsMatch) {
+                  if (!isLoading && allPasswordRequirementsMet && passwordsMatch && acceptedTerms) {
                     e.currentTarget.style.transform = 'translateY(-1px)';
                     e.currentTarget.style.boxShadow = '0 6px 16px rgba(102, 126, 234, 0.4)';
                   }
                 }}
                 onMouseLeave={(e) => {
-                  if (!isLoading && allPasswordRequirementsMet && passwordsMatch) {
+                  if (!isLoading && allPasswordRequirementsMet && passwordsMatch && acceptedTerms) {
                     e.currentTarget.style.transform = 'translateY(0)';
                     e.currentTarget.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.3)';
                   }

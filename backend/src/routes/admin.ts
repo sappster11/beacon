@@ -13,6 +13,14 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 
 // Helper to check if user is super admin
 const isSuperAdmin = (role: UserRole) => role === UserRole.SUPER_ADMIN;
 
+// Helper to get organizationId with type safety (only for org-scoped admin routes)
+const getOrgId = (req: AuthRequest): string => {
+  if (!req.user?.organizationId) {
+    throw new Error('Organization ID required for this operation');
+  }
+  return req.user.organizationId;
+};
+
 // Role hierarchy for privilege escalation prevention
 const ROLE_LEVELS: Record<string, number> = {
   'EMPLOYEE': 1,
@@ -39,7 +47,7 @@ router.get(
   async (req: AuthRequest, res) => {
     try {
       const settings = await prisma.systemSettings.findMany({
-        where: { organizationId: req.user!.organizationId }
+        where: { organizationId: getOrgId(req) }
       });
 
       const settingsObj: Record<string, any> = {};
@@ -74,7 +82,7 @@ router.get(
       const setting = await prisma.systemSettings.findUnique({
         where: {
           organizationId_category: {
-            organizationId: req.user!.organizationId,
+            organizationId: getOrgId(req),
             category
           }
         }
@@ -116,7 +124,7 @@ router.patch(
       const existing = await prisma.systemSettings.findUnique({
         where: {
           organizationId_category: {
-            organizationId: req.user!.organizationId,
+            organizationId: getOrgId(req),
             category
           }
         }
@@ -125,7 +133,7 @@ router.patch(
       const updated = await prisma.systemSettings.upsert({
         where: {
           organizationId_category: {
-            organizationId: req.user!.organizationId,
+            organizationId: getOrgId(req),
             category
           }
         },
@@ -133,7 +141,7 @@ router.patch(
         create: {
           category,
           settings: JSON.stringify(settings),
-          organizationId: req.user!.organizationId
+          organizationId: getOrgId(req)
         }
       });
 
@@ -182,7 +190,7 @@ router.patch(
       }
 
       // Verify user belongs to same organization
-      if (before.organizationId !== req.user!.organizationId) {
+      if (before.organizationId !== getOrgId(req)) {
         return res.status(404).json({ error: 'User not found' });
       }
 
@@ -224,7 +232,7 @@ router.patch(
 
       // Verify user belongs to same organization
       const existing = await prisma.user.findUnique({ where: { id } });
-      if (!existing || existing.organizationId !== req.user!.organizationId) {
+      if (!existing || existing.organizationId !== getOrgId(req)) {
         return res.status(404).json({ error: 'User not found' });
       }
 
@@ -298,7 +306,7 @@ router.post(
             const manager = await prisma.user.findFirst({
               where: {
                 email: record.manager,
-                organizationId: req.user!.organizationId
+                organizationId: getOrgId(req)
               }
             });
             if (manager) {
@@ -312,7 +320,7 @@ router.post(
             const department = await prisma.department.findFirst({
               where: {
                 name: record.department,
-                organizationId: req.user!.organizationId
+                organizationId: getOrgId(req)
               }
             });
             if (department) {
@@ -352,7 +360,7 @@ router.post(
               departmentId,
               hireDate: record.hireDate ? new Date(record.hireDate) : null,
               isActive: true,
-              organizationId: req.user!.organizationId
+              organizationId: getOrgId(req)
             }
           });
 
@@ -395,7 +403,7 @@ router.get(
   async (req: AuthRequest, res) => {
     try {
       const integrations = await prisma.integration.findMany({
-        where: { organizationId: req.user!.organizationId }
+        where: { organizationId: getOrgId(req) }
       });
 
       // Don't expose config to non-super-admins
@@ -433,7 +441,7 @@ router.get(
       const integration = await prisma.integration.findUnique({
         where: {
           organizationId_type: {
-            organizationId: req.user!.organizationId,
+            organizationId: getOrgId(req),
             type
           }
         }
@@ -487,7 +495,7 @@ router.patch(
       const integration = await prisma.integration.upsert({
         where: {
           organizationId_type: {
-            organizationId: req.user!.organizationId,
+            organizationId: getOrgId(req),
             type
           }
         },
@@ -499,7 +507,7 @@ router.patch(
           type,
           config: encryptedConfig,
           isConnected: true,
-          organizationId: req.user!.organizationId
+          organizationId: getOrgId(req)
         }
       });
 
@@ -542,7 +550,7 @@ router.post(
       const integration = await prisma.integration.update({
         where: {
           organizationId_type: {
-            organizationId: req.user!.organizationId,
+            organizationId: getOrgId(req),
             type
           }
         },
@@ -597,7 +605,7 @@ router.get(
       } = req.query;
 
       const where: any = {
-        organizationId: req.user!.organizationId
+        organizationId: getOrgId(req)
       };
 
       // HR_ADMIN can only see their own team's logs, SUPER_ADMIN sees all within org
@@ -694,7 +702,7 @@ router.get(
       }
 
       // Verify audit log belongs to user's organization (IDOR protection)
-      if (log.organizationId !== req.user!.organizationId) {
+      if (log.organizationId !== getOrgId(req)) {
         return res.status(404).json({ error: 'Audit log not found' });
       }
 
@@ -719,7 +727,7 @@ router.post(
       const { userId, action, resourceType, startDate, endDate, format = 'csv' } = req.body;
 
       const where: any = {
-        organizationId: req.user!.organizationId
+        organizationId: getOrgId(req)
       };
       if (userId) where.userId = userId;
       if (action) where.action = action;

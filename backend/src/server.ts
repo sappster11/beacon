@@ -37,6 +37,8 @@ import googleCalendarRoutes from './routes/google-calendar';
 import profileRoutes from './routes/profile';
 import adminRoutes from './routes/admin';
 import onboardingRoutes from './routes/onboarding';
+import dataExportRoutes from './routes/data-export';
+import platformAdminRoutes from './routes/platform-admin';
 import { authenticateToken } from './middleware/auth';
 import { PrismaClient } from '@prisma/client';
 
@@ -98,6 +100,8 @@ app.use('/api/calendar', googleCalendarRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/onboarding', onboardingRoutes);
+app.use('/api/data-export', dataExportRoutes);
+app.use('/api/platform-admin', platformAdminRoutes);
 
 // Auto-seed database on first startup (for production deployments)
 async function autoSeedIfEmpty() {

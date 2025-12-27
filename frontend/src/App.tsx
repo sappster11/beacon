@@ -23,6 +23,11 @@ import Development from './pages/Development';
 import OrgChart from './pages/OrgChart';
 import Settings from './pages/Settings';
 import Admin from './pages/Admin';
+import PlatformAdmin from './pages/PlatformAdmin';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
+import Dev from './pages/Dev';
+import CookieConsent from './components/CookieConsent';
 
 function App() {
   return (
@@ -37,6 +42,9 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/accept-invite" element={<AcceptInvite />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/dev" element={<Dev />} />
 
             <Route element={<ProtectedRoute />}>
               <Route element={<Layout />}>
@@ -53,11 +61,13 @@ function App() {
                 <Route path="/org-chart" element={<OrgChart />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/admin" element={<Admin />} />
+                <Route path="/platform-admin" element={<PlatformAdmin />} />
               </Route>
             </Route>
 
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
+            <CookieConsent />
           </TeamProvider>
         </AuthProvider>
       </BrowserRouter>
