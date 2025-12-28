@@ -422,24 +422,28 @@ export default function PlatformAdmin() {
                       </td>
                       <td style={{ padding: '16px', textAlign: 'right', position: 'relative' }}>
                         <button
+                          onMouseDown={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            console.log('Ellipsis MOUSEDOWN');
+                            alert('Button clicked! org: ' + org.name);
+                            setOpenMenuId(openMenuId === org.id ? null : org.id);
+                          }}
                           onClick={(e) => {
                             e.stopPropagation();
                             e.preventDefault();
-                            console.log('Ellipsis clicked, current openMenuId:', openMenuId, 'org.id:', org.id);
-                            const newMenuId = openMenuId === org.id ? null : org.id;
-                            console.log('Setting openMenuId to:', newMenuId);
-                            setOpenMenuId(newMenuId);
+                            console.log('Ellipsis CLICK');
                           }}
                           style={{
-                            padding: '8px',
-                            background: openMenuId === org.id ? '#f3f4f6' : 'transparent',
-                            border: 'none',
+                            padding: '12px',
+                            background: '#e5e7eb',
+                            border: '2px solid #3b82f6',
                             borderRadius: '6px',
                             cursor: 'pointer',
-                            color: '#6b7280',
+                            color: '#111827',
                           }}
                         >
-                          <MoreVertical size={18} />
+                          <MoreVertical size={20} />
                         </button>
                         {openMenuId === org.id && (
                           <div
