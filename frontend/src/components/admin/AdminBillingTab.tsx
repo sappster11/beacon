@@ -128,7 +128,7 @@ export default function AdminBillingTab() {
 
   const currentTier = subscriptionDetails?.subscription_tier || 'free';
   const subscriptionStatus = subscriptionDetails?.subscription_status || 'inactive';
-  const isSubscribed = ['active', 'trialing'].includes(subscriptionStatus);
+  const hasActiveSubscription = subscriptionStatus === 'active' && currentTier !== 'free';
 
   const pricePerSeat = isYearly ? PRICE_PER_SEAT_YEARLY : PRICE_PER_SEAT_MONTHLY;
   const totalPrice = pricePerSeat * seatCount;
@@ -261,7 +261,7 @@ export default function AdminBillingTab() {
       )}
 
       {/* Pricing Section */}
-      {!isSubscribed && (
+      {!hasActiveSubscription && (
         <div
           style={{
             background: 'white',
