@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@sentry/react": "^10.32.1",
+    "@supabase/supabase-js": "^2.89.0",
     "@tiptap/react": "^3.14.0",
     "@tiptap/starter-kit": "^3.14.0",
     "axios": "^1.13.2",

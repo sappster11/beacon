@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Check } from 'lucide-react';
-import { onboarding } from '../lib/api';
+import { supabase } from '../lib/supabase';
 
 export default function Register() {
   const [step, setStep] = useState(1);
@@ -65,18 +65,39 @@ export default function Register() {
     setIsLoading(true);
 
     try {
-      const response = await onboarding.register({
-        organizationName: organizationName.trim(),
-        adminName: adminName.trim(),
-        adminEmail: adminEmail.trim().toLowerCase(),
-        adminPassword,
+      // Call edge function to create organization
+      const { data, error: fnError } = await supabase.functions.invoke('create-organization', {
+        body: {
+          organizationName: organizationName.trim(),
+          adminName: adminName.trim(),
+          adminEmail: adminEmail.trim().toLowerCase(),
+          adminPassword,
+        },
       });
 
-      // Store the token and redirect to dashboard
-      localStorage.setItem('auth_token', response.token);
+      if (fnError) {
+        throw new Error(fnError.message || 'Failed to create organization');
+      }
+
+      if (data?.error) {
+        throw new Error(data.error);
+      }
+
+      // Auto-login after signup
+      const { error: loginError } = await supabase.auth.signInWithPassword({
+        email: adminEmail.trim().toLowerCase(),
+        password: adminPassword,
+      });
+
+      if (loginError) {
+        // Account created but login failed - redirect to login page
+        navigate('/login');
+        return;
+      }
+
       navigate('/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Registration failed. Please try again.');
+      setError(err.message || 'Registration failed. Please try again.');
     } finally {
       setIsLoading(false);
     }

@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { auth } from '../lib/api';
+import { supabase } from '../lib/supabase';
 import type { User, LoginCredentials, Organization } from '../types';
+import type { Session, User as SupabaseUser } from '@supabase/supabase-js';
 
 interface AuthContextType {
   user: User | null;
@@ -14,42 +15,127 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Transform database user to frontend User type
+function transformUser(dbUser: any, org?: any): User {
+  return {
+    id: dbUser.id,
+    email: dbUser.email,
+    name: dbUser.name,
+    title: dbUser.title,
+    role: dbUser.role,
+    organizationId: dbUser.organization_id,
+    managerId: dbUser.manager_id,
+    departmentId: dbUser.department_id,
+    hireDate: dbUser.hire_date,
+    profilePicture: dbUser.profile_picture,
+    bio: dbUser.bio,
+    phoneNumber: dbUser.phone_number,
+    location: dbUser.location,
+    isActive: dbUser.is_active,
+    lastLoginAt: dbUser.last_login_at,
+    createdAt: dbUser.created_at,
+    updatedAt: dbUser.updated_at,
+    organization: org ? transformOrganization(org) : undefined,
+  };
+}
+
+function transformOrganization(dbOrg: any): Organization {
+  return {
+    id: dbOrg.id,
+    name: dbOrg.name,
+    slug: dbOrg.slug,
+    logo: dbOrg.logo,
+    isActive: dbOrg.is_active,
+    createdAt: dbOrg.created_at,
+    updatedAt: dbOrg.updated_at,
+  };
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [organization, setOrganization] = useState<Organization | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const token = localStorage.getItem('auth_token');
-    if (token) {
-      auth
-        .getCurrentUser()
-        .then((userData) => {
-          setUser(userData);
-          if (userData.organization) {
-            setOrganization(userData.organization);
-          }
-        })
-        .catch(() => {
-          localStorage.removeItem('auth_token');
-        })
-        .finally(() => setIsLoading(false));
-    } else {
-      setIsLoading(false);
-    }
-  }, []);
+  // Fetch user profile from database
+  const fetchUserProfile = async (authUser: SupabaseUser) => {
+    try {
+      // Fetch user with organization
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select(`
+          *,
+          organizations (*)
+        `)
+        .eq('id', authUser.id)
+        .single();
 
-  const login = async (credentials: LoginCredentials) => {
-    const response = await auth.login(credentials);
-    localStorage.setItem('auth_token', response.token);
-    setUser(response.user);
-    if (response.organization) {
-      setOrganization(response.organization);
+      if (userError || !userData) {
+        console.error('Error fetching user profile:', userError);
+        return null;
+      }
+
+      const transformedUser = transformUser(userData, userData.organizations);
+      setUser(transformedUser);
+
+      if (userData.organizations) {
+        setOrganization(transformOrganization(userData.organizations));
+      }
+
+      // Update last login
+      await supabase
+        .from('users')
+        .update({ last_login_at: new Date().toISOString() })
+        .eq('id', authUser.id);
+
+      return transformedUser;
+    } catch (error) {
+      console.error('Error in fetchUserProfile:', error);
+      return null;
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('auth_token');
+  useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        fetchUserProfile(session.user).finally(() => setIsLoading(false));
+      } else {
+        setIsLoading(false);
+      }
+    });
+
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === 'SIGNED_IN' && session?.user) {
+          await fetchUserProfile(session.user);
+        } else if (event === 'SIGNED_OUT') {
+          setUser(null);
+          setOrganization(null);
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const login = async (credentials: LoginCredentials) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: credentials.email,
+      password: credentials.password,
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    if (data.user) {
+      await fetchUserProfile(data.user);
+    }
+  };
+
+  const logout = async () => {
+    await supabase.auth.signOut();
     setUser(null);
     setOrganization(null);
     window.location.href = '/login';
@@ -57,10 +143,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const refreshUser = async () => {
     try {
-      const userData = await auth.getCurrentUser();
-      setUser(userData);
-      if (userData.organization) {
-        setOrganization(userData.organization);
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+      if (authUser) {
+        await fetchUserProfile(authUser);
       }
     } catch (error) {
       console.error('Failed to refresh user:', error);

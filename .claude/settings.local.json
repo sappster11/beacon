@@ -20,7 +20,9 @@
       "Bash(npx prisma migrate:*)",
       "Bash(grep:*)",
       "Bash(xargs cat:*)",
-      "Bash(npx prisma generate:*)"
+      "Bash(npx prisma generate:*)",
+      "Bash(git checkout:*)",
+      "Bash(npx supabase gen types:*)"
     ]
   }
 }
