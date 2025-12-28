@@ -1465,10 +1465,12 @@ export const manager = {
       .limit(5);
 
     return {
-      pendingReviews: pendingReviews?.length || 0,
-      pendingReviewsList: pendingReviews || [],
-      upcoming1on1s: upcoming1on1s?.length || 0,
-      upcoming1on1sList: upcoming1on1s || [],
+      reviewsDue: pendingReviews || [],
+      goalsToSet: [], // Goals not implemented yet
+      upcoming1on1s: upcoming1on1s || [],
+      summary: {
+        totalTodos: (pendingReviews?.length || 0) + (upcoming1on1s?.length || 0),
+      },
     };
   },
 
