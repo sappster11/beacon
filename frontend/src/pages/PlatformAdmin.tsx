@@ -85,25 +85,18 @@ export default function PlatformAdmin() {
   // Deactivate confirmation state
   const [confirmDeactivate, setConfirmDeactivate] = useState<Organization | null>(null);
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    if (!openMenuId) return;
-
-    const handleClickOutside = (e: MouseEvent) => {
-      // Small delay to avoid catching the same click that opened the menu
-      setTimeout(() => setOpenMenuId(null), 0);
-    };
-
-    // Add listener on next tick so it doesn't catch the opening click
-    const timeoutId = setTimeout(() => {
-      document.addEventListener('click', handleClickOutside);
-    }, 0);
-
-    return () => {
-      clearTimeout(timeoutId);
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [openMenuId]);
+  // Close dropdown when clicking outside - disabled for debugging
+  // useEffect(() => {
+  //   if (!openMenuId) return;
+  //   const handleClickOutside = () => setOpenMenuId(null);
+  //   const timeoutId = setTimeout(() => {
+  //     document.addEventListener('click', handleClickOutside);
+  //   }, 10);
+  //   return () => {
+  //     clearTimeout(timeoutId);
+  //     document.removeEventListener('click', handleClickOutside);
+  //   };
+  // }, [openMenuId]);
 
   // Check platform admin access
   useEffect(() => {
@@ -431,7 +424,11 @@ export default function PlatformAdmin() {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            setOpenMenuId(openMenuId === org.id ? null : org.id);
+                            e.preventDefault();
+                            console.log('Ellipsis clicked, current openMenuId:', openMenuId, 'org.id:', org.id);
+                            const newMenuId = openMenuId === org.id ? null : org.id;
+                            console.log('Setting openMenuId to:', newMenuId);
+                            setOpenMenuId(newMenuId);
                           }}
                           style={{
                             padding: '8px',
