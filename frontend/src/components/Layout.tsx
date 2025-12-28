@@ -3,12 +3,31 @@ import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { Home, Target, ClipboardList, Users, TrendingUp, LogOut, Menu, X, Building2, UsersRound, Settings, Globe } from 'lucide-react';
 import Avatar from './Avatar';
+import { supabase } from '../lib/supabase';
 
 export default function Layout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isPlatformAdmin, setIsPlatformAdmin] = useState(false);
+
+  // Check platform admin status
+  useEffect(() => {
+    const checkPlatformAdmin = async () => {
+      if (!user) {
+        setIsPlatformAdmin(false);
+        return;
+      }
+      const { data, error } = await supabase
+        .from('platform_admins')
+        .select('id')
+        .eq('user_id', user.id)
+        .single();
+      setIsPlatformAdmin(!error && !!data);
+    };
+    checkPlatformAdmin();
+  }, [user]);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -33,7 +52,6 @@ export default function Layout() {
 
   const isManager = user?.role === 'MANAGER' || user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
   const isAdmin = user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
-  const isPlatformAdmin = user?.role === 'PLATFORM_ADMIN';
 
   const managementItems = [];
   if (isManager) {

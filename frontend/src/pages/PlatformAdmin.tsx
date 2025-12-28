@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { platformAdmin } from '../lib/api';
+import { supabase } from '../lib/supabase';
 import {
   Building2,
   Users,
@@ -53,6 +54,8 @@ interface OrgDetails {
 export default function PlatformAdmin() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<Tab>('organizations');
+  const [isPlatformAdmin, setIsPlatformAdmin] = useState<boolean | null>(null);
+  const [checkingAccess, setCheckingAccess] = useState(true);
 
   // Metrics state
   const [metrics, setMetrics] = useState<any>(null);
@@ -69,20 +72,31 @@ export default function PlatformAdmin() {
   const [selectedOrg, setSelectedOrg] = useState<OrgDetails | null>(null);
   const [isLoadingOrgDetails, setIsLoadingOrgDetails] = useState(false);
 
-  // Check if user is platform admin
-  if (user?.role !== 'PLATFORM_ADMIN') {
-    return (
-      <div style={{ padding: '48px', textAlign: 'center' }}>
-        <h1 style={{ color: '#dc2626', marginBottom: '16px' }}>Access Denied</h1>
-        <p style={{ color: '#6b7280' }}>You do not have permission to access this page.</p>
-      </div>
-    );
-  }
+  // Check platform admin access
+  useEffect(() => {
+    const checkAccess = async () => {
+      if (!user) {
+        setIsPlatformAdmin(false);
+        setCheckingAccess(false);
+        return;
+      }
+      const { data, error } = await supabase
+        .from('platform_admins')
+        .select('id')
+        .eq('user_id', user.id)
+        .single();
+      setIsPlatformAdmin(!error && !!data);
+      setCheckingAccess(false);
+    };
+    checkAccess();
+  }, [user]);
 
   useEffect(() => {
-    loadMetrics();
-    loadOrganizations();
-  }, []);
+    if (isPlatformAdmin) {
+      loadMetrics();
+      loadOrganizations();
+    }
+  }, [isPlatformAdmin]);
 
   useEffect(() => {
     loadOrganizations();
@@ -149,6 +163,25 @@ export default function PlatformAdmin() {
       console.error('Failed to update org status:', error);
     }
   };
+
+  // Loading state
+  if (checkingAccess) {
+    return (
+      <div style={{ padding: '48px', textAlign: 'center' }}>
+        <p style={{ color: '#6b7280' }}>Checking access...</p>
+      </div>
+    );
+  }
+
+  // Access denied
+  if (!isPlatformAdmin) {
+    return (
+      <div style={{ padding: '48px', textAlign: 'center' }}>
+        <h1 style={{ color: '#dc2626', marginBottom: '16px' }}>Access Denied</h1>
+        <p style={{ color: '#6b7280' }}>You do not have permission to access this page.</p>
+      </div>
+    );
+  }
 
   return (
     <div style={{ padding: '48px' }}>
