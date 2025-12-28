@@ -318,6 +318,17 @@ export const users = {
 
 // Profile API
 export const profile = {
+  getMe: async (): Promise<User | null> => {
+    const userId = await getCurrentUserId();
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', userId)
+      .single();
+    if (error) return null;
+    return transformUser(data);
+  },
+
   updateProfile: async (updates: { bio?: string; phoneNumber?: string; location?: string }): Promise<User> => {
     const userId = await getCurrentUserId();
     const { data, error } = await supabase
