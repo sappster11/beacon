@@ -61,29 +61,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       console.log('fetchUserProfile: Starting for user', authUser.id);
 
-      // Fetch user with organization
-      console.log('fetchUserProfile: Making query...');
+      // First, just fetch the user without join
+      console.log('fetchUserProfile: Making simple query...');
       const { data: userData, error: userError } = await supabase
         .from('users')
-        .select(`
-          *,
-          organizations (*)
-        `)
+        .select('*')
         .eq('id', authUser.id)
         .single();
 
-      console.log('fetchUserProfile: Query complete', { userData, userError });
+      console.log('fetchUserProfile: User query complete', { userData, userError });
 
       if (userError || !userData) {
-        console.error('Error fetching user profile:', userError);
+        console.error('Error fetching user:', userError);
         return null;
       }
 
-      const transformedUser = transformUser(userData, userData.organizations);
+      // Then fetch organization separately
+      console.log('fetchUserProfile: Fetching organization...');
+      const { data: orgData, error: orgError } = await supabase
+        .from('organizations')
+        .select('*')
+        .eq('id', userData.organization_id)
+        .single();
+
+      console.log('fetchUserProfile: Org query complete', { orgData, orgError });
+
+      const transformedUser = transformUser(userData, orgData);
       setUser(transformedUser);
 
-      if (userData.organizations) {
-        setOrganization(transformOrganization(userData.organizations));
+      if (orgData) {
+        setOrganization(transformOrganization(orgData));
       }
 
       // Update last login
