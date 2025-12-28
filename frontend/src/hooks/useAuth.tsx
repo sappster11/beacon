@@ -64,18 +64,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // First, just fetch the user without join
       console.log('fetchUserProfile: Making simple query...');
 
-      // Debug: Test raw fetch to see if network works
-      const testUrl = `${import.meta.env.VITE_SUPABASE_URL}/rest/v1/users?id=eq.${authUser.id}&select=*`;
-      console.log('fetchUserProfile: Testing raw fetch to', testUrl);
+      // Use raw fetch instead of Supabase client to debug
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+      const url = `${supabaseUrl}/rest/v1/users?id=eq.${authUser.id}&select=*`;
 
-      const { data: session } = await supabase.auth.getSession();
-      console.log('fetchUserProfile: Got session', !!session?.session);
+      console.log('fetchUserProfile: Making raw fetch...');
+      const response = await fetch(url, {
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log('fetchUserProfile: Raw fetch complete, status:', response.status);
 
-      const { data: userData, error: userError } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', authUser.id)
-        .single();
+      const users = await response.json();
+      console.log('fetchUserProfile: Raw fetch data:', users);
+
+      const userData = users?.[0];
+      const userError = !userData ? { message: 'User not found' } : null;
 
       console.log('fetchUserProfile: User query complete', { userData, userError });
 
@@ -86,13 +94,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       // Then fetch organization separately
       console.log('fetchUserProfile: Fetching organization...');
-      const { data: orgData, error: orgError } = await supabase
-        .from('organizations')
-        .select('*')
-        .eq('id', userData.organization_id)
-        .single();
+      const orgUrl = `${supabaseUrl}/rest/v1/organizations?id=eq.${userData.organization_id}&select=*`;
+      const orgResponse = await fetch(orgUrl, {
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      const orgs = await orgResponse.json();
+      const orgData = orgs?.[0];
 
-      console.log('fetchUserProfile: Org query complete', { orgData, orgError });
+      console.log('fetchUserProfile: Org query complete', { orgData });
 
       const transformedUser = transformUser(userData, orgData);
       setUser(transformedUser);
@@ -101,12 +114,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setOrganization(transformOrganization(orgData));
       }
 
-      // Update last login
-      await supabase
-        .from('users')
-        .update({ last_login_at: new Date().toISOString() })
-        .eq('id', authUser.id);
-
+      // Skip last login update for now - can add back later
       return transformedUser;
     } catch (error) {
       console.error('Error in fetchUserProfile:', error);
@@ -115,14 +123,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        fetchUserProfile(session.user).finally(() => setIsLoading(false));
-      } else {
-        setIsLoading(false);
-      }
-    });
+    // Set loading to false after a short delay - don't wait for session check
+    // The onAuthStateChange will handle fetching profile if user is logged in
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 100);
 
     // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -136,7 +141,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     );
 
-    return () => subscription.unsubscribe();
+    return () => {
+      clearTimeout(timer);
+      subscription.unsubscribe();
+    };
   }, []);
 
   const login = async (credentials: LoginCredentials) => {
