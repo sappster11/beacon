@@ -127,17 +127,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    // Set loading to false after a short delay - don't wait for session check
-    // The onAuthStateChange will handle fetching profile if user is logged in
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 100);
+    // Check for existing session on mount
+    const initializeAuth = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+          console.log('initializeAuth: Found existing session');
+          await fetchUserProfile(session.user, session.access_token);
+        }
+      } catch (error) {
+        console.error('initializeAuth error:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeAuth();
 
     // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log('onAuthStateChange:', event, !!session);
-        if (event === 'SIGNED_IN' && session?.user) {
+        if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION' || event === 'TOKEN_REFRESHED') && session?.user) {
           // Pass the access token from the session
           await fetchUserProfile(session.user, session.access_token);
         } else if (event === 'SIGNED_OUT') {
@@ -148,7 +159,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
 
     return () => {
-      clearTimeout(timer);
       subscription.unsubscribe();
     };
   }, []);
