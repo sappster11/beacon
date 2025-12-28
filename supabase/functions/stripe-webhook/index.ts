@@ -61,13 +61,14 @@ serve(async (req) => {
         // Determine tier from price
         let tier = 'free'
         const priceId = subscription.items.data[0]?.price.id
-        const starterPriceId = Deno.env.get('STRIPE_STARTER_PRICE_ID')
-        const professionalPriceId = Deno.env.get('STRIPE_PROFESSIONAL_PRICE_ID')
-        const enterprisePriceId = Deno.env.get('STRIPE_ENTERPRISE_PRICE_ID')
 
-        if (priceId === starterPriceId) tier = 'starter'
-        else if (priceId === professionalPriceId) tier = 'professional'
-        else if (priceId === enterprisePriceId) tier = 'enterprise'
+        // Monthly: $7/mo, Yearly: $60/yr
+        const monthlyPriceId = 'price_1SjRAACwCNHtAVIQ9mD1IPEC'
+        const yearlyPriceId = 'price_1SjRAACwCNHtAVIQVacO8Dbm'
+
+        if (priceId === monthlyPriceId) tier = 'monthly'
+        else if (priceId === yearlyPriceId) tier = 'yearly'
+        else tier = 'pro' // fallback for any other valid subscription
 
         // Map Stripe status to our status
         let status = 'inactive'

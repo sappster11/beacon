@@ -7,53 +7,45 @@ interface PricingPlan {
   id: string;
   name: string;
   price: number;
+  period: string;
   priceId: string;
   features: string[];
   recommended?: boolean;
+  savings?: string;
 }
 
 const PRICING_PLANS: PricingPlan[] = [
   {
-    id: 'starter',
-    name: 'Starter',
-    price: 29,
-    priceId: import.meta.env.VITE_STRIPE_STARTER_PRICE_ID || '',
+    id: 'monthly',
+    name: 'Monthly',
+    price: 7,
+    period: 'month',
+    priceId: 'price_1SjRAACwCNHtAVIQ9mD1IPEC',
     features: [
-      'Up to 25 users',
+      'Unlimited users',
       'Performance reviews',
       'Goal tracking',
       '1:1 meetings',
+      'Development plans',
       'Email support',
     ],
   },
   {
-    id: 'professional',
-    name: 'Professional',
-    price: 99,
-    priceId: import.meta.env.VITE_STRIPE_PROFESSIONAL_PRICE_ID || '',
-    features: [
-      'Up to 100 users',
-      'Everything in Starter',
-      'Development plans',
-      'Peer feedback',
-      'Custom competencies',
-      'Priority support',
-    ],
-    recommended: true,
-  },
-  {
-    id: 'enterprise',
-    name: 'Enterprise',
-    price: 249,
-    priceId: import.meta.env.VITE_STRIPE_ENTERPRISE_PRICE_ID || '',
+    id: 'yearly',
+    name: 'Yearly',
+    price: 60,
+    period: 'year',
+    priceId: 'price_1SjRAACwCNHtAVIQVacO8Dbm',
     features: [
       'Unlimited users',
-      'Everything in Professional',
-      'SSO/SAML',
-      'API access',
-      'Custom integrations',
-      'Dedicated success manager',
+      'Performance reviews',
+      'Goal tracking',
+      '1:1 meetings',
+      'Development plans',
+      'Email support',
     ],
+    recommended: true,
+    savings: 'Save $24/year',
   },
 ];
 
@@ -337,7 +329,21 @@ export default function AdminBillingTab() {
                 <span style={{ fontSize: '36px', fontWeight: '700', color: '#111827' }}>
                   ${plan.price}
                 </span>
-                <span style={{ color: '#6b7280', fontSize: '14px' }}>/month</span>
+                <span style={{ color: '#6b7280', fontSize: '14px' }}>/{plan.period}</span>
+                {plan.savings && (
+                  <div style={{
+                    marginTop: '8px',
+                    padding: '4px 10px',
+                    background: '#dcfce7',
+                    color: '#166534',
+                    borderRadius: '6px',
+                    fontSize: '12px',
+                    fontWeight: '600',
+                    display: 'inline-block',
+                  }}>
+                    {plan.savings}
+                  </div>
+                )}
               </div>
 
               <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px 0' }}>
