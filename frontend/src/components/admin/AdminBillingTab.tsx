@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { supabase } from '../../lib/supabase';
-import { CreditCard, Check, ExternalLink, AlertCircle, Users, Minus, Plus } from 'lucide-react';
+import { CreditCard, Check, ExternalLink, AlertCircle } from 'lucide-react';
 
 const MONTHLY_PRICE_ID = 'price_1SjRAACwCNHtAVIQ9mD1IPEC';
 const YEARLY_PRICE_ID = 'price_1SjRAACwCNHtAVIQVacO8Dbm';
@@ -18,9 +18,8 @@ const FEATURES = [
 
 export default function AdminBillingTab() {
   const { organization } = useAuth();
-  const [isYearly, setIsYearly] = useState(true);
-  const [seatCount, setSeatCount] = useState(1);
-  const [currentUserCount, setCurrentUserCount] = useState(1);
+  const [isYearly, setIsYearly] = useState(false);
+  const [userCount, setUserCount] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [subscriptionDetails, setSubscriptionDetails] = useState<any>(null);
@@ -55,9 +54,7 @@ export default function AdminBillingTab() {
         .eq('organization_id', organization?.id);
 
       if (error) throw error;
-      const userCount = count || 1;
-      setCurrentUserCount(userCount);
-      setSeatCount(Math.max(userCount, 1));
+      setUserCount(count || 1);
     } catch (err) {
       console.error('Failed to load user count:', err);
     }
@@ -72,11 +69,11 @@ export default function AdminBillingTab() {
     const priceId = isYearly ? YEARLY_PRICE_ID : MONTHLY_PRICE_ID;
 
     try {
-      console.log('Calling create-checkout-session with:', { priceId, quantity: seatCount });
+      console.log('Calling create-checkout-session with:', { priceId, quantity: userCount });
       const { data, error } = await supabase.functions.invoke('create-checkout-session', {
         body: {
           priceId,
-          quantity: seatCount,
+          quantity: userCount,
           successUrl: `${window.location.origin}/admin?billing=success`,
           cancelUrl: `${window.location.origin}/admin?billing=canceled`,
         },
@@ -131,9 +128,9 @@ export default function AdminBillingTab() {
   const hasActiveSubscription = subscriptionStatus === 'active' && currentTier !== 'free';
 
   const pricePerSeat = isYearly ? PRICE_PER_SEAT_YEARLY : PRICE_PER_SEAT_MONTHLY;
-  const totalPrice = pricePerSeat * seatCount;
+  const totalPrice = pricePerSeat * userCount;
   const monthlyEquivalent = isYearly ? (PRICE_PER_SEAT_YEARLY / 12) : PRICE_PER_SEAT_MONTHLY;
-  const savings = isYearly ? (PRICE_PER_SEAT_MONTHLY * 12 - PRICE_PER_SEAT_YEARLY) * seatCount : 0;
+  const savings = isYearly ? (PRICE_PER_SEAT_MONTHLY * 12 - PRICE_PER_SEAT_YEARLY) * userCount : 0;
 
   const getStatusBadge = () => {
     const styles: Record<string, { bg: string; color: string; text: string }> = {
@@ -191,7 +188,7 @@ export default function AdminBillingTab() {
             </div>
             <p style={{ color: '#6b7280', fontSize: '14px', margin: 0 }}>
               {currentTier === 'free'
-                ? `You have ${currentUserCount} user${currentUserCount !== 1 ? 's' : ''} in your organization`
+                ? `You have ${userCount} user${userCount !== 1 ? 's' : ''} in your organization`
                 : subscriptionStatus === 'active'
                 ? 'Your subscription is active and will renew automatically'
                 : subscriptionStatus === 'trialing'
@@ -347,74 +344,6 @@ export default function AdminBillingTab() {
             )}
           </div>
 
-          {/* Seat Selection */}
-          <div
-            style={{
-              padding: '16px',
-              background: '#f9fafb',
-              borderRadius: '8px',
-              marginBottom: '24px',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Users size={18} style={{ color: '#6b7280' }} />
-                <span style={{ fontSize: '14px', color: '#374151', fontWeight: '500' }}>
-                  Number of seats
-                </span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <button
-                  onClick={() => setSeatCount(Math.max(currentUserCount, seatCount - 1))}
-                  disabled={seatCount <= currentUserCount}
-                  style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '6px',
-                    border: '1px solid #e5e7eb',
-                    background: 'white',
-                    cursor: seatCount <= currentUserCount ? 'not-allowed' : 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    opacity: seatCount <= currentUserCount ? 0.5 : 1,
-                  }}
-                >
-                  <Minus size={16} />
-                </button>
-                <span style={{ fontSize: '18px', fontWeight: '600', color: '#111827', minWidth: '40px', textAlign: 'center' }}>
-                  {seatCount}
-                </span>
-                <button
-                  onClick={() => setSeatCount(seatCount + 1)}
-                  style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '6px',
-                    border: '1px solid #e5e7eb',
-                    background: 'white',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Plus size={16} />
-                </button>
-              </div>
-            </div>
-            {seatCount < currentUserCount && (
-              <p style={{ fontSize: '12px', color: '#dc2626', marginTop: '8px', marginBottom: 0 }}>
-                Minimum {currentUserCount} seats required for your current users
-              </p>
-            )}
-            {seatCount === currentUserCount && (
-              <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '8px', marginBottom: 0 }}>
-                Based on your current {currentUserCount} user{currentUserCount !== 1 ? 's' : ''}
-              </p>
-            )}
-          </div>
-
           {/* Total */}
           <div
             style={{
@@ -426,7 +355,7 @@ export default function AdminBillingTab() {
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontSize: '14px', color: '#374151' }}>
-                {seatCount} seat{seatCount !== 1 ? 's' : ''} × ${pricePerSeat}/{isYearly ? 'year' : 'month'}
+                {userCount} user{userCount !== 1 ? 's' : ''} × ${pricePerSeat}/{isYearly ? 'year' : 'month'}
               </span>
               <span style={{ fontSize: '20px', fontWeight: '700', color: '#111827' }}>
                 ${totalPrice}/{isYearly ? 'year' : 'month'}
