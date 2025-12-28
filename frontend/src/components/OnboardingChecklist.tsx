@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, ChevronRight, Users, Building2, ClipboardList, User, X, Sparkles } from 'lucide-react';
-import api from '../lib/api';
+import { departments, users, reviewCycles, profile } from '../lib/api';
 
 interface ChecklistItem {
   id: string;
@@ -44,19 +44,19 @@ export default function OnboardingChecklist({ userRole }: OnboardingChecklistPro
 
   const loadStats = async () => {
     try {
-      const [deptRes, usersRes, cyclesRes, meRes] = await Promise.all([
-        api.get('/departments').catch(() => ({ data: [] })),
-        api.get('/users').catch(() => ({ data: [] })),
-        api.get('/review-cycles').catch(() => ({ data: [] })),
-        api.get('/auth/me').catch(() => ({ data: {} })),
+      const [deptList, usersList, cyclesList, me] = await Promise.all([
+        departments.getAll().catch(() => []),
+        users.getAll().catch(() => []),
+        reviewCycles.getAll().catch(() => []),
+        profile.getMe().catch(() => ({})),
       ]);
 
       setStats({
-        departments: deptRes.data.length,
-        users: usersRes.data.length,
-        reviewCycles: cyclesRes.data.length,
-        hasProfilePicture: !!meRes.data.profilePicture,
-        hasBio: !!meRes.data.bio,
+        departments: deptList?.length || 0,
+        users: usersList?.length || 0,
+        reviewCycles: cyclesList?.length || 0,
+        hasProfilePicture: !!(me as any)?.profilePicture,
+        hasBio: !!(me as any)?.bio,
       });
     } catch (error) {
       console.error('Failed to load onboarding stats:', error);
