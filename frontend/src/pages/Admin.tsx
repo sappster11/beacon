@@ -6,8 +6,9 @@ import AdminDepartmentsTab from '../components/admin/AdminDepartmentsTab';
 import AdminCompanyTab from '../components/admin/AdminCompanyTab';
 import AdminSettingsTab from '../components/admin/AdminSettingsTab';
 import AdminAuditLogsTab from '../components/admin/AdminAuditLogsTab';
+import AdminBillingTab from '../components/admin/AdminBillingTab';
 
-type TabType = 'users' | 'departments' | 'company' | 'settings' | 'audit-logs';
+type TabType = 'users' | 'departments' | 'company' | 'billing' | 'settings' | 'audit-logs';
 
 export default function Admin() {
   const { user } = useAuth();
@@ -24,6 +25,7 @@ export default function Admin() {
     { id: 'users', label: 'Users' },
     { id: 'departments', label: 'Departments' },
     { id: 'company', label: 'Company' },
+    { id: 'billing', label: 'Billing' },
     { id: 'settings', label: 'Settings' },
     { id: 'audit-logs', label: 'Audit Logs' }
   ];
@@ -83,6 +85,7 @@ export default function Admin() {
         {activeTab === 'users' && <AdminUsersTab />}
         {activeTab === 'departments' && <AdminDepartmentsTab />}
         {activeTab === 'company' && <AdminCompanyTab />}
+        {activeTab === 'billing' && <AdminBillingTab />}
         {activeTab === 'settings' && <AdminSettingsTab />}
         {activeTab === 'audit-logs' && <AdminAuditLogsTab />}
       </div>

@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react';
 import type { User, Department } from '../../types/index';
 import { X, Mail, Send } from 'lucide-react';
-import api from '../../lib/api';
+import { supabase } from '../../lib/supabase';
 
 interface InviteUserModalProps {
   onClose: () => void;
@@ -28,18 +28,23 @@ export default function InviteUserModal({ onClose, onSuccess, departments, users
     setIsSubmitting(true);
 
     try {
-      await api.post('/users/invite', {
-        email: formData.email,
-        name: formData.name,
-        title: formData.title || undefined,
-        role: formData.role,
-        departmentId: formData.departmentId || undefined,
-        managerId: formData.managerId || undefined,
+      const { data, error: fnError } = await supabase.functions.invoke('invite-user', {
+        body: {
+          email: formData.email,
+          name: formData.name,
+          title: formData.title || undefined,
+          role: formData.role,
+          departmentId: formData.departmentId || undefined,
+          managerId: formData.managerId || undefined,
+        },
       });
+
+      if (fnError) throw fnError;
+      if (data?.error) throw new Error(data.error);
 
       onSuccess();
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to send invitation');
+      setError(err.message || 'Failed to send invitation');
     } finally {
       setIsSubmitting(false);
     }
