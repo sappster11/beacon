@@ -27,6 +27,7 @@ import Settings from './pages/Settings';
 import Admin from './pages/Admin';
 import PlatformAdmin from './pages/PlatformAdmin';
 import Library from './pages/Library';
+import Help from './pages/Help';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
 import Dev from './pages/Dev';
@@ -68,6 +69,7 @@ function App() {
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/platform-admin" element={<PlatformAdmin />} />
                 <Route path="/library" element={<Library />} />
+                <Route path="/help" element={<Help />} />
               </Route>
             </Route>
 

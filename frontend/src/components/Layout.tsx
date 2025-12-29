@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { Home, Target, ClipboardList, Users, TrendingUp, LogOut, Menu, X, Building2, UsersRound, Settings, Globe, BookOpen } from 'lucide-react';
+import { Home, Target, ClipboardList, Users, TrendingUp, LogOut, Menu, X, Building2, UsersRound, Settings, Globe, BookOpen, HelpCircle } from 'lucide-react';
 import Avatar from './Avatar';
 import { supabase } from '../lib/supabase';
 
@@ -48,6 +48,7 @@ export default function Layout() {
     { path: '/goals', label: 'Goals', icon: Target },
     { path: '/development', label: 'Development', icon: TrendingUp, comingSoon: true },
     { path: '/employees', label: 'Org Chart', icon: UsersRound },
+    { path: '/help', label: 'Help', icon: HelpCircle },
   ];
 
   const isManager = user?.role === 'MANAGER' || user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
