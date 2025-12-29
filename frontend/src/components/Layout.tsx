@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { Home, Target, ClipboardList, Users, TrendingUp, LogOut, Menu, X, Building2, UsersRound, Settings, Globe, BookOpen, HelpCircle, Briefcase } from 'lucide-react';
+import { Home, Target, ClipboardList, Users, TrendingUp, LogOut, Menu, X, Building2, UsersRound, Settings, Globe, BookOpen, HelpCircle } from 'lucide-react';
 import Avatar from './Avatar';
 import { supabase } from '../lib/supabase';
 
@@ -234,12 +234,8 @@ export default function Layout() {
                     color: '#9ca3af',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
                   }}
                 >
-                  <Briefcase size={12} />
                   Management
                 </div>
               </div>
@@ -309,12 +305,8 @@ export default function Layout() {
                     color: '#9ca3af',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
                   }}
                 >
-                  <Globe size={12} />
                   Platform
                 </div>
               </div>
