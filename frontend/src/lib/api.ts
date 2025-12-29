@@ -291,6 +291,7 @@ export const users = {
     const { data, error } = await supabase
       .from('users')
       .insert({
+        id: crypto.randomUUID(),
         email: user.email,
         name: user.name,
         title: user.title,
@@ -299,6 +300,7 @@ export const users = {
         manager_id: user.managerId,
         department_id: user.departmentId,
         hire_date: user.hireDate,
+        is_active: true,
       })
       .select()
       .single();
