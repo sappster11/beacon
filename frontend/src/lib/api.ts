@@ -1910,6 +1910,9 @@ function transformGoalLibraryItem(row: any): GoalLibraryItem {
     category: row.category,
     isPlatformDefault: row.is_platform_default,
     createdBy: row.created_by,
+    createdByName: row.creator?.name,
+    updatedBy: row.updated_by,
+    updatedByName: row.editor?.name,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -1924,6 +1927,9 @@ function transformCompetencyLibraryItem(row: any): CompetencyLibraryItem {
     category: row.category,
     isPlatformDefault: row.is_platform_default,
     createdBy: row.created_by,
+    createdByName: row.creator?.name,
+    updatedBy: row.updated_by,
+    updatedByName: row.editor?.name,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -1933,7 +1939,7 @@ export const goalLibrary = {
   getAll: async (): Promise<GoalLibraryItem[]> => {
     const { data, error } = await supabase
       .from('goal_library')
-      .select('*')
+      .select('*, creator:created_by(name), editor:updated_by(name)')
       .order('category')
       .order('title');
     if (error) throw error;
@@ -2004,7 +2010,7 @@ export const competencyLibrary = {
   getAll: async (): Promise<CompetencyLibraryItem[]> => {
     const { data, error } = await supabase
       .from('competency_library')
-      .select('*')
+      .select('*, creator:created_by(name), editor:updated_by(name)')
       .order('category')
       .order('name');
     if (error) throw error;

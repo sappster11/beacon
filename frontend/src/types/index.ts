@@ -317,7 +317,9 @@ export interface GoalLibraryItem {
   category?: string;
   isPlatformDefault: boolean;
   createdBy?: string;
+  createdByName?: string;
   updatedBy?: string;
+  updatedByName?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -330,7 +332,9 @@ export interface CompetencyLibraryItem {
   category?: string;
   isPlatformDefault: boolean;
   createdBy?: string;
+  createdByName?: string;
   updatedBy?: string;
+  updatedByName?: string;
   createdAt: string;
   updatedAt: string;
 }
