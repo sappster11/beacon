@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { goalLibrary, competencyLibrary } from '../lib/api';
 import type { GoalLibraryItem, CompetencyLibraryItem } from '../types';
-import { Target, TrendingUp, Plus, Edit2, Trash2, BookOpen, Filter, MoreHorizontal } from 'lucide-react';
+import { Target, TrendingUp, Plus, Edit2, Trash2, BookOpen, Filter, MoreVertical } from 'lucide-react';
 import TabNavigation from '../components/TabNavigation';
 
 export default function Library() {
@@ -297,7 +297,7 @@ export default function Library() {
                       onMouseEnter={(e) => e.currentTarget.style.background = '#f3f4f6'}
                       onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                     >
-                      <MoreHorizontal size={18} color="#6b7280" />
+                      <MoreVertical size={18} color="#6b7280" />
                     </button>
                     {openMenuId === goal.id && (
                       <div style={{
@@ -440,7 +440,7 @@ export default function Library() {
                       onMouseEnter={(e) => e.currentTarget.style.background = '#f3f4f6'}
                       onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                     >
-                      <MoreHorizontal size={18} color="#6b7280" />
+                      <MoreVertical size={18} color="#6b7280" />
                     </button>
                     {openMenuId === comp.id && (
                       <div style={{
