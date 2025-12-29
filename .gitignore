@@ -42,3 +42,4 @@ postgres_data/
 
 # Testing
 coverage/
+*.code-workspace
