@@ -297,7 +297,7 @@ export default function EmployeeOneOnOnes() {
           </div>
         ) : (
           <p style={{ margin: 0, fontSize: '14px', color: '#9ca3af', fontStyle: 'italic' }}>
-            No documents linked yet. Add a Google Doc or Notion page for your ongoing 1:1 notes.
+            No documents linked yet. Link any document for your ongoing 1:1 notes.
           </p>
         )}
       </div>
@@ -312,22 +312,20 @@ export default function EmployeeOneOnOnes() {
             {upcomingMeetings.map(meeting => (
               <div
                 key={meeting.id}
-                onClick={() => !isPlaceholder && navigate(`/one-on-ones/${meeting.id}`)}
+                onClick={() => navigate(`/one-on-ones/${meeting.id}`)}
                 style={{
                   padding: '16px 20px',
                   background: '#eff6ff',
                   border: '1px solid #bfdbfe',
                   borderRadius: '8px',
-                  cursor: isPlaceholder ? 'default' : 'pointer',
+                  cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   transition: 'all 0.15s',
                 }}
                 onMouseEnter={(e) => {
-                  if (!isPlaceholder) {
-                    e.currentTarget.style.background = '#dbeafe';
-                  }
+                  e.currentTarget.style.background = '#dbeafe';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = '#eff6ff';
@@ -350,7 +348,7 @@ export default function EmployeeOneOnOnes() {
                   </span>
                 </div>
                 <span style={{ fontSize: '13px', color: '#3b82f6', fontWeight: '500' }}>
-                  {isPlaceholder ? 'Preview' : 'Open →'}
+                  Open →
                 </span>
               </div>
             ))}
@@ -372,23 +370,21 @@ export default function EmployeeOneOnOnes() {
             {pastMeetings.map(meeting => (
               <div
                 key={meeting.id}
-                onClick={() => !isPlaceholder && navigate(`/one-on-ones/${meeting.id}`)}
+                onClick={() => navigate(`/one-on-ones/${meeting.id}`)}
                 style={{
                   padding: '16px 20px',
                   background: '#ffffff',
                   border: '1px solid #e5e7eb',
                   borderRadius: '8px',
-                  cursor: isPlaceholder ? 'default' : 'pointer',
+                  cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   transition: 'all 0.15s',
                 }}
                 onMouseEnter={(e) => {
-                  if (!isPlaceholder) {
-                    e.currentTarget.style.borderColor = '#3b82f6';
-                    e.currentTarget.style.background = '#f9fafb';
-                  }
+                  e.currentTarget.style.borderColor = '#3b82f6';
+                  e.currentTarget.style.background = '#f9fafb';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor = '#e5e7eb';
@@ -412,7 +408,7 @@ export default function EmployeeOneOnOnes() {
                   )}
                 </div>
                 <span style={{ fontSize: '13px', color: '#6b7280' }}>
-                  {isPlaceholder ? 'Preview' : 'View →'}
+                  View →
                 </span>
               </div>
             ))}
@@ -451,7 +447,7 @@ export default function EmployeeOneOnOnes() {
               Add Shared Document
             </h2>
             <p style={{ margin: '0 0 20px 0', fontSize: '14px', color: '#6b7280' }}>
-              Link a Google Doc, Notion page, or any URL for your 1:1s with {displayEmployee.name}.
+              Link any document for your 1:1s with {displayEmployee.name}.
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
