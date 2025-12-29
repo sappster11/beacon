@@ -1635,7 +1635,7 @@ export const manager = {
   },
 };
 
-// Google Calendar API - these will need edge functions
+// Google Calendar API
 export const googleCalendar = {
   getConnectionStatus: async (): Promise<CalendarConnectionStatus> => {
     const userId = await getCurrentUserId();
@@ -1648,7 +1648,6 @@ export const googleCalendar = {
     return { connected: !!data };
   },
   connect: async (): Promise<{ authUrl: string }> => {
-    // This needs an edge function to generate OAuth URL
     const { data, error } = await supabase.functions.invoke('google-calendar-connect');
     if (error) throw error;
     return data;
@@ -1662,8 +1661,14 @@ export const googleCalendar = {
       .eq('provider', 'google');
   },
   getEvents: async (maxResults?: number): Promise<{ events: any[] }> => {
-    // This needs an edge function to call Google Calendar API
-    return { events: [] };
+    const { data, error } = await supabase.functions.invoke('google-calendar-events', {
+      body: {},
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (error) throw error;
+    return data;
   },
 };
 
