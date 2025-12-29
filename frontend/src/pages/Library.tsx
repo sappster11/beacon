@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { goalLibrary, competencyLibrary } from '../lib/api';
 import type { GoalLibraryItem, CompetencyLibraryItem } from '../types';
-import { Target, TrendingUp, Plus, Edit2, Trash2, BookOpen, Star, Filter } from 'lucide-react';
+import { Target, TrendingUp, Plus, Edit2, Trash2, BookOpen, Filter } from 'lucide-react';
 import TabNavigation from '../components/TabNavigation';
 
 export default function Library() {
@@ -20,6 +20,8 @@ export default function Library() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingItem, setEditingItem] = useState<GoalLibraryItem | CompetencyLibraryItem | null>(null);
   const [formData, setFormData] = useState({ title: '', name: '', description: '', category: '' });
+  const [showNewCategoryInput, setShowNewCategoryInput] = useState(false);
+  const [newCategoryValue, setNewCategoryValue] = useState('');
 
   const isManager = user?.role === 'MANAGER' || user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
 
@@ -50,6 +52,8 @@ export default function Library() {
   const handleAdd = () => {
     setEditingItem(null);
     setFormData({ title: '', name: '', description: '', category: '' });
+    setShowNewCategoryInput(false);
+    setNewCategoryValue('');
     setShowAddModal(true);
   };
 
@@ -60,6 +64,8 @@ export default function Library() {
     } else {
       setFormData({ title: '', name: item.name, description: item.description || '', category: item.category || '' });
     }
+    setShowNewCategoryInput(false);
+    setNewCategoryValue('');
     setShowAddModal(true);
   };
 
@@ -204,7 +210,7 @@ export default function Library() {
       />
 
       {/* Category Filter */}
-      <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <div style={{ marginTop: '24px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
         <Filter size={16} color="#6b7280" />
         <select
           value={selectedCategory}
@@ -216,6 +222,7 @@ export default function Library() {
             fontSize: '14px',
             outline: 'none',
             cursor: 'pointer',
+            background: '#ffffff',
           }}
         >
           <option value="all">All Categories</option>
@@ -249,17 +256,34 @@ export default function Library() {
                 }}
               >
                 {goal.isPlatformDefault && (
-                  <div style={{ position: 'absolute', top: '12px', right: '12px', display: 'flex', alignItems: 'center', gap: '4px', padding: '4px 8px', background: '#fef3c7', borderRadius: '4px' }}>
-                    <Star size={12} color="#f59e0b" fill="#f59e0b" />
-                    <span style={{ fontSize: '11px', color: '#92400e', fontWeight: '500' }}>Default</span>
-                  </div>
+                  <span style={{
+                    position: 'absolute',
+                    top: '12px',
+                    right: '12px',
+                    padding: '4px 10px',
+                    background: '#f3f4f6',
+                    color: '#6b7280',
+                    borderRadius: '4px',
+                    fontSize: '11px',
+                    fontWeight: '500',
+                  }}>
+                    Template
+                  </span>
                 )}
-                <div style={{ display: 'flex', alignItems: 'start', gap: '12px', marginBottom: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'start', gap: '12px', marginBottom: '12px', paddingRight: goal.isPlatformDefault ? '70px' : '0' }}>
                   <Target size={20} color="#f59e0b" style={{ flexShrink: 0, marginTop: '2px' }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', fontWeight: '600', color: '#111827' }}>{goal.title}</h3>
+                    <h3 style={{
+                      margin: '0 0 4px 0',
+                      fontSize: '16px',
+                      fontWeight: '600',
+                      color: '#111827',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}>{goal.title}</h3>
                     {goal.category && (
-                      <span style={{ fontSize: '12px', color: '#6b7280', background: '#f3f4f6', padding: '2px 8px', borderRadius: '4px' }}>
+                      <span style={{ fontSize: '12px', color: '#6b7280', background: '#f3f4f6', padding: '2px 8px', borderRadius: '4px', display: 'inline-block' }}>
                         {goal.category}
                       </span>
                     )}
@@ -308,17 +332,34 @@ export default function Library() {
                 }}
               >
                 {comp.isPlatformDefault && (
-                  <div style={{ position: 'absolute', top: '12px', right: '12px', display: 'flex', alignItems: 'center', gap: '4px', padding: '4px 8px', background: '#fef3c7', borderRadius: '4px' }}>
-                    <Star size={12} color="#f59e0b" fill="#f59e0b" />
-                    <span style={{ fontSize: '11px', color: '#92400e', fontWeight: '500' }}>Default</span>
-                  </div>
+                  <span style={{
+                    position: 'absolute',
+                    top: '12px',
+                    right: '12px',
+                    padding: '4px 10px',
+                    background: '#f3f4f6',
+                    color: '#6b7280',
+                    borderRadius: '4px',
+                    fontSize: '11px',
+                    fontWeight: '500',
+                  }}>
+                    Template
+                  </span>
                 )}
-                <div style={{ display: 'flex', alignItems: 'start', gap: '12px', marginBottom: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'start', gap: '12px', marginBottom: '12px', paddingRight: comp.isPlatformDefault ? '70px' : '0' }}>
                   <TrendingUp size={20} color="#10b981" style={{ flexShrink: 0, marginTop: '2px' }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', fontWeight: '600', color: '#111827' }}>{comp.name}</h3>
+                    <h3 style={{
+                      margin: '0 0 4px 0',
+                      fontSize: '16px',
+                      fontWeight: '600',
+                      color: '#111827',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}>{comp.name}</h3>
                     {comp.category && (
-                      <span style={{ fontSize: '12px', color: '#6b7280', background: '#f3f4f6', padding: '2px 8px', borderRadius: '4px' }}>
+                      <span style={{ fontSize: '12px', color: '#6b7280', background: '#f3f4f6', padding: '2px 8px', borderRadius: '4px', display: 'inline-block' }}>
                         {comp.category}
                       </span>
                     )}
@@ -407,26 +448,85 @@ export default function Library() {
               <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
                 Category
               </label>
-              <input
-                type="text"
-                value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                style={{
-                  width: '100%',
-                  padding: '10px 12px',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '6px',
-                  fontSize: '14px',
-                  outline: 'none',
-                }}
-                placeholder="e.g., Leadership, Technical, Core"
-                list="categories"
-              />
-              <datalist id="categories">
-                {currentCategories.map(cat => (
-                  <option key={cat} value={cat} />
-                ))}
-              </datalist>
+              {showNewCategoryInput ? (
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <input
+                    type="text"
+                    value={newCategoryValue}
+                    onChange={(e) => setNewCategoryValue(e.target.value)}
+                    onBlur={() => {
+                      if (newCategoryValue.trim()) {
+                        setFormData({ ...formData, category: newCategoryValue.trim() });
+                      }
+                      setShowNewCategoryInput(false);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        if (newCategoryValue.trim()) {
+                          setFormData({ ...formData, category: newCategoryValue.trim() });
+                        }
+                        setShowNewCategoryInput(false);
+                      }
+                    }}
+                    autoFocus
+                    style={{
+                      flex: 1,
+                      padding: '10px 12px',
+                      border: '1px solid #3b82f6',
+                      borderRadius: '6px',
+                      fontSize: '14px',
+                      outline: 'none',
+                    }}
+                    placeholder="Enter new category name..."
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowNewCategoryInput(false);
+                      setNewCategoryValue('');
+                    }}
+                    style={{
+                      padding: '10px 12px',
+                      background: '#f3f4f6',
+                      color: '#374151',
+                      border: 'none',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      fontSize: '14px',
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              ) : (
+                <select
+                  value={formData.category}
+                  onChange={(e) => {
+                    if (e.target.value === '__new__') {
+                      setShowNewCategoryInput(true);
+                      setNewCategoryValue('');
+                    } else {
+                      setFormData({ ...formData, category: e.target.value });
+                    }
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '6px',
+                    fontSize: '14px',
+                    outline: 'none',
+                    background: '#ffffff',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <option value="">Select a category...</option>
+                  {currentCategories.map(cat => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                  <option value="__new__">+ Add new category...</option>
+                </select>
+              )}
             </div>
 
             <div style={{ marginBottom: '24px' }}>

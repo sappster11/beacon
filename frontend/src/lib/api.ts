@@ -1974,12 +1974,14 @@ export const goalLibrary = {
   },
 
   update: async (id: string, updates: Partial<GoalLibraryItem>): Promise<GoalLibraryItem> => {
+    const userId = await getCurrentUserId();
     const { data, error } = await supabase
       .from('goal_library')
       .update({
         title: updates.title,
         description: updates.description,
         category: updates.category,
+        updated_by: userId,
         updated_at: new Date().toISOString(),
       })
       .eq('id', id)
@@ -2043,12 +2045,14 @@ export const competencyLibrary = {
   },
 
   update: async (id: string, updates: Partial<CompetencyLibraryItem>): Promise<CompetencyLibraryItem> => {
+    const userId = await getCurrentUserId();
     const { data, error } = await supabase
       .from('competency_library')
       .update({
         name: updates.name,
         description: updates.description,
         category: updates.category,
+        updated_by: userId,
         updated_at: new Date().toISOString(),
       })
       .eq('id', id)
