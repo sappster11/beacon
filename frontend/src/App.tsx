@@ -18,6 +18,7 @@ import ReviewManagement from './pages/ReviewManagement';
 import Team from './pages/Team';
 import Employees from './pages/Employees';
 import OneOnOnes from './pages/OneOnOnes';
+import EmployeeOneOnOnes from './pages/EmployeeOneOnOnes';
 import OneOnOneDetail from './pages/OneOnOneDetail';
 import Development from './pages/Development';
 import OrgChart from './pages/OrgChart';
@@ -57,6 +58,7 @@ function App() {
                 <Route path="/team" element={<Team />} />
                 <Route path="/employees" element={<Employees />} />
                 <Route path="/one-on-ones" element={<OneOnOnes />} />
+                <Route path="/one-on-ones/employee/:employeeId" element={<EmployeeOneOnOnes />} />
                 <Route path="/one-on-ones/:id" element={<OneOnOneDetail />} />
                 <Route path="/development" element={<Development />} />
                 <Route path="/org-chart" element={<OrgChart />} />
