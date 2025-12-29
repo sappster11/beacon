@@ -666,7 +666,7 @@ export default function OneOnOnes() {
               Sync from Google Calendar
             </h2>
             <p style={{ margin: '0 0 20px 0', fontSize: '14px', color: '#6b7280' }}>
-              Select meetings to track as 1:1s
+              Showing meetings with you and one other person
             </p>
 
             {loadingEvents ? (
