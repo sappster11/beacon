@@ -121,9 +121,11 @@ export default function AdminDepartmentsTab() {
                   <div style={{ fontSize: '16px', fontWeight: '600', color: '#111827', marginBottom: '4px' }}>
                     {topDept.name}
                   </div>
-                  <div style={{ fontSize: '13px', color: '#6b7280' }}>
-                    {subDepts.length} sub-department{subDepts.length !== 1 ? 's' : ''}
-                  </div>
+                  {subDepts.length > 0 && (
+                    <div style={{ fontSize: '13px', color: '#6b7280' }}>
+                      {subDepts.length} sub-department{subDepts.length !== 1 ? 's' : ''}
+                    </div>
+                  )}
                 </div>
                 <div style={{ position: 'relative' }} ref={openDropdownId === topDept.id ? dropdownRef : null}>
                   <button

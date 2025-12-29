@@ -13,6 +13,7 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
   const [type, setType] = useState<'QUARTERLY' | 'SEMI_ANNUAL' | 'ANNUAL'>('QUARTERLY');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [setAsActive, setSetAsActive] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
@@ -39,6 +40,12 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
         startDate,
         endDate,
       });
+
+      // Set as active if checkbox is checked
+      if (setAsActive) {
+        await reviewCycles.setActive(cycle.id);
+        cycle.status = 'active';
+      }
 
       onCreated(cycle);
     } catch (err: any) {
@@ -207,7 +214,7 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
           </div>
 
           {/* End Date */}
-          <div style={{ marginBottom: '24px' }}>
+          <div style={{ marginBottom: '20px' }}>
             <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
               End Date *
             </label>
@@ -231,6 +238,36 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
                 e.currentTarget.style.borderColor = '#e5e7eb';
               }}
             />
+          </div>
+
+          {/* Set as Active */}
+          <div style={{ marginBottom: '24px' }}>
+            <label
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                color: '#374151',
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={setAsActive}
+                onChange={(e) => setSetAsActive(e.target.checked)}
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  cursor: 'pointer',
+                  accentColor: '#3b82f6',
+                }}
+              />
+              <span style={{ fontWeight: '500' }}>Set as active cycle</span>
+            </label>
+            <p style={{ fontSize: '13px', color: '#6b7280', marginTop: '6px', marginLeft: '28px' }}>
+              This will mark this cycle as the current active review cycle. Any previously active cycle will be deactivated.
+            </p>
           </div>
 
           {/* Actions */}

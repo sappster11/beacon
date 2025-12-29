@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Target, ClipboardList, Users, TrendingUp, Building2, Settings, CheckCircle, AlertCircle, Clock, UsersRound } from 'lucide-react';
+import { Target, ClipboardList, Users, TrendingUp, Building2, Settings, CheckCircle, AlertCircle, Clock, UsersRound, BookOpen, HelpCircle } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { manager } from '../lib/api';
 import OnboardingChecklist from '../components/OnboardingChecklist';
@@ -76,6 +76,13 @@ export default function Dashboard() {
       path: '/employees',
       color: '#3b82f6',
     },
+    {
+      title: 'Help',
+      description: 'FAQs and how-to guides',
+      icon: HelpCircle,
+      path: '/help',
+      color: '#3b82f6',
+    },
   ];
 
   const managementCards = [];
@@ -86,6 +93,13 @@ export default function Dashboard() {
       description: 'Manage your team',
       icon: Building2,
       path: '/team',
+      color: '#10b981',
+    });
+    managementCards.push({
+      title: 'Library',
+      description: 'Goal and review templates',
+      icon: BookOpen,
+      path: '/library',
       color: '#10b981',
     });
   }

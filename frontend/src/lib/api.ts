@@ -39,6 +39,8 @@ function transformUser(row: any): User {
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     organization: row.organizations ? transformOrganization(row.organizations) : undefined,
+    department: row.department ? { id: row.department.id, name: row.department.name } : undefined,
+    manager: row.manager ? { id: row.manager.id, name: row.manager.name } : undefined,
   };
 }
 
@@ -240,9 +242,17 @@ async function getCurrentUserId(): Promise<string> {
 // Users API
 export const users = {
   getAll: async (): Promise<User[]> => {
+    const userId = await getCurrentUserId();
+    const { data: currentUser } = await supabase
+      .from('users')
+      .select('organization_id')
+      .eq('id', userId)
+      .single();
+
     const { data, error } = await supabase
       .from('users')
-      .select('*')
+      .select('*, department:departments(id, name), manager:users!users_manager_id_fkey(id, name)')
+      .eq('organization_id', currentUser?.organization_id)
       .order('name');
     if (error) throw error;
     return data.map(transformUser);
@@ -259,9 +269,17 @@ export const users = {
   },
 
   getOrgChart: async (): Promise<User[]> => {
+    const userId = await getCurrentUserId();
+    const { data: currentUser } = await supabase
+      .from('users')
+      .select('organization_id')
+      .eq('id', userId)
+      .single();
+
     const { data, error } = await supabase
       .from('users')
-      .select('*')
+      .select('*, department:departments(id, name), manager:users!users_manager_id_fkey(id, name)')
+      .eq('organization_id', currentUser?.organization_id)
       .eq('is_active', true)
       .order('name');
     if (error) throw error;
@@ -271,7 +289,7 @@ export const users = {
   getDirectReports: async (id: string): Promise<User[]> => {
     const { data, error } = await supabase
       .from('users')
-      .select('*')
+      .select('*, department:departments(id, name), manager:users!users_manager_id_fkey(id, name)')
       .eq('manager_id', id)
       .eq('is_active', true)
       .order('name');
@@ -288,10 +306,11 @@ export const users = {
       .eq('id', userId)
       .single();
 
+    const newUserId = crypto.randomUUID();
     const { data, error } = await supabase
       .from('users')
       .insert({
-        id: crypto.randomUUID(),
+        id: newUserId,
         email: user.email,
         name: user.name,
         title: user.title,
@@ -305,6 +324,16 @@ export const users = {
       .select()
       .single();
     if (error) throw error;
+
+    // Log audit event
+    await auditLogs.create({
+      action: 'CREATE',
+      resourceType: 'User',
+      resourceId: newUserId,
+      description: `Created user ${user.name} (${user.email})`,
+      changes: { name: user.name, email: user.email, role: user.role || 'EMPLOYEE' },
+    });
+
     return transformUser(data);
   },
 
@@ -324,6 +353,16 @@ export const users = {
       .select()
       .single();
     if (error) throw error;
+
+    // Log audit event
+    await auditLogs.create({
+      action: 'UPDATE',
+      resourceType: 'User',
+      resourceId: id,
+      description: `Updated user ${data.name}`,
+      changes: updates,
+    });
+
     return transformUser(data);
   },
 
@@ -335,6 +374,16 @@ export const users = {
       .select()
       .single();
     if (error) throw error;
+
+    // Log audit event
+    await auditLogs.create({
+      action: 'UPDATE',
+      resourceType: 'User',
+      resourceId: id,
+      description: `Deactivated user ${data.name}`,
+      changes: { is_active: false },
+    });
+
     return transformUser(data);
   },
 
@@ -346,6 +395,16 @@ export const users = {
       .select()
       .single();
     if (error) throw error;
+
+    // Log audit event
+    await auditLogs.create({
+      action: 'UPDATE',
+      resourceType: 'User',
+      resourceId: id,
+      description: `Reactivated user ${data.name}`,
+      changes: { is_active: true },
+    });
+
     return transformUser(data);
   },
 };
@@ -615,6 +674,40 @@ export const auditLogs = {
 
     return { logs, total: count || 0 };
   },
+
+  create: async (params: {
+    action: 'CREATE' | 'UPDATE' | 'DELETE';
+    resourceType: string;
+    resourceId: string;
+    description?: string;
+    changes?: any;
+    status?: 'success' | 'failed';
+    errorMessage?: string;
+  }): Promise<void> => {
+    try {
+      const userId = await getCurrentUserId();
+      const { data: currentUser } = await supabase
+        .from('users')
+        .select('organization_id')
+        .eq('id', userId)
+        .single();
+
+      await supabase.from('audit_logs').insert({
+        user_id: userId,
+        organization_id: currentUser?.organization_id,
+        action: params.action,
+        resource_type: params.resourceType,
+        resource_id: params.resourceId,
+        description: params.description,
+        changes: params.changes ? JSON.stringify(params.changes) : null,
+        status: params.status || 'success',
+        error_message: params.errorMessage,
+      });
+    } catch (error) {
+      // Silently fail - don't break main operation if audit logging fails
+      console.error('Failed to create audit log:', error);
+    }
+  },
 };
 
 // Profile API
@@ -742,6 +835,16 @@ export const departments = {
       .select()
       .single();
     if (error) throw error;
+
+    // Log audit event
+    await auditLogs.create({
+      action: 'CREATE',
+      resourceType: 'Department',
+      resourceId: data.id,
+      description: `Created department ${department.name}`,
+      changes: { name: department.name },
+    });
+
     return transformDepartment(data);
   },
 
@@ -756,15 +859,40 @@ export const departments = {
       .select()
       .single();
     if (error) throw error;
+
+    // Log audit event
+    await auditLogs.create({
+      action: 'UPDATE',
+      resourceType: 'Department',
+      resourceId: id,
+      description: `Updated department ${data.name}`,
+      changes: updates,
+    });
+
     return transformDepartment(data);
   },
 
   delete: async (id: string): Promise<void> => {
+    // Get name before delete for audit log
+    const { data: dept } = await supabase
+      .from('departments')
+      .select('name')
+      .eq('id', id)
+      .single();
+
     const { error } = await supabase
       .from('departments')
       .delete()
       .eq('id', id);
     if (error) throw error;
+
+    // Log audit event
+    await auditLogs.create({
+      action: 'DELETE',
+      resourceType: 'Department',
+      resourceId: id,
+      description: `Deleted department ${dept?.name || id}`,
+    });
   },
 };
 
