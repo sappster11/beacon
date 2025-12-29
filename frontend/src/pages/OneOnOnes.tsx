@@ -123,11 +123,10 @@ export default function OneOnOnes() {
 
     try {
       const { events } = await googleCalendar.getEvents(100);
+      // Show all events with a start time - user can pick which to track as 1:1s
       const filteredEvents = events.filter((event: any) => {
-        if (!event.start || !event.attendees) return false;
-        if (!event.recurringEventId) return false;
-        const attendeeCount = event.attendees.length;
-        return attendeeCount >= 1 && attendeeCount <= 2;
+        if (!event.start) return false;
+        return true;
       });
       setCalendarEvents(filteredEvents);
     } catch (err) {
@@ -645,7 +644,7 @@ export default function OneOnOnes() {
               Sync from Google Calendar
             </h2>
             <p style={{ margin: '0 0 20px 0', fontSize: '14px', color: '#6b7280' }}>
-              Select recurring meetings to track as 1:1s
+              Select meetings to track as 1:1s
             </p>
 
             {loadingEvents ? (
@@ -655,7 +654,7 @@ export default function OneOnOnes() {
             ) : calendarEvents.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '40px', background: '#f9fafb', borderRadius: '8px' }}>
                 <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
-                  No recurring 2-person meetings found.
+                  No upcoming calendar events found.
                 </p>
               </div>
             ) : (
@@ -681,7 +680,9 @@ export default function OneOnOnes() {
                           hour: 'numeric',
                           minute: '2-digit',
                         })}
-                        <span style={{ marginLeft: '8px', color: '#f59e0b' }}>🔁 Recurring</span>
+                        {event.recurringEventId && (
+                          <span style={{ marginLeft: '8px', color: '#f59e0b' }}>🔁 Recurring</span>
+                        )}
                       </p>
                     </div>
 
