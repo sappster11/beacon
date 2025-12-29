@@ -104,10 +104,15 @@ export default function OneOnOnes() {
     try {
       const { events } = await googleCalendar.getEvents(100);
 
-      // Filter to only show events with attendees (potential 1:1s)
-      const filteredEvents = events.filter((event: any) =>
-        event.attendees && event.attendees.length > 0 && event.start
-      );
+      // Filter to recurring 2-person meetings (likely 1:1s)
+      const filteredEvents = events.filter((event: any) => {
+        if (!event.start || !event.attendees) return false;
+        // Must be recurring
+        if (!event.recurringEventId) return false;
+        // 2-person meetings only (1-2 attendees depending on whether organizer is counted)
+        const attendeeCount = event.attendees.length;
+        return attendeeCount >= 1 && attendeeCount <= 2;
+      });
 
       setCalendarEvents(filteredEvents);
     } catch (err) {
@@ -757,7 +762,7 @@ export default function OneOnOnes() {
             ) : calendarEvents.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '40px', background: '#f9fafb', borderRadius: '8px' }}>
                 <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>
-                  No upcoming calendar events found with attendees.
+                  No recurring 2-person meetings found. Only recurring meetings with one other attendee are shown as potential 1:1s.
                 </p>
               </div>
             ) : (
