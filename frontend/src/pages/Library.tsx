@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { goalLibrary, competencyLibrary } from '../lib/api';
 import type { GoalLibraryItem, CompetencyLibraryItem } from '../types';
-import { Target, TrendingUp, Plus, Edit2, Trash2, BookOpen, Filter } from 'lucide-react';
+import { Target, TrendingUp, Plus, Edit2, Trash2, BookOpen, Filter, MoreHorizontal } from 'lucide-react';
 import TabNavigation from '../components/TabNavigation';
 
 export default function Library() {
@@ -22,6 +22,19 @@ export default function Library() {
   const [formData, setFormData] = useState({ title: '', name: '', description: '', category: '' });
   const [showNewCategoryInput, setShowNewCategoryInput] = useState(false);
   const [newCategoryValue, setNewCategoryValue] = useState('');
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setOpenMenuId(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const isManager = user?.role === 'MANAGER' || user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
 
@@ -255,22 +268,98 @@ export default function Library() {
                   position: 'relative',
                 }}
               >
-                {goal.isPlatformDefault && (
-                  <span style={{
-                    position: 'absolute',
-                    top: '12px',
-                    right: '12px',
-                    padding: '4px 10px',
-                    background: '#f3f4f6',
-                    color: '#6b7280',
-                    borderRadius: '4px',
-                    fontSize: '11px',
-                    fontWeight: '500',
-                  }}>
-                    Template
-                  </span>
-                )}
-                <div style={{ display: 'flex', alignItems: 'start', gap: '12px', marginBottom: '12px', paddingRight: goal.isPlatformDefault ? '70px' : '0' }}>
+                <div style={{ position: 'absolute', top: '12px', right: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {goal.isPlatformDefault && (
+                    <span style={{
+                      padding: '4px 10px',
+                      background: '#f3f4f6',
+                      color: '#6b7280',
+                      borderRadius: '4px',
+                      fontSize: '11px',
+                      fontWeight: '500',
+                    }}>
+                      Template
+                    </span>
+                  )}
+                  {!goal.isPlatformDefault && (
+                    <div style={{ position: 'relative' }} ref={openMenuId === goal.id ? menuRef : null}>
+                      <button
+                        onClick={() => setOpenMenuId(openMenuId === goal.id ? null : goal.id)}
+                        style={{
+                          padding: '4px',
+                          background: 'transparent',
+                          border: 'none',
+                          cursor: 'pointer',
+                          borderRadius: '4px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = '#f3f4f6'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                      >
+                        <MoreHorizontal size={18} color="#6b7280" />
+                      </button>
+                      {openMenuId === goal.id && (
+                        <div style={{
+                          position: 'absolute',
+                          top: '100%',
+                          right: 0,
+                          marginTop: '4px',
+                          background: '#ffffff',
+                          border: '1px solid #e5e7eb',
+                          borderRadius: '8px',
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                          zIndex: 10,
+                          minWidth: '120px',
+                          overflow: 'hidden',
+                        }}>
+                          <button
+                            onClick={() => { handleEdit(goal); setOpenMenuId(null); }}
+                            style={{
+                              width: '100%',
+                              padding: '10px 14px',
+                              background: 'transparent',
+                              border: 'none',
+                              cursor: 'pointer',
+                              fontSize: '14px',
+                              color: '#374151',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '8px',
+                              textAlign: 'left',
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.background = '#f3f4f6'}
+                            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                          >
+                            <Edit2 size={14} /> Edit
+                          </button>
+                          <button
+                            onClick={() => { handleDelete(goal); setOpenMenuId(null); }}
+                            style={{
+                              width: '100%',
+                              padding: '10px 14px',
+                              background: 'transparent',
+                              border: 'none',
+                              cursor: 'pointer',
+                              fontSize: '14px',
+                              color: '#dc2626',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '8px',
+                              textAlign: 'left',
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.background = '#fee2e2'}
+                            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                          >
+                            <Trash2 size={14} /> Delete
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+                <div style={{ display: 'flex', alignItems: 'start', gap: '12px', marginBottom: '12px', paddingRight: '50px' }}>
                   <Target size={20} color="#f59e0b" style={{ flexShrink: 0, marginTop: '2px' }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <h3 style={{
@@ -294,29 +383,13 @@ export default function Library() {
                     {goal.description}
                   </p>
                 )}
-                {!goal.isPlatformDefault && (goal.createdByName || goal.updatedByName) && (
-                  <div style={{ fontSize: '12px', color: '#9ca3af', marginBottom: '12px', borderTop: '1px solid #f3f4f6', paddingTop: '12px' }}>
+                {(goal.createdByName || goal.updatedByName) && (
+                  <div style={{ fontSize: '12px', color: '#9ca3af', borderTop: '1px solid #f3f4f6', paddingTop: '12px' }}>
                     {goal.updatedByName ? (
                       <span>Last edited by {goal.updatedByName} on {new Date(goal.updatedAt).toLocaleDateString()}</span>
                     ) : goal.createdByName ? (
                       <span>Created by {goal.createdByName} on {new Date(goal.createdAt).toLocaleDateString()}</span>
                     ) : null}
-                  </div>
-                )}
-                {!goal.isPlatformDefault && (
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                    <button
-                      onClick={() => handleEdit(goal)}
-                      style={{ padding: '6px 12px', background: '#f3f4f6', color: '#374151', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px' }}
-                    >
-                      <Edit2 size={14} /> Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(goal)}
-                      style={{ padding: '6px 12px', background: '#fee2e2', color: '#dc2626', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px' }}
-                    >
-                      <Trash2 size={14} /> Delete
-                    </button>
                   </div>
                 )}
               </div>
@@ -340,22 +413,98 @@ export default function Library() {
                   position: 'relative',
                 }}
               >
-                {comp.isPlatformDefault && (
-                  <span style={{
-                    position: 'absolute',
-                    top: '12px',
-                    right: '12px',
-                    padding: '4px 10px',
-                    background: '#f3f4f6',
-                    color: '#6b7280',
-                    borderRadius: '4px',
-                    fontSize: '11px',
-                    fontWeight: '500',
-                  }}>
-                    Template
-                  </span>
-                )}
-                <div style={{ display: 'flex', alignItems: 'start', gap: '12px', marginBottom: '12px', paddingRight: comp.isPlatformDefault ? '70px' : '0' }}>
+                <div style={{ position: 'absolute', top: '12px', right: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {comp.isPlatformDefault && (
+                    <span style={{
+                      padding: '4px 10px',
+                      background: '#f3f4f6',
+                      color: '#6b7280',
+                      borderRadius: '4px',
+                      fontSize: '11px',
+                      fontWeight: '500',
+                    }}>
+                      Template
+                    </span>
+                  )}
+                  {!comp.isPlatformDefault && (
+                    <div style={{ position: 'relative' }} ref={openMenuId === comp.id ? menuRef : null}>
+                      <button
+                        onClick={() => setOpenMenuId(openMenuId === comp.id ? null : comp.id)}
+                        style={{
+                          padding: '4px',
+                          background: 'transparent',
+                          border: 'none',
+                          cursor: 'pointer',
+                          borderRadius: '4px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = '#f3f4f6'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                      >
+                        <MoreHorizontal size={18} color="#6b7280" />
+                      </button>
+                      {openMenuId === comp.id && (
+                        <div style={{
+                          position: 'absolute',
+                          top: '100%',
+                          right: 0,
+                          marginTop: '4px',
+                          background: '#ffffff',
+                          border: '1px solid #e5e7eb',
+                          borderRadius: '8px',
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                          zIndex: 10,
+                          minWidth: '120px',
+                          overflow: 'hidden',
+                        }}>
+                          <button
+                            onClick={() => { handleEdit(comp); setOpenMenuId(null); }}
+                            style={{
+                              width: '100%',
+                              padding: '10px 14px',
+                              background: 'transparent',
+                              border: 'none',
+                              cursor: 'pointer',
+                              fontSize: '14px',
+                              color: '#374151',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '8px',
+                              textAlign: 'left',
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.background = '#f3f4f6'}
+                            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                          >
+                            <Edit2 size={14} /> Edit
+                          </button>
+                          <button
+                            onClick={() => { handleDelete(comp); setOpenMenuId(null); }}
+                            style={{
+                              width: '100%',
+                              padding: '10px 14px',
+                              background: 'transparent',
+                              border: 'none',
+                              cursor: 'pointer',
+                              fontSize: '14px',
+                              color: '#dc2626',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '8px',
+                              textAlign: 'left',
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.background = '#fee2e2'}
+                            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                          >
+                            <Trash2 size={14} /> Delete
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+                <div style={{ display: 'flex', alignItems: 'start', gap: '12px', marginBottom: '12px', paddingRight: '50px' }}>
                   <TrendingUp size={20} color="#10b981" style={{ flexShrink: 0, marginTop: '2px' }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <h3 style={{
@@ -379,29 +528,13 @@ export default function Library() {
                     {comp.description}
                   </p>
                 )}
-                {!comp.isPlatformDefault && (comp.createdByName || comp.updatedByName) && (
-                  <div style={{ fontSize: '12px', color: '#9ca3af', marginBottom: '12px', borderTop: '1px solid #f3f4f6', paddingTop: '12px' }}>
+                {(comp.createdByName || comp.updatedByName) && (
+                  <div style={{ fontSize: '12px', color: '#9ca3af', borderTop: '1px solid #f3f4f6', paddingTop: '12px' }}>
                     {comp.updatedByName ? (
                       <span>Last edited by {comp.updatedByName} on {new Date(comp.updatedAt).toLocaleDateString()}</span>
                     ) : comp.createdByName ? (
                       <span>Created by {comp.createdByName} on {new Date(comp.createdAt).toLocaleDateString()}</span>
                     ) : null}
-                  </div>
-                )}
-                {!comp.isPlatformDefault && (
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                    <button
-                      onClick={() => handleEdit(comp)}
-                      style={{ padding: '6px 12px', background: '#f3f4f6', color: '#374151', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px' }}
-                    >
-                      <Edit2 size={14} /> Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(comp)}
-                      style={{ padding: '6px 12px', background: '#fee2e2', color: '#dc2626', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px' }}
-                    >
-                      <Trash2 size={14} /> Delete
-                    </button>
                   </div>
                 )}
               </div>
