@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { X, ExternalLink, Upload, FileText, Link as LinkIcon, ArrowLeft, Bold, Italic, Underline, List, ListOrdered } from 'lucide-react';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { X, ExternalLink, Upload, FileText, Link as LinkIcon, ArrowLeft, Bold, Italic, Underline, List, ListOrdered, Eye } from 'lucide-react';
 import type { OneOnOne } from '../types';
 import { oneOnOnes as oneOnOnesApi, goals as goalsApi, reviews as reviewsApi, reviewCycles as reviewCyclesApi } from '../lib/api';
 import TabNavigation from '../components/TabNavigation';

@@ -351,21 +351,24 @@ export default function Help() {
     if (!roleText) return null;
 
     return (
-      <div style={{
-        display: 'flex',
+      <span style={{
+        display: 'inline-flex',
         alignItems: 'center',
-        gap: '8px',
-        padding: '8px 12px',
+        gap: '4px',
+        padding: '3px 8px',
         background: '#eff6ff',
         border: '1px solid #bfdbfe',
-        borderRadius: '6px',
-        marginBottom: '12px',
+        borderRadius: '4px',
+        marginLeft: '10px',
+        fontSize: '10px',
+        color: '#1e40af',
+        fontWeight: '500',
+        textTransform: 'none',
+        letterSpacing: '0',
       }}>
-        <Info size={16} style={{ color: '#3b82f6', flexShrink: 0 }} />
-        <span style={{ fontSize: '13px', color: '#1e40af' }}>
-          You can see this section because you're a <strong>{roleText}</strong>
-        </span>
-      </div>
+        <Info size={12} style={{ color: '#3b82f6' }} />
+        Visible because you're a {roleText}
+      </span>
     );
   };
 
@@ -451,11 +454,13 @@ export default function Help() {
                     marginBottom: '12px',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px',
+                    display: 'flex',
+                    alignItems: 'center',
                   }}
                 >
                   {category}
+                  <RoleBadge category={category} />
                 </h2>
-                <RoleBadge category={category} />
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   {faqsByCategory[category].map((faq, index) => {
                     const globalIndex = filteredFAQs.indexOf(faq);
@@ -536,11 +541,13 @@ export default function Help() {
                     marginBottom: '12px',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px',
+                    display: 'flex',
+                    alignItems: 'center',
                   }}
                 >
                   {category}
+                  <RoleBadge category={category} />
                 </h2>
-                <RoleBadge category={category} />
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   {guidesByCategory[category].map((guide, index) => {
                     const globalIndex = filteredGuides.indexOf(guide);
