@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { Home, Target, ClipboardList, Users, TrendingUp, LogOut, Menu, X, Building2, UsersRound, Settings, Globe } from 'lucide-react';
+import { Home, Target, ClipboardList, Users, TrendingUp, LogOut, Menu, X, Building2, UsersRound, Settings, Globe, BookOpen } from 'lucide-react';
 import Avatar from './Avatar';
 import { supabase } from '../lib/supabase';
 
@@ -56,6 +56,7 @@ export default function Layout() {
   const managementItems = [];
   if (isManager) {
     managementItems.push({ path: '/team', label: 'Team', icon: Building2 });
+    managementItems.push({ path: '/library', label: 'Library', icon: BookOpen });
   }
   if (isAdmin) {
     managementItems.push({ path: '/review-management', label: 'Review Management', icon: ClipboardList });

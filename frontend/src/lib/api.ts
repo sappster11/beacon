@@ -13,6 +13,8 @@ import type {
   OneOnOne,
   CalendarConnectionStatus,
   DevelopmentPlan,
+  GoalLibraryItem,
+  CompetencyLibraryItem,
 } from '../types';
 
 // Helper to transform snake_case database rows to camelCase
@@ -1895,6 +1897,173 @@ export const onboarding = {
     });
     if (error) throw error;
     return result;
+  },
+};
+
+// Goal Library API
+function transformGoalLibraryItem(row: any): GoalLibraryItem {
+  return {
+    id: row.id,
+    organizationId: row.organization_id,
+    title: row.title,
+    description: row.description,
+    category: row.category,
+    isPlatformDefault: row.is_platform_default,
+    createdBy: row.created_by,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+function transformCompetencyLibraryItem(row: any): CompetencyLibraryItem {
+  return {
+    id: row.id,
+    organizationId: row.organization_id,
+    name: row.name,
+    description: row.description,
+    category: row.category,
+    isPlatformDefault: row.is_platform_default,
+    createdBy: row.created_by,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+export const goalLibrary = {
+  getAll: async (): Promise<GoalLibraryItem[]> => {
+    const { data, error } = await supabase
+      .from('goal_library')
+      .select('*')
+      .order('category')
+      .order('title');
+    if (error) throw error;
+    return (data || []).map(transformGoalLibraryItem);
+  },
+
+  getCategories: async (): Promise<string[]> => {
+    const { data, error } = await supabase
+      .from('goal_library')
+      .select('category')
+      .not('category', 'is', null);
+    if (error) throw error;
+    const categories = [...new Set((data || []).map(d => d.category).filter(Boolean))];
+    return categories.sort();
+  },
+
+  create: async (item: Partial<GoalLibraryItem>): Promise<GoalLibraryItem> => {
+    const userId = await getCurrentUserId();
+    const { data: user } = await supabase
+      .from('users')
+      .select('organization_id')
+      .eq('id', userId)
+      .single();
+
+    const { data, error } = await supabase
+      .from('goal_library')
+      .insert({
+        organization_id: user?.organization_id,
+        title: item.title,
+        description: item.description,
+        category: item.category,
+        created_by: userId,
+      })
+      .select()
+      .single();
+    if (error) throw error;
+    return transformGoalLibraryItem(data);
+  },
+
+  update: async (id: string, updates: Partial<GoalLibraryItem>): Promise<GoalLibraryItem> => {
+    const { data, error } = await supabase
+      .from('goal_library')
+      .update({
+        title: updates.title,
+        description: updates.description,
+        category: updates.category,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', id)
+      .select()
+      .single();
+    if (error) throw error;
+    return transformGoalLibraryItem(data);
+  },
+
+  delete: async (id: string): Promise<void> => {
+    const { error } = await supabase
+      .from('goal_library')
+      .delete()
+      .eq('id', id);
+    if (error) throw error;
+  },
+};
+
+export const competencyLibrary = {
+  getAll: async (): Promise<CompetencyLibraryItem[]> => {
+    const { data, error } = await supabase
+      .from('competency_library')
+      .select('*')
+      .order('category')
+      .order('name');
+    if (error) throw error;
+    return (data || []).map(transformCompetencyLibraryItem);
+  },
+
+  getCategories: async (): Promise<string[]> => {
+    const { data, error } = await supabase
+      .from('competency_library')
+      .select('category')
+      .not('category', 'is', null);
+    if (error) throw error;
+    const categories = [...new Set((data || []).map(d => d.category).filter(Boolean))];
+    return categories.sort();
+  },
+
+  create: async (item: Partial<CompetencyLibraryItem>): Promise<CompetencyLibraryItem> => {
+    const userId = await getCurrentUserId();
+    const { data: user } = await supabase
+      .from('users')
+      .select('organization_id')
+      .eq('id', userId)
+      .single();
+
+    const { data, error } = await supabase
+      .from('competency_library')
+      .insert({
+        organization_id: user?.organization_id,
+        name: item.name,
+        description: item.description,
+        category: item.category,
+        created_by: userId,
+      })
+      .select()
+      .single();
+    if (error) throw error;
+    return transformCompetencyLibraryItem(data);
+  },
+
+  update: async (id: string, updates: Partial<CompetencyLibraryItem>): Promise<CompetencyLibraryItem> => {
+    const { data, error } = await supabase
+      .from('competency_library')
+      .update({
+        name: updates.name,
+        description: updates.description,
+        category: updates.category,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', id)
+      .select()
+      .single();
+    if (error) throw error;
+    return transformCompetencyLibraryItem(data);
+  },
+
+  delete: async (id: string): Promise<void> => {
+    const { error } = await supabase
+      .from('competency_library')
+      .delete()
+      .eq('id', id);
+    if (error) throw error;
   },
 };
 

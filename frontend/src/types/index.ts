@@ -307,3 +307,28 @@ export interface BulkImportResult {
     data: any;
   }>;
 }
+
+// Library types
+export interface GoalLibraryItem {
+  id: string;
+  organizationId?: string;
+  title: string;
+  description?: string;
+  category?: string;
+  isPlatformDefault: boolean;
+  createdBy?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CompetencyLibraryItem {
+  id: string;
+  organizationId?: string;
+  name: string;
+  description?: string;
+  category?: string;
+  isPlatformDefault: boolean;
+  createdBy?: string;
+  createdAt: string;
+  updatedAt: string;
+}

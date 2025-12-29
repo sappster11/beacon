@@ -24,6 +24,7 @@ import OrgChart from './pages/OrgChart';
 import Settings from './pages/Settings';
 import Admin from './pages/Admin';
 import PlatformAdmin from './pages/PlatformAdmin';
+import Library from './pages/Library';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
 import Dev from './pages/Dev';
@@ -62,6 +63,7 @@ function App() {
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/platform-admin" element={<PlatformAdmin />} />
+                <Route path="/library" element={<Library />} />
               </Route>
             </Route>
 
