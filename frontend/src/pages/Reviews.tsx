@@ -280,91 +280,53 @@ export default function Reviews() {
       )}
 
       {/* Filter Tabs */}
-      <div style={{ marginBottom: '24px' }}>
-        <div className="reviews-tabs" style={{ display: 'flex', gap: '16px', marginBottom: '16px', borderBottom: '2px solid #e5e7eb', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-          {/* Status Filter Tabs */}
+      <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+        {/* Status Filter Tabs */}
+        <div style={{ display: 'flex', gap: '8px' }}>
           <button
             onClick={() => setStatusFilter('current')}
             style={{
-              padding: '12px 20px',
-              background: 'transparent',
-              border: 'none',
-              borderBottom: statusFilter === 'current' ? '2px solid #3b82f6' : '2px solid transparent',
-              marginBottom: '-2px',
+              padding: '8px 20px',
+              background: statusFilter === 'current' ? '#3b82f6' : '#ffffff',
+              color: statusFilter === 'current' ? '#ffffff' : '#374151',
+              border: '1px solid #e5e7eb',
+              borderRadius: '8px',
               cursor: 'pointer',
               fontSize: '14px',
-              fontWeight: statusFilter === 'current' ? '600' : '500',
-              color: statusFilter === 'current' ? '#3b82f6' : '#6b7280',
+              fontWeight: '500',
               transition: 'all 0.15s',
-              whiteSpace: 'nowrap',
             }}
           >
-            Current
+            In Progress
           </button>
           <button
             onClick={() => setStatusFilter('completed')}
             style={{
-              padding: '12px 20px',
-              background: 'transparent',
-              border: 'none',
-              borderBottom: statusFilter === 'completed' ? '2px solid #3b82f6' : '2px solid transparent',
-              marginBottom: '-2px',
+              padding: '8px 20px',
+              background: statusFilter === 'completed' ? '#3b82f6' : '#ffffff',
+              color: statusFilter === 'completed' ? '#ffffff' : '#374151',
+              border: '1px solid #e5e7eb',
+              borderRadius: '8px',
               cursor: 'pointer',
               fontSize: '14px',
-              fontWeight: statusFilter === 'completed' ? '600' : '500',
-              color: statusFilter === 'completed' ? '#3b82f6' : '#6b7280',
+              fontWeight: '500',
               transition: 'all 0.15s',
-              whiteSpace: 'nowrap',
             }}
           >
             Completed
           </button>
-          <button
-            onClick={() => setStatusFilter('all')}
-            style={{
-              padding: '12px 20px',
-              background: 'transparent',
-              border: 'none',
-              borderBottom: statusFilter === 'all' ? '2px solid #3b82f6' : '2px solid transparent',
-              marginBottom: '-2px',
-              cursor: 'pointer',
-              fontSize: '14px',
-              fontWeight: statusFilter === 'all' ? '600' : '500',
-              color: statusFilter === 'all' ? '#3b82f6' : '#6b7280',
-              transition: 'all 0.15s',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            All
-          </button>
         </div>
 
-        {/* Role Filter Pills (Only show if user is a manager) */}
+        {/* Role Filter (Only show if user is a manager) */}
         {isManager && (
-          <div className="reviews-role-filter" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '8px' }}>
             <button
-              onClick={() => setRoleFilter('all')}
+              onClick={() => setRoleFilter(roleFilter === 'reviewee' ? 'all' : 'reviewee')}
               style={{
                 padding: '8px 16px',
-                background: roleFilter === 'all' ? '#3b82f6' : '#ffffff',
-                color: roleFilter === 'all' ? '#ffffff' : '#374151',
-                border: '1px solid #e5e7eb',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontSize: '14px',
-                fontWeight: '500',
-                transition: 'all 0.15s',
-              }}
-            >
-              All Reviews
-            </button>
-            <button
-              onClick={() => setRoleFilter('reviewee')}
-              style={{
-                padding: '8px 16px',
-                background: roleFilter === 'reviewee' ? '#3b82f6' : '#ffffff',
-                color: roleFilter === 'reviewee' ? '#ffffff' : '#374151',
-                border: '1px solid #e5e7eb',
+                background: roleFilter === 'reviewee' ? '#dbeafe' : '#ffffff',
+                color: roleFilter === 'reviewee' ? '#1e40af' : '#374151',
+                border: roleFilter === 'reviewee' ? '1px solid #93c5fd' : '1px solid #e5e7eb',
                 borderRadius: '8px',
                 cursor: 'pointer',
                 fontSize: '14px',
@@ -375,12 +337,12 @@ export default function Reviews() {
               My Reviews
             </button>
             <button
-              onClick={() => setRoleFilter('reviewer')}
+              onClick={() => setRoleFilter(roleFilter === 'reviewer' ? 'all' : 'reviewer')}
               style={{
                 padding: '8px 16px',
-                background: roleFilter === 'reviewer' ? '#3b82f6' : '#ffffff',
-                color: roleFilter === 'reviewer' ? '#ffffff' : '#374151',
-                border: '1px solid #e5e7eb',
+                background: roleFilter === 'reviewer' ? '#fef3c7' : '#ffffff',
+                color: roleFilter === 'reviewer' ? '#92400e' : '#374151',
+                border: roleFilter === 'reviewer' ? '1px solid #fcd34d' : '1px solid #e5e7eb',
                 borderRadius: '8px',
                 cursor: 'pointer',
                 fontSize: '14px',

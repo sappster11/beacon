@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { reviewCycles } from '../lib/api';
 import type { ReviewCycle } from '../types';
-import { Plus, Calendar, Users, CheckCircle } from 'lucide-react';
+import { Plus, Calendar, Users, CheckCircle, Star } from 'lucide-react';
 import CreateReviewCycleModal from '../components/CreateReviewCycleModal';
 import AssignReviewsModal from '../components/AssignReviewsModal';
 
@@ -42,24 +42,26 @@ export default function ReviewManagement() {
     return labels[type] || type;
   };
 
-  const getStatusBadge = (cycle: ReviewCycle) => {
-    const now = new Date();
-    const start = new Date(cycle.startDate);
-    const end = new Date(cycle.endDate);
-
-    let status = '';
-    let color = '';
-
-    if (now < start) {
-      status = 'Upcoming';
-      color = '#6b7280';
-    } else if (now >= start && now <= end) {
-      status = 'Active';
-      color = '#10b981';
-    } else {
-      status = 'Completed';
-      color = '#3b82f6';
+  const handleSetActive = async (cycleId: string) => {
+    try {
+      await reviewCycles.setActive(cycleId);
+      await loadCycles();
+    } catch (err: any) {
+      setError(err.message || 'Failed to set cycle as active');
     }
+  };
+
+  const getStatusBadge = (cycle: ReviewCycle) => {
+    const status = cycle.status || 'completed';
+    const isActive = status === 'active';
+
+    const statusConfig: Record<string, { label: string; color: string }> = {
+      active: { label: 'Active', color: '#10b981' },
+      completed: { label: 'Completed', color: '#6b7280' },
+      cancelled: { label: 'Cancelled', color: '#ef4444' },
+    };
+
+    const config = statusConfig[status] || statusConfig.completed;
 
     return (
       <span
@@ -68,11 +70,15 @@ export default function ReviewManagement() {
           borderRadius: '6px',
           fontSize: '12px',
           fontWeight: '500',
-          background: `${color}20`,
-          color,
+          background: `${config.color}20`,
+          color: config.color,
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '4px',
         }}
       >
-        {status}
+        {isActive && <Star size={12} fill={config.color} />}
+        {config.label}
       </span>
     );
   };
@@ -120,37 +126,68 @@ export default function ReviewManagement() {
           </div>
 
           {isAdmin && (
-            <button
-              onClick={() => {
-                setSelectedCycle(cycle);
-                setShowAssignReviewsModal(true);
-              }}
-              className="assign-reviews-btn"
-              style={{
-                padding: '8px 16px',
-                background: '#3b82f6',
-                color: '#ffffff',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontSize: '14px',
-                fontWeight: '500',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                transition: 'all 0.15s',
-                flexShrink: 0,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#2563eb';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#3b82f6';
-              }}
-            >
-              <Users size={16} />
-              Assign Reviews
-            </button>
+            <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+              {cycle.status !== 'active' && (
+                <button
+                  onClick={() => handleSetActive(cycle.id)}
+                  style={{
+                    padding: '8px 16px',
+                    background: '#ffffff',
+                    color: '#10b981',
+                    border: '1px solid #10b981',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    transition: 'all 0.15s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#10b981';
+                    e.currentTarget.style.color = '#ffffff';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = '#ffffff';
+                    e.currentTarget.style.color = '#10b981';
+                  }}
+                >
+                  <Star size={16} />
+                  Set Active
+                </button>
+              )}
+              <button
+                onClick={() => {
+                  setSelectedCycle(cycle);
+                  setShowAssignReviewsModal(true);
+                }}
+                className="assign-reviews-btn"
+                style={{
+                  padding: '8px 16px',
+                  background: '#3b82f6',
+                  color: '#ffffff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  transition: 'all 0.15s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#2563eb';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = '#3b82f6';
+                }}
+              >
+                <Users size={16} />
+                Assign Reviews
+              </button>
+            </div>
           )}
         </div>
       </div>

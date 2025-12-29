@@ -528,6 +528,31 @@ export const reviewCycles = {
     if (error) throw error;
     return transformReviewCycle(data);
   },
+
+  setActive: async (id: string): Promise<void> => {
+    const userId = await getCurrentUserId();
+    const { data: currentUser } = await supabase
+      .from('users')
+      .select('organization_id')
+      .eq('id', userId)
+      .single();
+
+    if (!currentUser?.organization_id) throw new Error('User organization not found');
+
+    // Set all cycles in the org to 'completed'
+    await supabase
+      .from('review_cycles')
+      .update({ status: 'completed' })
+      .eq('organization_id', currentUser.organization_id);
+
+    // Set the specified cycle to 'active'
+    const { error } = await supabase
+      .from('review_cycles')
+      .update({ status: 'active' })
+      .eq('id', id);
+
+    if (error) throw error;
+  },
 };
 
 // Reviews API
