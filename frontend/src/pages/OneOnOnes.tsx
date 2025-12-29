@@ -303,7 +303,7 @@ export default function OneOnOnes() {
   if (isLoading) {
     return (
       <div style={{ padding: '20px' }}>
-        <h1>One-on-One Meetings</h1>
+        <h1>1:1s</h1>
         <p>Loading meetings...</p>
       </div>
     );
@@ -315,8 +315,8 @@ export default function OneOnOnes() {
     <div style={{ padding: '48px' }}>
       <div className="page-header-with-action" style={{ marginBottom: '30px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px', flexWrap: 'wrap' }}>
         <div>
-          <h1 style={{ fontSize: '32px', marginBottom: '8px' }}>One-on-One Meetings</h1>
-          <p style={{ fontSize: '16px', color: '#666', margin: 0 }}>Manage your 1:1 meetings and action items</p>
+          <h1 style={{ fontSize: '32px', marginBottom: '8px' }}>1:1s</h1>
+          <p style={{ fontSize: '16px', color: '#666', margin: 0 }}>Manage your 1:1 meetings and notes</p>
         </div>
         {(user?.role === 'MANAGER' || user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN') && (
           <div className="one-on-one-actions" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
@@ -345,8 +345,8 @@ export default function OneOnOnes() {
                 e.currentTarget.style.background = '#3b82f6';
               }}
             >
-              <Calendar size={18} />
-              Schedule Meeting
+              <Plus size={18} />
+              Add Manually
             </button>
             {calendarConnected && (
               <button
@@ -372,7 +372,7 @@ export default function OneOnOnes() {
                 }}
               >
                 <Calendar size={18} />
-                Import from Calendar
+                Sync with Google
               </button>
             )}
           </div>
@@ -410,30 +410,39 @@ export default function OneOnOnes() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <Calendar size={20} color="#3b82f6" />
             <span style={{ fontSize: '14px', color: '#1e40af' }}>
-              Connect Google Calendar to automatically sync your one-on-ones
+              Connect Google Calendar to automatically sync your 1:1s
             </span>
           </div>
           <button
             onClick={handleConnectCalendar}
             style={{
               padding: '8px 16px',
-              background: '#3b82f6',
-              color: '#ffffff',
-              border: 'none',
+              background: '#ffffff',
+              color: '#374151',
+              border: '1px solid #d1d5db',
               borderRadius: '6px',
               cursor: 'pointer',
               fontSize: '14px',
               fontWeight: '500',
               whiteSpace: 'nowrap',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#2563eb';
+              e.currentTarget.style.background = '#f9fafb';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#3b82f6';
+              e.currentTarget.style.background = '#ffffff';
             }}
           >
-            Connect Calendar
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            Sync with Google
           </button>
         </div>
       )}
@@ -467,7 +476,7 @@ export default function OneOnOnes() {
             color: activeTab === 'all' ? '#3b82f6' : '#6b7280',
           }}
         >
-          All Meetings ({meetings.length})
+          All 1:1s ({meetings.length})
         </button>
       </div>
 
@@ -519,7 +528,7 @@ export default function OneOnOnes() {
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{ marginTop: 0, marginBottom: '24px', fontSize: '24px' }}>
-              Schedule Meeting
+              Add 1:1
             </h2>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -696,7 +705,7 @@ export default function OneOnOnes() {
                   e.currentTarget.style.background = '#3b82f6';
                 }}
               >
-                Schedule Meeting
+                Add 1:1
               </button>
             </div>
           </div>
@@ -735,10 +744,10 @@ export default function OneOnOnes() {
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: '600', color: '#111827' }}>
-              Import from Calendar
+              Sync from Google Calendar
             </h2>
             <p style={{ margin: '0 0 24px 0', fontSize: '14px', color: '#6b7280' }}>
-              Select calendar events to convert into one-on-ones
+              Select recurring meetings to track as 1:1s
             </p>
 
             {loadingEvents ? (
@@ -835,7 +844,7 @@ export default function OneOnOnes() {
                         }
                       }}
                     >
-                      Link as One-on-One
+                      Link as 1:1
                     </button>
                   </div>
                 ))}

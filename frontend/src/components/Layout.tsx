@@ -44,7 +44,7 @@ export default function Layout() {
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: Home },
     { path: '/reviews', label: 'Reviews', icon: ClipboardList },
-    { path: '/one-on-ones', label: 'One-on-Ones', icon: Users },
+    { path: '/one-on-ones', label: '1:1s', icon: Users },
     { path: '/goals', label: 'Goals', icon: Target },
     { path: '/development', label: 'Development', icon: TrendingUp, comingSoon: true },
     { path: '/employees', label: 'Org Chart', icon: UsersRound },

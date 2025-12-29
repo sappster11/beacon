@@ -48,7 +48,7 @@ export default function Dashboard() {
       color: '#3b82f6',
     },
     {
-      title: 'One-on-Ones',
+      title: '1:1s',
       description: 'Manage your 1:1 meetings',
       icon: Users,
       path: '/one-on-ones',
