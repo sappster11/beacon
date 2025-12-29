@@ -142,6 +142,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
 
 export default function OneOnOneDetail() {
   const { id } = useParams<{ id: string }>();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useAuth();
   const [meeting, setMeeting] = useState<OneOnOne | null>(null);
@@ -151,6 +152,9 @@ export default function OneOnOneDetail() {
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Check if in preview mode (non-UUID id or preview=true param)
+  const isPreviewMode = searchParams.get('preview') === 'true' || (id && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id));
 
   // Local state for inline editing
   const [agenda, setAgenda] = useState('');
@@ -184,7 +188,7 @@ export default function OneOnOneDetail() {
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
       setAgenda(html);
-      if (meeting) {
+      if (meeting && !isPreviewMode) {
         saveAgenda(meeting.id, html);
       }
     },
@@ -196,7 +200,7 @@ export default function OneOnOneDetail() {
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
       setSharedNotes(html);
-      if (meeting) {
+      if (meeting && !isPreviewMode) {
         saveSharedNotes(meeting.id, html);
       }
     },
@@ -208,7 +212,7 @@ export default function OneOnOneDetail() {
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
       setManagerNotes(html);
-      if (meeting) {
+      if (meeting && !isPreviewMode) {
         saveManagerNotes(meeting.id, html);
       }
     },
@@ -233,16 +237,66 @@ export default function OneOnOneDetail() {
     }
   }, [managerNotes, managerNotesEditor]);
 
+  // Preview mode dummy data
+  const previewMeeting: OneOnOne = {
+    id: 'preview',
+    managerId: 'manager-1',
+    employeeId: 'employee-1',
+    scheduledAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+    agenda: '<p><strong>Discussion Topics:</strong></p><ul><li>Q1 goals progress review</li><li>Upcoming project timeline</li><li>Career development discussion</li><li>Team collaboration feedback</li></ul>',
+    sharedNotes: '<p><strong>Key Takeaways:</strong></p><ul><li>Great progress on the dashboard redesign project</li><li>Need to schedule follow-up with design team</li><li>Consider taking the leadership workshop next quarter</li></ul><p><strong>Action Items:</strong></p><ul><li>Complete code review by Friday</li><li>Set up meeting with stakeholders</li><li>Update project documentation</li></ul>',
+    managerNotes: '<p><strong>Private Notes:</strong></p><p>Employee is showing strong initiative. Consider for team lead role in Q2. Follow up on certification program interest.</p>',
+    actionItems: '- Complete code review by Friday\n- Set up meeting with stakeholders\n- Update project documentation\n- Schedule follow-up 1:1 in 2 weeks',
+    status: 'completed',
+    transcript: 'Sample transcript content would appear here after uploading or pasting meeting notes...',
+    manager: { id: 'manager-1', name: user?.name || 'Manager Name', email: 'manager@example.com', title: 'Engineering Manager' },
+    employee: { id: 'employee-1', name: 'Sarah Chen', email: 'sarah@example.com', title: 'Senior Software Engineer' },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  const previewGoals: Goal[] = [
+    { id: 'g1', title: 'Complete Dashboard Redesign', description: 'Implement new UI components', status: 'ACTIVE', targetValue: 100, currentValue: 75, unit: '%', userId: 'employee-1', createdAt: '', updatedAt: '' },
+    { id: 'g2', title: 'Improve Test Coverage', description: 'Increase unit test coverage to 80%', status: 'ACTIVE', targetValue: 80, currentValue: 65, unit: '%', userId: 'employee-1', createdAt: '', updatedAt: '' },
+    { id: 'g3', title: 'Lead Sprint Planning', description: 'Take ownership of sprint planning sessions', status: 'ACTIVE', userId: 'employee-1', createdAt: '', updatedAt: '' },
+  ];
+
+  const previewCompetencies = [
+    { name: 'Technical Leadership', description: 'Guide technical decisions and mentor team members' },
+    { name: 'Communication', description: 'Clear and effective communication with stakeholders' },
+    { name: 'Problem Solving', description: 'Analyze complex problems and develop solutions' },
+  ];
+
+  const previewDocuments = [
+    { id: 'd1', title: 'Running 1:1 Agenda Doc', url: 'https://docs.google.com/example', isRecurring: true },
+    { id: 'd2', title: 'Q1 Goals Tracker', url: 'https://docs.google.com/example2', isRecurring: false },
+  ];
+
   // Load meeting data
   useEffect(() => {
     const loadData = async () => {
+      if (isPreviewMode) {
+        // Load preview data
+        setMeeting(previewMeeting);
+        setAgenda(previewMeeting.agenda || '');
+        setSharedNotes(previewMeeting.sharedNotes || '');
+        setManagerNotes(previewMeeting.managerNotes || '');
+        setTranscript(previewMeeting.transcript || '');
+        setActionItems(previewMeeting.actionItems || '');
+        setEmployeeGoals(previewGoals);
+        setCurrentCycleCompetencies(previewCompetencies);
+        setDocuments(previewDocuments);
+        setLoading(false);
+        return;
+      }
+
       if (id) {
         await loadMeeting();
         await loadDocuments();
       }
     };
     loadData();
-  }, [id]);
+  }, [id, isPreviewMode]);
 
   const loadMeeting = async () => {
     if (!id) return;
@@ -567,6 +621,30 @@ export default function OneOnOneDetail() {
     <>
       <style>{editorStyles}</style>
       <div style={{ padding: '48px', maxWidth: '1200px', margin: '0 auto' }}>
+        {/* Preview Mode Banner */}
+        {isPreviewMode && (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            padding: '12px 16px',
+            background: '#fef3c7',
+            border: '1px solid #fbbf24',
+            borderRadius: '8px',
+            marginBottom: '24px',
+          }}>
+            <Eye size={20} color="#92400e" />
+            <div>
+              <div style={{ fontWeight: '600', color: '#92400e', fontSize: '14px' }}>
+                Preview Mode
+              </div>
+              <div style={{ fontSize: '13px', color: '#a16207' }}>
+                This is sample data showing how a 1:1 meeting looks. Changes won't be saved.
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Header */}
         <div style={{ marginBottom: '32px' }}>
         <button
