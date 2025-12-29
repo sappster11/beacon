@@ -3,8 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { oneOnOnes, googleCalendar, users } from '../lib/api';
 import type { User } from '../types';
-import { Plus, Users, ChevronRight } from 'lucide-react';
+import { Plus, Users, ChevronRight, FileText, ExternalLink } from 'lucide-react';
 import Avatar from '../components/Avatar';
+
+// Smart date formatting
+const formatNextDate = (dateStr: string): string => {
+  const date = new Date(dateStr);
+  const now = new Date();
+  const diffMs = date.getTime() - now.getTime();
+  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+  if (diffDays <= 0) return 'Today';
+  if (diffDays === 1) return 'Tomorrow';
+  if (diffDays <= 5) {
+    return date.toLocaleDateString('en-US', { weekday: 'long' });
+  }
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+};
 
 interface EmployeeWithMeetings {
   employee: {
@@ -359,63 +374,112 @@ export default function OneOnOnes() {
         </div>
       ) : (
         <div style={{ display: 'grid', gap: '12px' }}>
-          {displayData.map(({ employee, nextMeeting, meetings: empMeetings }) => (
-            <div
-              key={employee.id}
-              onClick={() => navigate(`/one-on-ones/employee/${employee.id}`)}
-              style={{
-                background: '#ffffff',
-                border: '1px solid #e5e7eb',
-                borderRadius: '12px',
-                padding: '20px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '16px',
-                cursor: 'pointer',
-                transition: 'all 0.15s',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = '#3b82f6';
-                e.currentTarget.style.boxShadow = '0 2px 8px rgba(59, 130, 246, 0.1)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = '#e5e7eb';
-                e.currentTarget.style.boxShadow = 'none';
-              }}
-            >
-              <Avatar
-                user={{ name: employee.name, profilePicture: employee.profilePicture }}
-                size="md"
-              />
+          {displayData.map(({ employee, nextMeeting, meetings: empMeetings }) => {
+            // Get linked documents from localStorage
+            const storedDocs = localStorage.getItem(`1on1-docs-${user?.id}-${employee.id}`);
+            const documents: { title: string; url: string }[] = storedDocs ? JSON.parse(storedDocs) : [];
 
-              <div style={{ flex: 1 }}>
-                <h3 style={{ margin: '0 0 2px 0', fontSize: '16px', fontWeight: '600', color: '#111827' }}>
-                  {employee.name}
-                </h3>
-                {employee.title && (
-                  <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>{employee.title}</p>
+            return (
+              <div
+                key={employee.id}
+                style={{
+                  background: '#ffffff',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '12px',
+                  padding: '20px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '16px',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s',
+                }}
+                onClick={() => navigate(`/one-on-ones/employee/${employee.id}`)}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#3b82f6';
+                  e.currentTarget.style.boxShadow = '0 2px 8px rgba(59, 130, 246, 0.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = '#e5e7eb';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              >
+                <Avatar
+                  user={{ name: employee.name, profilePicture: employee.profilePicture }}
+                  size="md"
+                />
+
+                <div style={{ flex: 1 }}>
+                  <h3 style={{ margin: '0 0 2px 0', fontSize: '16px', fontWeight: '600', color: '#111827' }}>
+                    {employee.name}
+                  </h3>
+                  {employee.title && (
+                    <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>{employee.title}</p>
+                  )}
+                </div>
+
+                {/* Document links */}
+                {documents.length > 0 && (
+                  <div
+                    style={{ display: 'flex', gap: '8px' }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {documents.slice(0, 2).map((doc, idx) => (
+                      <a
+                        key={idx}
+                        href={doc.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          padding: '6px 10px',
+                          background: '#f3f4f6',
+                          border: '1px solid #e5e7eb',
+                          borderRadius: '6px',
+                          color: '#374151',
+                          textDecoration: 'none',
+                          fontSize: '12px',
+                          fontWeight: '500',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          whiteSpace: 'nowrap',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = '#e5e7eb';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = '#f3f4f6';
+                        }}
+                        title={doc.title}
+                      >
+                        <FileText size={12} />
+                        {doc.title.length > 15 ? doc.title.substring(0, 15) + '...' : doc.title}
+                      </a>
+                    ))}
+                    {documents.length > 2 && (
+                      <span style={{ fontSize: '12px', color: '#6b7280', alignSelf: 'center' }}>
+                        +{documents.length - 2}
+                      </span>
+                    )}
+                  </div>
                 )}
+
+                {nextMeeting ? (
+                  <div style={{ textAlign: 'right', marginRight: '8px' }}>
+                    <p style={{ margin: '0 0 2px 0', fontSize: '12px', color: '#6b7280' }}>Next 1:1</p>
+                    <p style={{ margin: 0, fontSize: '14px', fontWeight: '500', color: '#3b82f6' }}>
+                      {formatNextDate(nextMeeting.scheduledAt)}
+                    </p>
+                  </div>
+                ) : (
+                  <div style={{ textAlign: 'right', marginRight: '8px' }}>
+                    <p style={{ margin: 0, fontSize: '13px', color: '#9ca3af' }}>No upcoming</p>
+                  </div>
+                )}
+
+                <ChevronRight size={20} color="#9ca3af" />
               </div>
-
-              {nextMeeting ? (
-                <div style={{ textAlign: 'right', marginRight: '8px' }}>
-                  <p style={{ margin: '0 0 2px 0', fontSize: '12px', color: '#6b7280' }}>Next 1:1</p>
-                  <p style={{ margin: 0, fontSize: '14px', fontWeight: '500', color: '#3b82f6' }}>
-                    {new Date(nextMeeting.scheduledAt).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                    })}
-                  </p>
-                </div>
-              ) : (
-                <div style={{ textAlign: 'right', marginRight: '8px' }}>
-                  <p style={{ margin: 0, fontSize: '13px', color: '#9ca3af' }}>No upcoming</p>
-                </div>
-              )}
-
-              <ChevronRight size={20} color="#9ca3af" />
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

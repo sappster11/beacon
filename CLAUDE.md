@@ -259,3 +259,11 @@ git add -A && git commit -m "message" && git push
 - Feature branches - Create for major changes, merge to main when ready
 
 Always commit with descriptive messages and the Claude Code signature.
+
+---
+
+## Deployment Workflow
+
+**IMPORTANT:** When a feature or fix is ready, always ask Jacob: "Ready to deploy?" before committing and pushing.
+
+Do NOT describe completed work in a way that sounds like it's live until it's actually deployed. The build succeeding is not the same as deploying.

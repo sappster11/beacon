@@ -2,8 +2,13 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { oneOnOnes, users } from '../lib/api';
-import { ArrowLeft, Calendar, FileText, ExternalLink, Plus, Link as LinkIcon } from 'lucide-react';
+import { ArrowLeft, Calendar, FileText, ExternalLink, Plus, Link as LinkIcon, Trash2 } from 'lucide-react';
 import Avatar from '../components/Avatar';
+
+interface LinkedDocument {
+  title: string;
+  url: string;
+}
 
 export default function EmployeeOneOnOnes() {
   const { employeeId } = useParams<{ employeeId: string }>();
@@ -13,7 +18,7 @@ export default function EmployeeOneOnOnes() {
   const [meetings, setMeetings] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  const [linkedDocument, setLinkedDocument] = useState<{ title: string; url: string } | null>(null);
+  const [documents, setDocuments] = useState<LinkedDocument[]>([]);
   const [showAddDocModal, setShowAddDocModal] = useState(false);
   const [newDoc, setNewDoc] = useState({ title: '', url: '' });
 
@@ -51,13 +56,6 @@ export default function EmployeeOneOnOnes() {
         const meeting = employeeMeetings[0];
         const emp = meeting.manager.id === user?.id ? meeting.employee : meeting.manager;
         setEmployee(emp);
-
-        // Check for recurring document in any meeting
-        // For now, we'll store this in localStorage per employee relationship
-        const storedDoc = localStorage.getItem(`1on1-doc-${user?.id}-${employeeId}`);
-        if (storedDoc) {
-          setLinkedDocument(JSON.parse(storedDoc));
-        }
       } else {
         // Try to load employee info directly
         try {
@@ -66,6 +64,12 @@ export default function EmployeeOneOnOnes() {
         } catch (err) {
           console.error('Failed to load employee:', err);
         }
+      }
+
+      // Load documents from localStorage
+      const storedDocs = localStorage.getItem(`1on1-docs-${user?.id}-${employeeId}`);
+      if (storedDocs) {
+        setDocuments(JSON.parse(storedDocs));
       }
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to load data');
@@ -80,17 +84,22 @@ export default function EmployeeOneOnOnes() {
       return;
     }
 
-    // Store in localStorage for now
-    localStorage.setItem(`1on1-doc-${user?.id}-${employeeId}`, JSON.stringify(newDoc));
-    setLinkedDocument(newDoc);
+    const updatedDocs = [...documents, newDoc];
+    localStorage.setItem(`1on1-docs-${user?.id}-${employeeId}`, JSON.stringify(updatedDocs));
+    setDocuments(updatedDocs);
     setShowAddDocModal(false);
     setNewDoc({ title: '', url: '' });
     setError('');
   };
 
-  const handleRemoveDocument = () => {
-    localStorage.removeItem(`1on1-doc-${user?.id}-${employeeId}`);
-    setLinkedDocument(null);
+  const handleRemoveDocument = (index: number) => {
+    const updatedDocs = documents.filter((_, i) => i !== index);
+    if (updatedDocs.length === 0) {
+      localStorage.removeItem(`1on1-docs-${user?.id}-${employeeId}`);
+    } else {
+      localStorage.setItem(`1on1-docs-${user?.id}-${employeeId}`, JSON.stringify(updatedDocs));
+    }
+    setDocuments(updatedDocs);
   };
 
   // Placeholder data for preview
@@ -194,13 +203,13 @@ export default function EmployeeOneOnOnes() {
         </div>
       </div>
 
-      {/* Linked Document Section */}
+      {/* Shared Documents Section */}
       <div style={{ marginBottom: '32px', padding: '20px', background: '#f9fafb', borderRadius: '12px', border: '1px solid #e5e7eb' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <h3 style={{ margin: 0, fontSize: '16px', fontWeight: '600', color: '#374151' }}>
-            Shared Document
+            Shared Documents
           </h3>
-          {isManager && !linkedDocument && (
+          {isManager && (
             <button
               onClick={() => setShowAddDocModal(true)}
               style={{
@@ -217,61 +226,78 @@ export default function EmployeeOneOnOnes() {
                 gap: '6px',
               }}
             >
-              <LinkIcon size={14} />
-              Link Document
+              <Plus size={14} />
+              Add Document
             </button>
           )}
         </div>
 
-        {linkedDocument ? (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', background: '#ffffff', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <FileText size={20} color="#3b82f6" />
-              <span style={{ fontSize: '14px', fontWeight: '500', color: '#111827' }}>{linkedDocument.title}</span>
-            </div>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <a
-                href={linkedDocument.url}
-                target="_blank"
-                rel="noopener noreferrer"
+        {documents.length > 0 ? (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {documents.map((doc, idx) => (
+              <div
+                key={idx}
                 style={{
-                  padding: '8px 14px',
-                  background: '#3b82f6',
-                  color: '#ffffff',
-                  border: 'none',
-                  borderRadius: '6px',
-                  textDecoration: 'none',
-                  fontSize: '13px',
-                  fontWeight: '500',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '6px',
+                  justifyContent: 'space-between',
+                  padding: '12px 16px',
+                  background: '#ffffff',
+                  borderRadius: '8px',
+                  border: '1px solid #e5e7eb',
                 }}
               >
-                <ExternalLink size={14} />
-                Open
-              </a>
-              {isManager && (
-                <button
-                  onClick={handleRemoveDocument}
-                  style={{
-                    padding: '8px 12px',
-                    background: 'transparent',
-                    color: '#dc2626',
-                    border: '1px solid #fecaca',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                    fontSize: '13px',
-                  }}
-                >
-                  Remove
-                </button>
-              )}
-            </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <FileText size={18} color="#3b82f6" />
+                  <span style={{ fontSize: '14px', fontWeight: '500', color: '#111827' }}>{doc.title}</span>
+                </div>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <a
+                    href={doc.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      padding: '6px 12px',
+                      background: '#3b82f6',
+                      color: '#ffffff',
+                      border: 'none',
+                      borderRadius: '6px',
+                      textDecoration: 'none',
+                      fontSize: '13px',
+                      fontWeight: '500',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                    }}
+                  >
+                    <ExternalLink size={12} />
+                    Open
+                  </a>
+                  {isManager && (
+                    <button
+                      onClick={() => handleRemoveDocument(idx)}
+                      style={{
+                        padding: '6px 10px',
+                        background: 'transparent',
+                        color: '#dc2626',
+                        border: '1px solid #fecaca',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        fontSize: '13px',
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
           <p style={{ margin: 0, fontSize: '14px', color: '#9ca3af', fontStyle: 'italic' }}>
-            No shared document linked. Link a Google Doc or Notion page to use as your ongoing 1:1 notes.
+            No documents linked yet. Add a Google Doc or Notion page for your ongoing 1:1 notes.
           </p>
         )}
       </div>
@@ -296,6 +322,15 @@ export default function EmployeeOneOnOnes() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
+                  transition: 'all 0.15s',
+                }}
+                onMouseEnter={(e) => {
+                  if (!isPlaceholder) {
+                    e.currentTarget.style.background = '#dbeafe';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = '#eff6ff';
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -314,9 +349,9 @@ export default function EmployeeOneOnOnes() {
                     })}
                   </span>
                 </div>
-                {!isPlaceholder && (
-                  <span style={{ fontSize: '13px', color: '#3b82f6' }}>View →</span>
-                )}
+                <span style={{ fontSize: '13px', color: '#3b82f6', fontWeight: '500' }}>
+                  {isPlaceholder ? 'Preview' : 'Open →'}
+                </span>
               </div>
             ))}
           </div>
@@ -369,16 +404,16 @@ export default function EmployeeOneOnOnes() {
                       year: 'numeric',
                     })}
                   </span>
-                  {meeting.sharedNotes && (
+                  {(meeting.sharedNotes || meeting.managerNotes) && (
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#3b82f6', background: '#eff6ff', padding: '2px 8px', borderRadius: '4px' }}>
                       <FileText size={12} />
                       Has notes
                     </span>
                   )}
                 </div>
-                {!isPlaceholder && (
-                  <span style={{ fontSize: '13px', color: '#6b7280' }}>View →</span>
-                )}
+                <span style={{ fontSize: '13px', color: '#6b7280' }}>
+                  {isPlaceholder ? 'Preview' : 'View →'}
+                </span>
               </div>
             ))}
           </div>
@@ -413,10 +448,10 @@ export default function EmployeeOneOnOnes() {
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{ margin: '0 0 8px 0', fontSize: '20px', fontWeight: '600', color: '#111827' }}>
-              Link Shared Document
+              Add Shared Document
             </h2>
             <p style={{ margin: '0 0 20px 0', fontSize: '14px', color: '#6b7280' }}>
-              Link a Google Doc, Notion page, or any URL to use as your ongoing 1:1 notes with {displayEmployee.name}.
+              Link a Google Doc, Notion page, or any URL for your 1:1s with {displayEmployee.name}.
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -428,7 +463,7 @@ export default function EmployeeOneOnOnes() {
                   type="text"
                   value={newDoc.title}
                   onChange={(e) => setNewDoc({ ...newDoc, title: e.target.value })}
-                  placeholder="e.g., 1:1 Notes with Sarah"
+                  placeholder="e.g., 1:1 Notes, Career Development, Goals Doc"
                   style={{
                     width: '100%',
                     padding: '10px 12px',
@@ -490,7 +525,7 @@ export default function EmployeeOneOnOnes() {
                   fontWeight: '500',
                 }}
               >
-                Link Document
+                Add Document
               </button>
             </div>
           </div>
