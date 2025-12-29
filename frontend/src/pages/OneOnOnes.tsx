@@ -229,6 +229,38 @@ export default function OneOnOnes() {
 
   const employeesWithMeetings = getEmployeesWithMeetings();
 
+  // Placeholder data for preview (remove once real data exists)
+  const placeholderData: EmployeeWithMeetings[] = employeesWithMeetings.length > 0 ? [] : [
+    {
+      employee: { id: 'placeholder-1', name: 'Sarah Chen', title: 'Senior Software Engineer', profilePicture: undefined },
+      nextMeeting: { id: 'next-1', scheduledAt: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(), status: 'scheduled', manager: { id: user?.id || '' }, employee: { id: 'placeholder-1', name: 'Sarah Chen' } },
+      meetings: [
+        { id: 'm1', scheduledAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), status: 'completed', sharedNotes: 'Discussed Q1 goals progress. Sarah is on track with the API refactoring project. Need to follow up on the documentation.', managerNotes: 'Consider for tech lead role next quarter.', manager: { id: user?.id || '' }, employee: { id: 'placeholder-1', name: 'Sarah Chen' } },
+        { id: 'm2', scheduledAt: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(), status: 'completed', sharedNotes: 'Talked about career development and upcoming projects.', manager: { id: user?.id || '' }, employee: { id: 'placeholder-1', name: 'Sarah Chen' } },
+        { id: 'm3', scheduledAt: new Date(Date.now() - 21 * 24 * 60 * 60 * 1000).toISOString(), status: 'completed', manager: { id: user?.id || '' }, employee: { id: 'placeholder-1', name: 'Sarah Chen' } },
+        { id: 'm4', scheduledAt: new Date(Date.now() - 28 * 24 * 60 * 60 * 1000).toISOString(), status: 'completed', sharedNotes: 'Sprint retrospective discussion. Identified blockers with the CI/CD pipeline.', actionItems: '- Fix CI/CD pipeline issues\n- Review PR backlog', manager: { id: user?.id || '' }, employee: { id: 'placeholder-1', name: 'Sarah Chen' } },
+      ],
+    },
+    {
+      employee: { id: 'placeholder-2', name: 'Marcus Johnson', title: 'Product Designer', profilePicture: undefined },
+      nextMeeting: { id: 'next-2', scheduledAt: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(), status: 'scheduled', manager: { id: user?.id || '' }, employee: { id: 'placeholder-2', name: 'Marcus Johnson' } },
+      meetings: [
+        { id: 'm5', scheduledAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(), status: 'completed', sharedNotes: 'Reviewed new dashboard designs. Great progress on the mobile responsive layouts.', manager: { id: user?.id || '' }, employee: { id: 'placeholder-2', name: 'Marcus Johnson' } },
+        { id: 'm6', scheduledAt: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(), status: 'completed', sharedNotes: 'Discussed design system updates and component library.', managerNotes: 'Very thorough with documentation.', manager: { id: user?.id || '' }, employee: { id: 'placeholder-2', name: 'Marcus Johnson' } },
+      ],
+    },
+    {
+      employee: { id: 'placeholder-3', name: 'Emily Rodriguez', title: 'Frontend Developer', profilePicture: undefined },
+      nextMeeting: undefined,
+      meetings: [
+        { id: 'm7', scheduledAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), status: 'completed', sharedNotes: 'Onboarding check-in. Emily is settling in well and has already shipped her first feature.', manager: { id: user?.id || '' }, employee: { id: 'placeholder-3', name: 'Emily Rodriguez' } },
+        { id: 'm8', scheduledAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(), status: 'completed', agenda: 'First week check-in\nQuestions about codebase\nTeam introductions', sharedNotes: 'Went over team norms and development workflow.', manager: { id: user?.id || '' }, employee: { id: 'placeholder-3', name: 'Emily Rodriguez' } },
+      ],
+    },
+  ];
+
+  const displayData = employeesWithMeetings.length > 0 ? employeesWithMeetings : placeholderData;
+
   if (isLoading) {
     return (
       <div style={{ padding: '48px' }}>
@@ -350,7 +382,7 @@ export default function OneOnOnes() {
       )}
 
       {/* Employee Cards */}
-      {employeesWithMeetings.length === 0 ? (
+      {displayData.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '60px 20px', background: '#f9fafb', borderRadius: '12px', border: '1px solid #e5e7eb' }}>
           <Users size={32} color="#9ca3af" style={{ marginBottom: '12px' }} />
           <h3 style={{ margin: '0 0 8px 0', color: '#111827', fontSize: '18px', fontWeight: '600' }}>No 1:1s yet</h3>
@@ -360,7 +392,7 @@ export default function OneOnOnes() {
         </div>
       ) : (
         <div style={{ display: 'grid', gap: '16px' }}>
-          {employeesWithMeetings.map(({ employee, meetings: empMeetings, nextMeeting }) => {
+          {displayData.map(({ employee, meetings: empMeetings, nextMeeting }) => {
             const isExpanded = expandedEmployees.has(employee.id);
             const pastMeetings = empMeetings.filter(m => new Date(m.scheduledAt) <= new Date() || m.status !== 'scheduled');
 
