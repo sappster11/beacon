@@ -44,9 +44,11 @@ export default function Reviews() {
 
   // Filter reviews based on status and role
   const filteredReviews = allReviews.filter(review => {
-    // Status filter
+    // Status filter - 'current' means any in-progress status, 'completed' means COMPLETED
     if (statusFilter === 'current') {
-      if (review.status === 'COMPLETED') return false;
+      // In-progress statuses (not completed)
+      const inProgressStatuses = ['SELF_REVIEW', 'MANAGER_REVIEW', 'READY_TO_SHARE', 'SHARED', 'ACKNOWLEDGED', 'PENDING_APPROVAL'];
+      if (!inProgressStatuses.includes(review.status)) return false;
     } else if (statusFilter === 'completed') {
       if (review.status !== 'COMPLETED') return false;
     }
@@ -85,6 +87,19 @@ export default function Reviews() {
     switch (status) {
       case 'COMPLETED':
         return '#10b981';
+      case 'SELF_REVIEW':
+        return '#3b82f6';
+      case 'MANAGER_REVIEW':
+        return '#f59e0b';
+      case 'READY_TO_SHARE':
+        return '#8b5cf6';
+      case 'SHARED':
+        return '#06b6d4';
+      case 'ACKNOWLEDGED':
+        return '#10b981';
+      case 'PENDING_APPROVAL':
+        return '#f59e0b';
+      // Legacy statuses
       case 'IN_PROGRESS':
         return '#f59e0b';
       case 'NOT_STARTED':

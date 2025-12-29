@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Award, TrendingUp, Target, MessageSquare, Trash2, MoreVertical, Edit2 } from 'lucide-react';
-import type { Review, Competency, SelfReflection, AssignedGoal } from '../types';
+import { Award, TrendingUp, Target, MessageSquare, Trash2, MoreVertical, Edit2, Check, Circle, Clock, Share2, ThumbsUp, Shield, CheckCircle } from 'lucide-react';
+import type { Review, Competency, SelfReflection, AssignedGoal, ReviewStatus } from '../types';
 import { reviews as reviewsApi } from '../lib/api';
 import TabNavigation from './TabNavigation';
 import CompetencyCard from './CompetencyCard';
@@ -12,7 +12,30 @@ interface ReviewDetailModalProps {
   onClose: () => void;
   isReviewer: boolean;
   isPage?: boolean;
+  isSkipLevelManager?: boolean; // True if current user is the reviewer's manager
+  onReviewUpdate?: (review: Review) => void;
 }
+
+// Workflow step configuration
+const WORKFLOW_STEPS: { status: ReviewStatus; label: string; shortLabel: string }[] = [
+  { status: 'SELF_REVIEW', label: 'Self Review', shortLabel: 'Self' },
+  { status: 'MANAGER_REVIEW', label: 'Manager Review', shortLabel: 'Manager' },
+  { status: 'READY_TO_SHARE', label: 'Ready to Share', shortLabel: 'Ready' },
+  { status: 'SHARED', label: 'Shared', shortLabel: 'Shared' },
+  { status: 'ACKNOWLEDGED', label: 'Acknowledged', shortLabel: 'Ack' },
+  { status: 'PENDING_APPROVAL', label: 'Pending Approval', shortLabel: 'Approval' },
+  { status: 'COMPLETED', label: 'Completed', shortLabel: 'Done' },
+];
+
+const getStepIndex = (status: ReviewStatus): number => {
+  return WORKFLOW_STEPS.findIndex(s => s.status === status);
+};
+
+// Helper to check if manager content should be visible to employee
+const canEmployeeSeeManagerContent = (status: ReviewStatus): boolean => {
+  const visibleStatuses: ReviewStatus[] = ['SHARED', 'ACKNOWLEDGED', 'PENDING_APPROVAL', 'COMPLETED'];
+  return visibleStatuses.includes(status);
+};
 
 const RATING_LABELS = {
   1: 'Not effective',
@@ -87,13 +110,24 @@ function debounce<T extends (...args: any[]) => any>(func: T, wait: number): (..
   };
 }
 
-export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer, isPage = false }: ReviewDetailModalProps) {
+export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer, isPage = false, isSkipLevelManager = false, onReviewUpdate }: ReviewDetailModalProps) {
   const [activeTab, setActiveTab] = useState('scoring');
   const [competencies, setCompetencies] = useState<Competency[]>([]);
   const [selfReflections, setSelfReflections] = useState<SelfReflection[]>([]);
   const [assignedGoals, setAssignedGoals] = useState<AssignedGoal[]>([]);
   const [saveMessage, setSaveMessage] = useState('');
   const [lastSavedTime, setLastSavedTime] = useState<Date | null>(null);
+  const [workflowLoading, setWorkflowLoading] = useState(false);
+  const [currentReview, setCurrentReview] = useState<Review | null>(review);
+
+  // Update currentReview when review prop changes
+  useEffect(() => {
+    setCurrentReview(review);
+  }, [review]);
+
+  // Determine if employee can see manager content based on workflow status
+  const isEmployee = !isReviewer && !isSkipLevelManager;
+  const showManagerContent = isReviewer || isSkipLevelManager || (currentReview && canEmployeeSeeManagerContent(currentReview.status));
 
   // Add competency form state
   const [showAddCompetency, setShowAddCompetency] = useState(false);
@@ -347,7 +381,154 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
     setEditReflectionQuestion('');
   };
 
-  if (!isOpen || !review) return null;
+  // Workflow action handlers
+  const handleSubmitSelfReview = async () => {
+    if (!currentReview || workflowLoading) return;
+    setWorkflowLoading(true);
+    try {
+      const updated = await reviewsApi.submitSelfReview(currentReview.id);
+      setCurrentReview(updated);
+      onReviewUpdate?.(updated);
+      setSaveMessage('Self-review submitted!');
+      setTimeout(() => setSaveMessage(''), 3000);
+    } catch (error) {
+      console.error('Failed to submit self-review:', error);
+      setSaveMessage('Failed to submit');
+      setTimeout(() => setSaveMessage(''), 3000);
+    } finally {
+      setWorkflowLoading(false);
+    }
+  };
+
+  const handleSubmitManagerReview = async () => {
+    if (!currentReview || workflowLoading) return;
+    setWorkflowLoading(true);
+    try {
+      const updated = await reviewsApi.submitManagerReview(currentReview.id);
+      setCurrentReview(updated);
+      onReviewUpdate?.(updated);
+      setSaveMessage('Manager review submitted!');
+      setTimeout(() => setSaveMessage(''), 3000);
+    } catch (error) {
+      console.error('Failed to submit manager review:', error);
+      setSaveMessage('Failed to submit');
+      setTimeout(() => setSaveMessage(''), 3000);
+    } finally {
+      setWorkflowLoading(false);
+    }
+  };
+
+  const handleShareReview = async () => {
+    if (!currentReview || workflowLoading) return;
+    setWorkflowLoading(true);
+    try {
+      const updated = await reviewsApi.shareReview(currentReview.id);
+      setCurrentReview(updated);
+      onReviewUpdate?.(updated);
+      setSaveMessage('Review shared with employee!');
+      setTimeout(() => setSaveMessage(''), 3000);
+    } catch (error) {
+      console.error('Failed to share review:', error);
+      setSaveMessage('Failed to share');
+      setTimeout(() => setSaveMessage(''), 3000);
+    } finally {
+      setWorkflowLoading(false);
+    }
+  };
+
+  const handleAcknowledgeReview = async () => {
+    if (!currentReview || workflowLoading) return;
+    setWorkflowLoading(true);
+    try {
+      const updated = await reviewsApi.acknowledgeReview(currentReview.id);
+      setCurrentReview(updated);
+      onReviewUpdate?.(updated);
+      setSaveMessage('Review acknowledged!');
+      setTimeout(() => setSaveMessage(''), 3000);
+    } catch (error) {
+      console.error('Failed to acknowledge review:', error);
+      setSaveMessage('Failed to acknowledge');
+      setTimeout(() => setSaveMessage(''), 3000);
+    } finally {
+      setWorkflowLoading(false);
+    }
+  };
+
+  const handleApproveReview = async () => {
+    if (!currentReview || workflowLoading) return;
+    setWorkflowLoading(true);
+    try {
+      const updated = await reviewsApi.approveReview(currentReview.id);
+      setCurrentReview(updated);
+      onReviewUpdate?.(updated);
+      setSaveMessage('Review approved!');
+      setTimeout(() => setSaveMessage(''), 3000);
+    } catch (error) {
+      console.error('Failed to approve review:', error);
+      setSaveMessage('Failed to approve');
+      setTimeout(() => setSaveMessage(''), 3000);
+    } finally {
+      setWorkflowLoading(false);
+    }
+  };
+
+  // Get status banner configuration
+  const getStatusBanner = () => {
+    if (!currentReview) return null;
+    const status = currentReview.status;
+
+    switch (status) {
+      case 'SELF_REVIEW':
+        if (isEmployee) {
+          return { color: '#3b82f6', bg: '#eff6ff', message: 'Complete your self-review and submit when ready.' };
+        }
+        return { color: '#f59e0b', bg: '#fffbeb', message: `Waiting for ${currentReview.reviewee?.name || 'employee'} to complete self-review.` };
+
+      case 'MANAGER_REVIEW':
+        if (isReviewer) {
+          if (!currentReview.selfReviewSubmittedAt) {
+            return { color: '#f59e0b', bg: '#fffbeb', message: 'Employee has not submitted their self-review yet. You can still work on your assessment.' };
+          }
+          return { color: '#3b82f6', bg: '#eff6ff', message: 'Complete your manager assessment and submit when ready.' };
+        }
+        if (currentReview.selfReviewSubmittedAt) {
+          return { color: '#10b981', bg: '#f0fdf4', message: 'Your self-review has been submitted. Waiting for manager review.' };
+        }
+        return { color: '#3b82f6', bg: '#eff6ff', message: 'Complete your self-review and submit when ready.' };
+
+      case 'READY_TO_SHARE':
+        if (isReviewer) {
+          return { color: '#8b5cf6', bg: '#f5f3ff', message: 'Both reviews are complete. Share with employee during your 1:1 meeting.' };
+        }
+        return { color: '#10b981', bg: '#f0fdf4', message: 'Both reviews are complete. Your manager will share feedback during your 1:1.' };
+
+      case 'SHARED':
+        if (isEmployee) {
+          return { color: '#3b82f6', bg: '#eff6ff', message: 'Review your manager\'s feedback and acknowledge when ready.' };
+        }
+        return { color: '#f59e0b', bg: '#fffbeb', message: `Waiting for ${currentReview.reviewee?.name || 'employee'} to acknowledge the review.` };
+
+      case 'ACKNOWLEDGED':
+        return { color: '#10b981', bg: '#f0fdf4', message: 'Review has been acknowledged by employee.' };
+
+      case 'PENDING_APPROVAL':
+        if (isSkipLevelManager) {
+          return { color: '#8b5cf6', bg: '#f5f3ff', message: 'Review both assessments and approve when ready.' };
+        }
+        return { color: '#f59e0b', bg: '#fffbeb', message: 'Waiting for skip-level manager approval.' };
+
+      case 'COMPLETED':
+        if (currentReview.autoApproved) {
+          return { color: '#10b981', bg: '#f0fdf4', message: 'Review completed (auto-approved - no skip-level manager).' };
+        }
+        return { color: '#10b981', bg: '#f0fdf4', message: 'Review completed and approved.' };
+
+      default:
+        return null;
+    }
+  };
+
+  if (!isOpen || !currentReview) return null;
 
   const competencyWeight = competencies.length > 0 ? 100 / competencies.length : 0;
   const goalWeight = assignedGoals.length > 0 ? 100 / assignedGoals.length : 0;
@@ -377,6 +558,9 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
 
   const contentClassName = isPage ? 'review-detail-page' : 'review-detail-modal modal-content';
 
+  const statusBanner = getStatusBanner();
+  const currentStepIndex = getStepIndex(currentReview.status);
+
   const content = (
     <div className={contentClassName} style={contentStyle} onClick={isPage ? undefined : (e) => e.stopPropagation()}>
       {/* Header */}
@@ -385,45 +569,241 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
         style={{
           padding: '24px 32px',
           borderBottom: '1px solid #e5e7eb',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: '16px',
-          flexWrap: 'wrap',
         }}
       >
-        <div>
-          <h2 style={{ margin: '0 0 4px 0', fontSize: '24px', fontWeight: '600', color: '#111827' }}>
-            {review.cycle?.name || 'Performance Review'}
-          </h2>
-          <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
-            {review.reviewee?.name} • {review.reviewee?.title}
-          </p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '20px' }}>
+          <div>
+            <h2 style={{ margin: '0 0 4px 0', fontSize: '24px', fontWeight: '600', color: '#111827' }}>
+              {currentReview.cycle?.name || 'Performance Review'}
+            </h2>
+            <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
+              {currentReview.reviewee?.name} • {currentReview.reviewee?.title}
+            </p>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            {saveMessage && (
+              <span
+                style={{
+                  fontSize: '13px',
+                  color: saveMessage.includes('✓') || saveMessage.includes('submitted') || saveMessage.includes('shared') || saveMessage.includes('acknowledged') || saveMessage.includes('approved') ? '#10b981' : '#ef4444',
+                  fontWeight: '500',
+                }}
+              >
+                {saveMessage}
+              </span>
+            )}
+            {lastSavedTime && !saveMessage && (
+              <span
+                style={{
+                  fontSize: '13px',
+                  color: '#6b7280',
+                  fontWeight: '500',
+                }}
+              >
+                Last Saved: {lastSavedTime.toLocaleTimeString()}
+              </span>
+            )}
+          </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          {saveMessage && (
-            <span
-              style={{
-                fontSize: '13px',
-                color: saveMessage.includes('✓') ? '#10b981' : '#ef4444',
-                fontWeight: '500',
-              }}
-            >
-              {saveMessage}
-            </span>
-          )}
-          {lastSavedTime && (
-            <span
-              style={{
-                fontSize: '13px',
-                color: '#6b7280',
-                fontWeight: '500',
-              }}
-            >
-              Last Saved: {lastSavedTime.toLocaleTimeString()}
-            </span>
-          )}
+
+        {/* Progress Indicator */}
+        <div style={{ marginBottom: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            {WORKFLOW_STEPS.map((step, index) => {
+              const isCompleted = index < currentStepIndex;
+              const isCurrent = index === currentStepIndex;
+
+              return (
+                <div key={step.status} style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
+                    <div
+                      style={{
+                        width: '28px',
+                        height: '28px',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        background: isCompleted ? '#10b981' : isCurrent ? '#3b82f6' : '#e5e7eb',
+                        color: isCompleted || isCurrent ? '#ffffff' : '#9ca3af',
+                        fontSize: '12px',
+                        fontWeight: '600',
+                      }}
+                    >
+                      {isCompleted ? <Check size={14} /> : index + 1}
+                    </div>
+                    <span
+                      style={{
+                        fontSize: '11px',
+                        color: isCurrent ? '#3b82f6' : isCompleted ? '#10b981' : '#9ca3af',
+                        fontWeight: isCurrent ? '600' : '400',
+                        marginTop: '4px',
+                        textAlign: 'center',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {step.shortLabel}
+                    </span>
+                  </div>
+                  {index < WORKFLOW_STEPS.length - 1 && (
+                    <div
+                      style={{
+                        flex: 1,
+                        height: '2px',
+                        background: index < currentStepIndex ? '#10b981' : '#e5e7eb',
+                        marginBottom: '20px',
+                      }}
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
+
+        {/* Status Banner */}
+        {statusBanner && (
+          <div
+            style={{
+              padding: '12px 16px',
+              background: statusBanner.bg,
+              border: `1px solid ${statusBanner.color}40`,
+              borderRadius: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '16px',
+              flexWrap: 'wrap',
+            }}
+          >
+            <span style={{ fontSize: '14px', color: statusBanner.color, fontWeight: '500' }}>
+              {statusBanner.message}
+            </span>
+
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', gap: '8px' }}>
+              {/* Employee: Submit Self-Review */}
+              {isEmployee && (currentReview.status === 'SELF_REVIEW' || (currentReview.status === 'MANAGER_REVIEW' && !currentReview.selfReviewSubmittedAt)) && (
+                <button
+                  onClick={handleSubmitSelfReview}
+                  disabled={workflowLoading}
+                  style={{
+                    padding: '8px 16px',
+                    background: workflowLoading ? '#9ca3af' : '#3b82f6',
+                    color: '#ffffff',
+                    border: 'none',
+                    borderRadius: '6px',
+                    cursor: workflowLoading ? 'not-allowed' : 'pointer',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <CheckCircle size={16} />
+                  {workflowLoading ? 'Submitting...' : 'Submit Self-Review'}
+                </button>
+              )}
+
+              {/* Manager: Submit Manager Review */}
+              {isReviewer && (currentReview.status === 'SELF_REVIEW' || currentReview.status === 'MANAGER_REVIEW') && !currentReview.managerReviewSubmittedAt && (
+                <button
+                  onClick={handleSubmitManagerReview}
+                  disabled={workflowLoading}
+                  style={{
+                    padding: '8px 16px',
+                    background: workflowLoading ? '#9ca3af' : '#3b82f6',
+                    color: '#ffffff',
+                    border: 'none',
+                    borderRadius: '6px',
+                    cursor: workflowLoading ? 'not-allowed' : 'pointer',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <CheckCircle size={16} />
+                  {workflowLoading ? 'Submitting...' : 'Submit Manager Review'}
+                </button>
+              )}
+
+              {/* Manager: Share Review */}
+              {isReviewer && currentReview.status === 'READY_TO_SHARE' && (
+                <button
+                  onClick={handleShareReview}
+                  disabled={workflowLoading}
+                  style={{
+                    padding: '8px 16px',
+                    background: workflowLoading ? '#9ca3af' : '#8b5cf6',
+                    color: '#ffffff',
+                    border: 'none',
+                    borderRadius: '6px',
+                    cursor: workflowLoading ? 'not-allowed' : 'pointer',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <Share2 size={16} />
+                  {workflowLoading ? 'Sharing...' : 'Share with Employee'}
+                </button>
+              )}
+
+              {/* Employee: Acknowledge Review */}
+              {isEmployee && currentReview.status === 'SHARED' && (
+                <button
+                  onClick={handleAcknowledgeReview}
+                  disabled={workflowLoading}
+                  style={{
+                    padding: '8px 16px',
+                    background: workflowLoading ? '#9ca3af' : '#10b981',
+                    color: '#ffffff',
+                    border: 'none',
+                    borderRadius: '6px',
+                    cursor: workflowLoading ? 'not-allowed' : 'pointer',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <ThumbsUp size={16} />
+                  {workflowLoading ? 'Acknowledging...' : 'Acknowledge Review'}
+                </button>
+              )}
+
+              {/* Skip-Level Manager: Approve Review */}
+              {isSkipLevelManager && currentReview.status === 'PENDING_APPROVAL' && (
+                <button
+                  onClick={handleApproveReview}
+                  disabled={workflowLoading}
+                  style={{
+                    padding: '8px 16px',
+                    background: workflowLoading ? '#9ca3af' : '#10b981',
+                    color: '#ffffff',
+                    border: 'none',
+                    borderRadius: '6px',
+                    cursor: workflowLoading ? 'not-allowed' : 'pointer',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <Shield size={16} />
+                  {workflowLoading ? 'Approving...' : 'Approve Review'}
+                </button>
+              )}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Tab Navigation */}

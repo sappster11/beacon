@@ -46,7 +46,14 @@ export interface Department {
 
 // Review types
 export type ReviewCycleType = 'QUARTERLY' | 'SEMI_ANNUAL' | 'ANNUAL';
-export type ReviewStatus = 'NOT_STARTED' | 'IN_PROGRESS' | 'COMPLETED' | 'CALIBRATED';
+export type ReviewStatus =
+  | 'SELF_REVIEW'
+  | 'MANAGER_REVIEW'
+  | 'READY_TO_SHARE'
+  | 'SHARED'
+  | 'ACKNOWLEDGED'
+  | 'PENDING_APPROVAL'
+  | 'COMPLETED';
 
 export interface ReviewCycle {
   id: string;
@@ -87,6 +94,14 @@ export interface Review {
   managerAssessment?: string;
   summaryComments?: string; // JSON string
   status: ReviewStatus;
+  // Workflow tracking fields
+  selfReviewSubmittedAt?: string;
+  managerReviewSubmittedAt?: string;
+  sharedAt?: string;
+  acknowledgedAt?: string;
+  skipLevelApprovedAt?: string;
+  skipLevelApproverId?: string;
+  autoApproved?: boolean;
   createdAt: string;
   updatedAt: string;
   // Populated relations

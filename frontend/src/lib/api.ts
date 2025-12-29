@@ -94,6 +94,14 @@ function transformReview(row: any): Review {
     managerAssessment: row.manager_assessment,
     summaryComments: row.summary_comments ? JSON.stringify(row.summary_comments) : undefined,
     status: row.status,
+    // Workflow tracking fields
+    selfReviewSubmittedAt: row.self_review_submitted_at,
+    managerReviewSubmittedAt: row.manager_review_submitted_at,
+    sharedAt: row.shared_at,
+    acknowledgedAt: row.acknowledged_at,
+    skipLevelApprovedAt: row.skip_level_approved_at,
+    skipLevelApproverId: row.skip_level_approver_id,
+    autoApproved: row.auto_approved,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     reviewee: row.reviewee ? transformUser(row.reviewee) : undefined,
@@ -611,7 +619,7 @@ export const reviews = {
         reviewee_id: review.revieweeId,
         reviewer_id: review.reviewerId,
         cycle_id: review.cycleId,
-        status: 'NOT_STARTED',
+        status: 'SELF_REVIEW',
       })
       .select()
       .single();
@@ -758,7 +766,7 @@ export const reviews = {
             reviewee_id: employeeId,
             reviewer_id: employee.manager_id,
             cycle_id: cycleId,
-            status: 'NOT_STARTED',
+            status: 'SELF_REVIEW',
           })
           .select()
           .single();
@@ -888,6 +896,112 @@ export const reviews = {
     const { data, error } = await supabase
       .from('reviews')
       .update({ summary_comments: summaryComments })
+      .eq('id', id)
+      .select()
+      .single();
+    if (error) throw error;
+    return transformReview(data);
+  },
+
+  // Workflow transition methods
+  submitSelfReview: async (id: string): Promise<Review> => {
+    // First get the current review to check if manager has already submitted
+    const { data: current, error: fetchError } = await supabase
+      .from('reviews')
+      .select('manager_review_submitted_at')
+      .eq('id', id)
+      .single();
+    if (fetchError) throw fetchError;
+
+    // Determine new status based on whether manager has submitted
+    const newStatus = current.manager_review_submitted_at ? 'READY_TO_SHARE' : 'MANAGER_REVIEW';
+
+    const { data, error } = await supabase
+      .from('reviews')
+      .update({
+        self_review_submitted_at: new Date().toISOString(),
+        status: newStatus,
+      })
+      .eq('id', id)
+      .select()
+      .single();
+    if (error) throw error;
+    return transformReview(data);
+  },
+
+  submitManagerReview: async (id: string): Promise<Review> => {
+    // First get the current review to check if employee has already submitted
+    const { data: current, error: fetchError } = await supabase
+      .from('reviews')
+      .select('self_review_submitted_at')
+      .eq('id', id)
+      .single();
+    if (fetchError) throw fetchError;
+
+    // Determine new status based on whether employee has submitted
+    const newStatus = current.self_review_submitted_at ? 'READY_TO_SHARE' : 'MANAGER_REVIEW';
+
+    const { data, error } = await supabase
+      .from('reviews')
+      .update({
+        manager_review_submitted_at: new Date().toISOString(),
+        status: newStatus,
+      })
+      .eq('id', id)
+      .select()
+      .single();
+    if (error) throw error;
+    return transformReview(data);
+  },
+
+  shareReview: async (id: string): Promise<Review> => {
+    const { data, error } = await supabase
+      .from('reviews')
+      .update({
+        shared_at: new Date().toISOString(),
+        status: 'SHARED',
+      })
+      .eq('id', id)
+      .select()
+      .single();
+    if (error) throw error;
+    return transformReview(data);
+  },
+
+  acknowledgeReview: async (id: string): Promise<Review> => {
+    // Get the reviewer's manager_id to determine if skip-level approval is needed
+    const { data: reviewData, error: fetchError } = await supabase
+      .from('reviews')
+      .select('reviewer_id, reviewer:users!reviews_reviewer_id_fkey(manager_id)')
+      .eq('id', id)
+      .single();
+    if (fetchError) throw fetchError;
+
+    const hasSkipLevel = reviewData.reviewer?.manager_id;
+
+    const { data, error } = await supabase
+      .from('reviews')
+      .update({
+        acknowledged_at: new Date().toISOString(),
+        status: hasSkipLevel ? 'PENDING_APPROVAL' : 'COMPLETED',
+        auto_approved: !hasSkipLevel,
+      })
+      .eq('id', id)
+      .select()
+      .single();
+    if (error) throw error;
+    return transformReview(data);
+  },
+
+  approveReview: async (id: string): Promise<Review> => {
+    const userId = await getCurrentUserId();
+    const { data, error } = await supabase
+      .from('reviews')
+      .update({
+        skip_level_approved_at: new Date().toISOString(),
+        skip_level_approver_id: userId,
+        status: 'COMPLETED',
+      })
       .eq('id', id)
       .select()
       .single();
@@ -1472,12 +1586,12 @@ export const manager = {
   getTodos: async (): Promise<any> => {
     const userId = await getCurrentUserId();
 
-    // Get pending reviews where user is reviewer
+    // Get pending reviews where user is reviewer (in-progress workflow statuses)
     const { data: pendingReviews } = await supabase
       .from('reviews')
       .select('id, status, reviewee:users!reviews_reviewee_id_fkey(name)')
       .eq('reviewer_id', userId)
-      .in('status', ['NOT_STARTED', 'IN_PROGRESS']);
+      .in('status', ['SELF_REVIEW', 'MANAGER_REVIEW', 'READY_TO_SHARE', 'SHARED', 'ACKNOWLEDGED', 'PENDING_APPROVAL']);
 
     // Get upcoming 1:1s
     const { data: upcoming1on1s } = await supabase

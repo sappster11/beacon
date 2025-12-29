@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS platform_admins (
 ALTER TABLE platform_admins ENABLE ROW LEVEL SECURITY;
 
 -- Only platform admins can read this table (bootstrap issue solved by function being SECURITY DEFINER)
+DROP POLICY IF EXISTS "platform_admin_read" ON platform_admins;
 CREATE POLICY "platform_admin_read" ON platform_admins
   FOR SELECT USING (user_id = auth.uid());
 
