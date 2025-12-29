@@ -1,3 +1,16 @@
+:root {
+  /* Default brand colors - can be overridden by BrandingProvider */
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-secondary: #10b981;
+  --color-secondary-hover: #059669;
+  --color-accent: #8b5cf6;
+  --color-accent-hover: #7c3aed;
+  --color-success: #10b981;
+  --color-danger: #dc2626;
+  --color-warning: #f59e0b;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;

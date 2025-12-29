@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './hooks/useAuth';
 import { TeamProvider } from './hooks/useTeam';
+import { BrandingProvider } from './hooks/useBranding';
 import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 import Layout from './components/Layout';
@@ -36,8 +37,9 @@ function App() {
     <ErrorBoundary>
       <BrowserRouter>
         <AuthProvider>
-          <TeamProvider>
-            <Routes>
+          <BrandingProvider>
+            <TeamProvider>
+              <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
@@ -71,8 +73,9 @@ function App() {
 
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
-            <CookieConsent />
-          </TeamProvider>
+              <CookieConsent />
+            </TeamProvider>
+          </BrandingProvider>
         </AuthProvider>
       </BrowserRouter>
     </ErrorBoundary>
