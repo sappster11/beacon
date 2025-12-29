@@ -119,6 +119,7 @@ export default function EmployeeOneOnOnes() {
 
   const displayEmployee = employee || placeholderEmployee;
   const displayMeetings = meetings.length > 0 ? meetings : placeholderMeetings;
+  const isUsingPlaceholderMeetings = meetings.length === 0 && placeholderMeetings.length > 0;
 
   if (isLoading && !isPlaceholder) {
     return (
@@ -312,20 +313,21 @@ export default function EmployeeOneOnOnes() {
             {upcomingMeetings.map(meeting => (
               <div
                 key={meeting.id}
-                onClick={() => navigate(`/one-on-ones/${meeting.id}`)}
+                onClick={() => !isUsingPlaceholderMeetings && navigate(`/one-on-ones/${meeting.id}`)}
                 style={{
                   padding: '16px 20px',
                   background: '#eff6ff',
                   border: '1px solid #bfdbfe',
                   borderRadius: '8px',
-                  cursor: 'pointer',
+                  cursor: isUsingPlaceholderMeetings ? 'default' : 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   transition: 'all 0.15s',
+                  opacity: isUsingPlaceholderMeetings ? 0.7 : 1,
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#dbeafe';
+                  if (!isUsingPlaceholderMeetings) e.currentTarget.style.background = '#dbeafe';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = '#eff6ff';
@@ -347,9 +349,16 @@ export default function EmployeeOneOnOnes() {
                     })}
                   </span>
                 </div>
-                <span style={{ fontSize: '13px', color: '#3b82f6', fontWeight: '500' }}>
-                  Open →
-                </span>
+                {!isUsingPlaceholderMeetings && (
+                  <span style={{ fontSize: '13px', color: '#3b82f6', fontWeight: '500' }}>
+                    Open →
+                  </span>
+                )}
+                {isUsingPlaceholderMeetings && (
+                  <span style={{ fontSize: '12px', color: '#9ca3af', fontStyle: 'italic' }}>
+                    Sample data
+                  </span>
+                )}
               </div>
             ))}
           </div>
@@ -370,21 +379,24 @@ export default function EmployeeOneOnOnes() {
             {pastMeetings.map(meeting => (
               <div
                 key={meeting.id}
-                onClick={() => navigate(`/one-on-ones/${meeting.id}`)}
+                onClick={() => !isUsingPlaceholderMeetings && navigate(`/one-on-ones/${meeting.id}`)}
                 style={{
                   padding: '16px 20px',
                   background: '#ffffff',
                   border: '1px solid #e5e7eb',
                   borderRadius: '8px',
-                  cursor: 'pointer',
+                  cursor: isUsingPlaceholderMeetings ? 'default' : 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   transition: 'all 0.15s',
+                  opacity: isUsingPlaceholderMeetings ? 0.7 : 1,
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = '#3b82f6';
-                  e.currentTarget.style.background = '#f9fafb';
+                  if (!isUsingPlaceholderMeetings) {
+                    e.currentTarget.style.borderColor = '#3b82f6';
+                    e.currentTarget.style.background = '#f9fafb';
+                  }
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor = '#e5e7eb';
@@ -407,9 +419,16 @@ export default function EmployeeOneOnOnes() {
                     </span>
                   )}
                 </div>
-                <span style={{ fontSize: '13px', color: '#6b7280' }}>
-                  View →
-                </span>
+                {!isUsingPlaceholderMeetings && (
+                  <span style={{ fontSize: '13px', color: '#6b7280' }}>
+                    View →
+                  </span>
+                )}
+                {isUsingPlaceholderMeetings && (
+                  <span style={{ fontSize: '12px', color: '#9ca3af', fontStyle: 'italic' }}>
+                    Sample data
+                  </span>
+                )}
               </div>
             ))}
           </div>
