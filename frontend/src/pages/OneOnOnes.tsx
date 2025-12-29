@@ -1,16 +1,24 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { oneOnOnes, googleCalendar, users } from '../lib/api';
-import type { OneOnOne, User } from '../types';
-import { Calendar, FileText, Link as LinkIcon, Plus } from 'lucide-react';
+import type { User } from '../types';
+import { Calendar, Plus, ChevronDown, ChevronRight, Users, FileText, X } from 'lucide-react';
+import Avatar from '../components/Avatar';
+
+interface EmployeeWithMeetings {
+  employee: {
+    id: string;
+    name: string;
+    title?: string;
+    profilePicture?: string;
+  };
+  meetings: any[];
+  nextMeeting?: any;
+}
 
 export default function OneOnOnes() {
   const { user } = useAuth();
-  const navigate = useNavigate();
   const [meetings, setMeetings] = useState<any[]>([]);
-  const [upcomingMeetings, setUpcomingMeetings] = useState<any[]>([]);
-  const [activeTab, setActiveTab] = useState<'upcoming' | 'all'>('upcoming');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [calendarConnected, setCalendarConnected] = useState(false);
@@ -25,8 +33,13 @@ export default function OneOnOnes() {
     employeeId: '',
     date: '',
     time: '',
-    agenda: '',
   });
+
+  // Employee card state
+  const [expandedEmployees, setExpandedEmployees] = useState<Set<string>>(new Set());
+  const [selectedMeeting, setSelectedMeeting] = useState<any>(null);
+
+  const isManager = user?.role === 'MANAGER' || user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
 
   useEffect(() => {
     loadMeetings();
@@ -37,12 +50,8 @@ export default function OneOnOnes() {
   const loadMeetings = async () => {
     try {
       setIsLoading(true);
-      const [allMeetings, upcoming] = await Promise.all([
-        oneOnOnes.getMyMeetings(),
-        oneOnOnes.getUpcoming(),
-      ]);
+      const allMeetings = await oneOnOnes.getMyMeetings();
       setMeetings(allMeetings);
-      setUpcomingMeetings(upcoming);
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to load meetings');
     } finally {
@@ -64,7 +73,6 @@ export default function OneOnOnes() {
     if (params.get('connected') === 'true') {
       setShowSuccessMessage(true);
       setCalendarConnected(true);
-      // Clean up URL
       window.history.replaceState({}, '', '/one-on-ones');
       setTimeout(() => setShowSuccessMessage(false), 5000);
     }
@@ -83,7 +91,6 @@ export default function OneOnOnes() {
   const loadEmployees = async () => {
     if (!user?.id) return;
     try {
-      // Admins can see all employees, managers only their direct reports
       if (user.role === 'HR_ADMIN' || user.role === 'SUPER_ADMIN') {
         const allUsers = await users.getAll();
         setEmployees(allUsers.filter(u => u.id !== user.id));
@@ -103,17 +110,13 @@ export default function OneOnOnes() {
 
     try {
       const { events } = await googleCalendar.getEvents(100);
-
       // Filter to recurring 2-person meetings (likely 1:1s)
       const filteredEvents = events.filter((event: any) => {
         if (!event.start || !event.attendees) return false;
-        // Must be recurring
         if (!event.recurringEventId) return false;
-        // 2-person meetings only (1-2 attendees depending on whether organizer is counted)
         const attendeeCount = event.attendees.length;
         return attendeeCount >= 1 && attendeeCount <= 2;
       });
-
       setCalendarEvents(filteredEvents);
     } catch (err) {
       console.error('Failed to load calendar events:', err);
@@ -125,7 +128,6 @@ export default function OneOnOnes() {
 
   const handleLinkCalendarEvent = async (event: any) => {
     const employeeId = selectedEventEmployees[event.id];
-
     if (!employeeId) {
       setError('Please select an employee for this meeting');
       return;
@@ -139,8 +141,6 @@ export default function OneOnOnes() {
         scheduledAt: event.start.dateTime || event.start.date,
         title: event.summary,
       });
-
-      // Remove from list
       setCalendarEvents(calendarEvents.filter(e => e.id !== event.id));
       loadMeetings();
       setError('');
@@ -150,28 +150,21 @@ export default function OneOnOnes() {
   };
 
   const handleScheduleMeeting = async () => {
-    const { employeeId, date, time, agenda } = scheduleForm;
-
-    // Validate form
+    const { employeeId, date, time } = scheduleForm;
     if (!employeeId || !date || !time) {
       setError('Please fill in all required fields');
       return;
     }
 
     try {
-      // Combine date and time into ISO string
       const scheduledAt = new Date(`${date}T${time}`).toISOString();
-
       await oneOnOnes.create({
         employeeId,
         scheduledAt,
-        agenda: agenda || undefined,
-        syncToCalendar: false, // Manual creation, no calendar sync
+        syncToCalendar: false,
       });
-
-      // Success - close modal and reload
       setShowScheduleModal(false);
-      setScheduleForm({ employeeId: '', date: '', time: '', agenda: '' });
+      setScheduleForm({ employeeId: '', date: '', time: '' });
       loadMeetings();
       setError('');
     } catch (err: any) {
@@ -179,159 +172,150 @@ export default function OneOnOnes() {
     }
   };
 
-  const isManager = (meeting: any) => {
-    return meeting.manager.id === user?.id;
+  const toggleEmployeeExpanded = (employeeId: string) => {
+    setExpandedEmployees(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(employeeId)) {
+        newSet.delete(employeeId);
+      } else {
+        newSet.add(employeeId);
+      }
+      return newSet;
+    });
   };
 
-  const getOtherPerson = (meeting: any) => {
-    return isManager(meeting) ? meeting.employee : meeting.manager;
+  // Group meetings by employee
+  const getEmployeesWithMeetings = (): EmployeeWithMeetings[] => {
+    const employeeMap = new Map<string, EmployeeWithMeetings>();
+    const now = new Date();
+
+    meetings.forEach(meeting => {
+      // Determine the "other person" (employee if I'm manager, manager if I'm employee)
+      const otherPerson = meeting.manager.id === user?.id ? meeting.employee : meeting.manager;
+      const employeeId = otherPerson.id;
+
+      if (!employeeMap.has(employeeId)) {
+        employeeMap.set(employeeId, {
+          employee: otherPerson,
+          meetings: [],
+          nextMeeting: undefined,
+        });
+      }
+
+      const entry = employeeMap.get(employeeId)!;
+      entry.meetings.push(meeting);
+
+      // Find next upcoming meeting
+      const meetingDate = new Date(meeting.scheduledAt);
+      if (meetingDate > now && meeting.status === 'scheduled') {
+        if (!entry.nextMeeting || meetingDate < new Date(entry.nextMeeting.scheduledAt)) {
+          entry.nextMeeting = meeting;
+        }
+      }
+    });
+
+    // Sort meetings within each employee (newest first)
+    employeeMap.forEach(entry => {
+      entry.meetings.sort((a, b) => new Date(b.scheduledAt).getTime() - new Date(a.scheduledAt).getTime());
+    });
+
+    // Sort employees by most recent meeting
+    return Array.from(employeeMap.values()).sort((a, b) => {
+      const aLatest = a.meetings[0]?.scheduledAt || '';
+      const bLatest = b.meetings[0]?.scheduledAt || '';
+      return new Date(bLatest).getTime() - new Date(aLatest).getTime();
+    });
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'scheduled':
-        return '#3b82f6';
-      case 'completed':
-        return '#10b981';
-      case 'cancelled':
-        return '#ef4444';
-      default:
-        return '#6b7280';
-    }
-  };
-
-  const renderMeetingCard = (meeting: any) => {
-    const otherPerson = getOtherPerson(meeting);
-    const roleLabel = isManager(meeting) ? 'With Employee' : 'With Manager';
-    const isUpcoming = new Date(meeting.scheduledAt) > new Date();
-
-    return (
-      <div
-        key={meeting.id}
-        className="one-on-one-card"
-        onClick={() => navigate(`/one-on-ones/${meeting.id}`)}
-        style={{
-          border: '1px solid #e5e7eb',
-          borderRadius: '12px',
-          padding: '24px',
-          marginBottom: '16px',
-          background: '#ffffff',
-          cursor: 'pointer',
-          transition: 'all 0.2s',
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = '#3b82f6';
-          e.currentTarget.style.boxShadow = '0 2px 8px rgba(59,130,246,0.2)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = '#e5e7eb';
-          e.currentTarget.style.boxShadow = 'none';
-        }}
-      >
-        <div className="one-on-one-card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '12px', gap: '12px', flexWrap: 'wrap' }}>
-          <div style={{ flex: 1 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-              <h3 style={{ margin: 0 }}>
-                {new Date(meeting.scheduledAt).toLocaleDateString('en-US', {
-                  weekday: 'short',
-                  month: 'short',
-                  day: 'numeric',
-                  year: 'numeric',
-                })}
-              </h3>
-              <span style={{ fontSize: '16px', color: '#666' }}>
-                {new Date(meeting.scheduledAt).toLocaleTimeString('en-US', {
-                  hour: 'numeric',
-                  minute: '2-digit',
-                })}
-              </span>
-            </div>
-            <p style={{ margin: '0', color: '#666' }}>
-              {roleLabel}: <strong>{otherPerson.name}</strong> ({otherPerson.title})
-            </p>
-          </div>
-          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-            {isUpcoming && (
-              <span
-                style={{
-                  padding: '4px 8px',
-                  borderRadius: '4px',
-                  fontSize: '12px',
-                  background: '#e7f3ff',
-                  color: '#004085',
-                }}
-              >
-                Upcoming
-              </span>
-            )}
-            <span
-              style={{
-                padding: '4px 12px',
-                borderRadius: '4px',
-                fontSize: '14px',
-                fontWeight: 'bold',
-                background: getStatusColor(meeting.status),
-                color: 'white',
-              }}
-            >
-              {meeting.status.toUpperCase()}
-            </span>
-          </div>
-        </div>
-
-        {meeting.agenda && (
-          <div style={{ marginTop: '12px', padding: '12px', background: '#f8f9fa', borderRadius: '4px' }}>
-            <strong style={{ fontSize: '14px' }}>Agenda:</strong>
-            <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: '#666' }}>{meeting.agenda}</p>
-          </div>
-        )}
-
-        <div style={{ marginTop: '12px', fontSize: '14px', color: '#666', display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-          {meeting.sharedNotes && <span>📝 Has shared notes</span>}
-          {meeting.actionItems && <span>✅ Has action items</span>}
-          {isManager(meeting) && meeting.managerNotes && <span>🔒 Has private notes</span>}
-          {(meeting.transcript || meeting.transcriptFileUrl) && (
-            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <FileText size={14} /> Transcript
-            </span>
-          )}
-          {meeting.documentUrl && (
-            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <LinkIcon size={14} /> Document
-            </span>
-          )}
-        </div>
-      </div>
-    );
-  };
+  const employeesWithMeetings = getEmployeesWithMeetings();
 
   if (isLoading) {
     return (
-      <div style={{ padding: '20px' }}>
-        <h1>1:1s</h1>
-        <p>Loading meetings...</p>
+      <div style={{ padding: '48px' }}>
+        <h1 style={{ fontSize: '32px', marginBottom: '8px' }}>1:1s</h1>
+        <p style={{ color: '#6b7280' }}>Loading...</p>
       </div>
     );
   }
 
-  const displayMeetings = activeTab === 'upcoming' ? upcomingMeetings : meetings;
-
   return (
     <div style={{ padding: '48px' }}>
-      <div className="page-header-with-action" style={{ marginBottom: '30px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px', flexWrap: 'wrap' }}>
+      {/* Header */}
+      <div style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: '16px', flexWrap: 'wrap' }}>
         <div>
-          <h1 style={{ fontSize: '32px', marginBottom: '8px' }}>1:1s</h1>
-          <p style={{ fontSize: '16px', color: '#666', margin: 0 }}>Manage your 1:1 meetings and notes</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+            <Users size={28} color="#3b82f6" />
+            <h1 style={{ fontSize: '32px', fontWeight: '600', color: '#111827', margin: 0 }}>1:1s</h1>
+          </div>
+          <p style={{ fontSize: '16px', color: '#6b7280', margin: 0 }}>
+            Track your 1:1 meetings and notes with your team
+          </p>
         </div>
-        {(user?.role === 'MANAGER' || user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN') && (
-          <div className="one-on-one-actions" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+
+        {isManager && (
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            {calendarConnected ? (
+              <button
+                onClick={handleOpenImportModal}
+                style={{
+                  padding: '10px 16px',
+                  background: '#ffffff',
+                  color: '#374151',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.background = '#f9fafb'}
+                onMouseLeave={(e) => e.currentTarget.style.background = '#ffffff'}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+                Sync from Google
+              </button>
+            ) : (
+              <button
+                onClick={handleConnectCalendar}
+                style={{
+                  padding: '10px 16px',
+                  background: '#ffffff',
+                  color: '#374151',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.background = '#f9fafb'}
+                onMouseLeave={(e) => e.currentTarget.style.background = '#ffffff'}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+                Connect Google
+              </button>
+            )}
             <button
               onClick={() => {
                 setShowScheduleModal(true);
                 loadEmployees();
               }}
               style={{
-                padding: '12px 24px',
+                padding: '10px 16px',
                 background: '#3b82f6',
                 color: '#ffffff',
                 border: 'none',
@@ -343,166 +327,262 @@ export default function OneOnOnes() {
                 alignItems: 'center',
                 gap: '8px',
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#2563eb';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#3b82f6';
-              }}
+              onMouseEnter={(e) => e.currentTarget.style.background = '#2563eb'}
+              onMouseLeave={(e) => e.currentTarget.style.background = '#3b82f6'}
             >
               <Plus size={18} />
               Add Manually
             </button>
-            {calendarConnected && (
-              <button
-                onClick={handleOpenImportModal}
-                style={{
-                  padding: '12px 24px',
-                  background: '#ffffff',
-                  color: '#3b82f6',
-                  border: '1px solid #3b82f6',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#eff6ff';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = '#ffffff';
-                }}
-              >
-                <Calendar size={18} />
-                Sync with Google
-              </button>
-            )}
           </div>
         )}
       </div>
 
       {showSuccessMessage && (
-        <div style={{ padding: '12px', background: '#d4edda', color: '#155724', borderRadius: '8px', marginBottom: '20px', border: '1px solid #c3e6cb' }}>
-          ✓ Google Calendar connected successfully!
+        <div style={{ padding: '12px 16px', background: '#dcfce7', color: '#166534', borderRadius: '8px', marginBottom: '20px', border: '1px solid #bbf7d0' }}>
+          Google Calendar connected successfully!
         </div>
       )}
 
       {error && (
-        <div style={{ padding: '12px', background: '#fee', color: '#c00', borderRadius: '4px', marginBottom: '20px' }}>
+        <div style={{ padding: '12px 16px', background: '#fef2f2', color: '#dc2626', borderRadius: '8px', marginBottom: '20px', border: '1px solid #fecaca' }}>
           {error}
         </div>
       )}
 
-      {!calendarConnected && (user?.role === 'MANAGER' || user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN') && (
-        <div
-          className="calendar-connect-banner"
-          style={{
-            padding: '16px 20px',
-            background: '#eff6ff',
-            borderRadius: '8px',
-            marginBottom: '24px',
-            border: '1px solid #bfdbfe',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            gap: '16px',
-            flexWrap: 'wrap',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <Calendar size={20} color="#3b82f6" />
-            <span style={{ fontSize: '14px', color: '#1e40af' }}>
-              Connect Google Calendar to automatically sync your 1:1s
-            </span>
-          </div>
-          <button
-            onClick={handleConnectCalendar}
-            style={{
-              padding: '8px 16px',
-              background: '#ffffff',
-              color: '#374151',
-              border: '1px solid #d1d5db',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontSize: '14px',
-              fontWeight: '500',
-              whiteSpace: 'nowrap',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#f9fafb';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#ffffff';
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-            </svg>
-            Sync with Google
-          </button>
-        </div>
-      )}
-
-      <div className="one-on-one-tabs" style={{ display: 'flex', gap: '8px', marginBottom: '24px', borderBottom: '1px solid #e5e7eb' }}>
-        <button
-          onClick={() => setActiveTab('upcoming')}
-          style={{
-            padding: '12px 24px',
-            border: 'none',
-            background: 'none',
-            cursor: 'pointer',
-            borderBottom: activeTab === 'upcoming' ? '2px solid #3b82f6' : '2px solid transparent',
-            marginBottom: '-2px',
-            fontWeight: activeTab === 'upcoming' ? '500' : '400',
-            color: activeTab === 'upcoming' ? '#3b82f6' : '#6b7280',
-          }}
-        >
-          Upcoming ({upcomingMeetings.length})
-        </button>
-        <button
-          onClick={() => setActiveTab('all')}
-          style={{
-            padding: '12px 24px',
-            border: 'none',
-            background: 'none',
-            cursor: 'pointer',
-            borderBottom: activeTab === 'all' ? '2px solid #3b82f6' : '2px solid transparent',
-            marginBottom: '-2px',
-            fontWeight: activeTab === 'all' ? '500' : '400',
-            color: activeTab === 'all' ? '#3b82f6' : '#6b7280',
-          }}
-        >
-          All 1:1s ({meetings.length})
-        </button>
-      </div>
-
-      {displayMeetings.length === 0 ? (
-        <div
-          style={{
-            textAlign: 'center',
-            padding: '60px 20px',
-            background: '#f9fafb',
-            borderRadius: '12px',
-            border: '1px solid #e5e7eb',
-          }}
-        >
-          <h3 style={{ margin: '0 0 8px 0', color: '#111827', fontSize: '18px', fontWeight: '600' }}>No meetings found</h3>
-          <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>{activeTab === 'upcoming' ? 'No upcoming 1:1 meetings scheduled.' : 'No 1:1 meetings yet.'}</p>
+      {/* Employee Cards */}
+      {employeesWithMeetings.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '60px 20px', background: '#f9fafb', borderRadius: '12px', border: '1px solid #e5e7eb' }}>
+          <Users size={32} color="#9ca3af" style={{ marginBottom: '12px' }} />
+          <h3 style={{ margin: '0 0 8px 0', color: '#111827', fontSize: '18px', fontWeight: '600' }}>No 1:1s yet</h3>
+          <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>
+            {isManager ? 'Sync from Google Calendar or add a 1:1 manually to get started.' : 'Your manager hasn\'t scheduled any 1:1s yet.'}
+          </p>
         </div>
       ) : (
-        <div style={{ maxWidth: '1400px' }}>{displayMeetings.map(renderMeetingCard)}</div>
+        <div style={{ display: 'grid', gap: '16px' }}>
+          {employeesWithMeetings.map(({ employee, meetings: empMeetings, nextMeeting }) => {
+            const isExpanded = expandedEmployees.has(employee.id);
+            const pastMeetings = empMeetings.filter(m => new Date(m.scheduledAt) <= new Date() || m.status !== 'scheduled');
+
+            return (
+              <div
+                key={employee.id}
+                style={{
+                  background: '#ffffff',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                }}
+              >
+                {/* Employee Header */}
+                <div style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <Avatar
+                    user={{ name: employee.name, profilePicture: employee.profilePicture }}
+                    size="md"
+                  />
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', fontWeight: '600', color: '#111827' }}>
+                      {employee.name}
+                    </h3>
+                    {employee.title && (
+                      <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>{employee.title}</p>
+                    )}
+                  </div>
+
+                  {/* Next 1:1 */}
+                  {nextMeeting && (
+                    <div style={{ textAlign: 'right' }}>
+                      <p style={{ margin: '0 0 2px 0', fontSize: '12px', color: '#6b7280' }}>Next 1:1</p>
+                      <p style={{ margin: 0, fontSize: '14px', fontWeight: '500', color: '#3b82f6' }}>
+                        {new Date(nextMeeting.scheduledAt).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                        })}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* View History Toggle */}
+                {pastMeetings.length > 0 && (
+                  <>
+                    <button
+                      onClick={() => toggleEmployeeExpanded(employee.id)}
+                      style={{
+                        width: '100%',
+                        padding: '12px 20px',
+                        background: '#f9fafb',
+                        border: 'none',
+                        borderTop: '1px solid #e5e7eb',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        fontSize: '14px',
+                        color: '#6b7280',
+                        fontWeight: '500',
+                      }}
+                    >
+                      {isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+                      View History ({pastMeetings.length})
+                    </button>
+
+                    {/* Expanded History */}
+                    {isExpanded && (
+                      <div style={{ padding: '12px 20px', background: '#f9fafb', borderTop: '1px solid #e5e7eb' }}>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                          {pastMeetings.map(meeting => (
+                            <button
+                              key={meeting.id}
+                              onClick={() => setSelectedMeeting(meeting)}
+                              style={{
+                                padding: '8px 12px',
+                                background: '#ffffff',
+                                border: '1px solid #e5e7eb',
+                                borderRadius: '6px',
+                                cursor: 'pointer',
+                                fontSize: '13px',
+                                color: '#374151',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.borderColor = '#3b82f6';
+                                e.currentTarget.style.background = '#eff6ff';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.borderColor = '#e5e7eb';
+                                e.currentTarget.style.background = '#ffffff';
+                              }}
+                            >
+                              {new Date(meeting.scheduledAt).toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric',
+                              })}
+                              {(meeting.sharedNotes || meeting.managerNotes) && (
+                                <FileText size={12} color="#3b82f6" />
+                              )}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            );
+          })}
+        </div>
       )}
 
-      {/* Schedule Meeting Modal */}
+      {/* Meeting Detail Modal */}
+      {selectedMeeting && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '20px',
+          }}
+          onClick={() => setSelectedMeeting(null)}
+        >
+          <div
+            style={{
+              background: '#ffffff',
+              borderRadius: '12px',
+              padding: '24px',
+              maxWidth: '600px',
+              width: '100%',
+              maxHeight: '80vh',
+              overflow: 'auto',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '20px' }}>
+              <div>
+                <h2 style={{ margin: '0 0 4px 0', fontSize: '20px', fontWeight: '600', color: '#111827' }}>
+                  1:1 on {new Date(selectedMeeting.scheduledAt).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })}
+                </h2>
+                <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
+                  with {selectedMeeting.manager.id === user?.id ? selectedMeeting.employee.name : selectedMeeting.manager.name}
+                </p>
+              </div>
+              <button
+                onClick={() => setSelectedMeeting(null)}
+                style={{
+                  padding: '8px',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  borderRadius: '6px',
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.background = '#f3f4f6'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+              >
+                <X size={20} color="#6b7280" />
+              </button>
+            </div>
+
+            {selectedMeeting.agenda && (
+              <div style={{ marginBottom: '16px' }}>
+                <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: '600', color: '#374151' }}>Agenda</h4>
+                <p style={{ margin: 0, fontSize: '14px', color: '#6b7280', whiteSpace: 'pre-wrap' }}>{selectedMeeting.agenda}</p>
+              </div>
+            )}
+
+            {selectedMeeting.sharedNotes && (
+              <div style={{ marginBottom: '16px' }}>
+                <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: '600', color: '#374151' }}>Shared Notes</h4>
+                <div style={{ padding: '12px', background: '#f9fafb', borderRadius: '8px', fontSize: '14px', color: '#374151', whiteSpace: 'pre-wrap' }}>
+                  {selectedMeeting.sharedNotes}
+                </div>
+              </div>
+            )}
+
+            {selectedMeeting.manager.id === user?.id && selectedMeeting.managerNotes && (
+              <div style={{ marginBottom: '16px' }}>
+                <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: '600', color: '#374151' }}>
+                  Private Notes <span style={{ fontSize: '12px', color: '#9ca3af', fontWeight: '400' }}>(only you can see)</span>
+                </h4>
+                <div style={{ padding: '12px', background: '#fef3c7', borderRadius: '8px', fontSize: '14px', color: '#92400e', whiteSpace: 'pre-wrap' }}>
+                  {selectedMeeting.managerNotes}
+                </div>
+              </div>
+            )}
+
+            {selectedMeeting.actionItems && (
+              <div style={{ marginBottom: '16px' }}>
+                <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: '600', color: '#374151' }}>Action Items</h4>
+                <div style={{ padding: '12px', background: '#f9fafb', borderRadius: '8px', fontSize: '14px', color: '#374151', whiteSpace: 'pre-wrap' }}>
+                  {selectedMeeting.actionItems}
+                </div>
+              </div>
+            )}
+
+            {!selectedMeeting.sharedNotes && !selectedMeeting.managerNotes && !selectedMeeting.actionItems && !selectedMeeting.agenda && (
+              <p style={{ margin: 0, fontSize: '14px', color: '#9ca3af', fontStyle: 'italic' }}>
+                No notes or agenda recorded for this 1:1.
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Add 1:1 Modal */}
       {showScheduleModal && (
         <div
           style={{
@@ -520,39 +600,25 @@ export default function OneOnOnes() {
           onClick={() => setShowScheduleModal(false)}
         >
           <div
-            className="modal-content"
             style={{
               background: '#ffffff',
               borderRadius: '12px',
-              padding: '32px',
-              maxWidth: '500px',
+              padding: '24px',
+              maxWidth: '400px',
               width: '90%',
-              maxHeight: '90vh',
-              overflow: 'auto',
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 style={{ marginTop: 0, marginBottom: '24px', fontSize: '24px' }}>
+            <h2 style={{ margin: '0 0 20px 0', fontSize: '20px', fontWeight: '600', color: '#111827' }}>
               Add 1:1
             </h2>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              {/* Employee Selection */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div>
-                <label
-                  htmlFor="employee"
-                  style={{
-                    display: 'block',
-                    marginBottom: '8px',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    color: '#374151',
-                  }}
-                >
-                  Employee <span style={{ color: '#ef4444' }}>*</span>
+                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', fontWeight: '500', color: '#374151' }}>
+                  Employee
                 </label>
                 <select
-                  id="employee"
                   value={scheduleForm.employeeId}
                   onChange={(e) => setScheduleForm({ ...scheduleForm, employeeId: e.target.value })}
                   style={{
@@ -563,7 +629,7 @@ export default function OneOnOnes() {
                     fontSize: '14px',
                   }}
                 >
-                  <option value="">Select an employee...</option>
+                  <option value="">Select employee...</option>
                   {employees.map((emp) => (
                     <option key={emp.id} value={emp.id}>
                       {emp.name} {emp.title && `- ${emp.title}`}
@@ -572,23 +638,12 @@ export default function OneOnOnes() {
                 </select>
               </div>
 
-              {/* Date */}
               <div>
-                <label
-                  htmlFor="date"
-                  style={{
-                    display: 'block',
-                    marginBottom: '8px',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    color: '#374151',
-                  }}
-                >
-                  Date <span style={{ color: '#ef4444' }}>*</span>
+                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', fontWeight: '500', color: '#374151' }}>
+                  Date
                 </label>
                 <input
                   type="date"
-                  id="date"
                   value={scheduleForm.date}
                   onChange={(e) => setScheduleForm({ ...scheduleForm, date: e.target.value })}
                   style={{
@@ -601,23 +656,12 @@ export default function OneOnOnes() {
                 />
               </div>
 
-              {/* Time */}
               <div>
-                <label
-                  htmlFor="time"
-                  style={{
-                    display: 'block',
-                    marginBottom: '8px',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    color: '#374151',
-                  }}
-                >
-                  Time <span style={{ color: '#ef4444' }}>*</span>
+                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', fontWeight: '500', color: '#374151' }}>
+                  Time
                 </label>
                 <input
                   type="time"
-                  id="time"
                   value={scheduleForm.time}
                   onChange={(e) => setScheduleForm({ ...scheduleForm, time: e.target.value })}
                   style={{
@@ -629,64 +673,19 @@ export default function OneOnOnes() {
                   }}
                 />
               </div>
-
-              {/* Agenda (Optional) */}
-              <div>
-                <label
-                  htmlFor="agenda"
-                  style={{
-                    display: 'block',
-                    marginBottom: '8px',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    color: '#374151',
-                  }}
-                >
-                  Agenda (Optional)
-                </label>
-                <textarea
-                  id="agenda"
-                  value={scheduleForm.agenda}
-                  onChange={(e) => setScheduleForm({ ...scheduleForm, agenda: e.target.value })}
-                  placeholder="Add meeting agenda or topics to discuss..."
-                  rows={4}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    border: '1px solid #d1d5db',
-                    borderRadius: '6px',
-                    fontSize: '14px',
-                    fontFamily: 'inherit',
-                    resize: 'vertical',
-                  }}
-                />
-              </div>
             </div>
 
-            {/* Actions */}
-            <div
-              className="modal-actions"
-              style={{
-                marginTop: '24px',
-                display: 'flex',
-                gap: '12px',
-                justifyContent: 'flex-end',
-              }}
-            >
+            <div style={{ marginTop: '24px', display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
               <button
-                onClick={() => {
-                  setShowScheduleModal(false);
-                  setScheduleForm({ employeeId: '', date: '', time: '', agenda: '' });
-                }}
+                onClick={() => setShowScheduleModal(false)}
                 style={{
-                  padding: '10px 20px',
+                  padding: '10px 16px',
                   background: '#ffffff',
                   color: '#374151',
                   border: '1px solid #d1d5db',
                   borderRadius: '6px',
                   cursor: 'pointer',
                   fontSize: '14px',
-                  fontWeight: '500',
                 }}
               >
                 Cancel
@@ -694,7 +693,7 @@ export default function OneOnOnes() {
               <button
                 onClick={handleScheduleMeeting}
                 style={{
-                  padding: '10px 20px',
+                  padding: '10px 16px',
                   background: '#3b82f6',
                   color: '#ffffff',
                   border: 'none',
@@ -702,12 +701,6 @@ export default function OneOnOnes() {
                   cursor: 'pointer',
                   fontSize: '14px',
                   fontWeight: '500',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#2563eb';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = '#3b82f6';
                 }}
               >
                 Add 1:1
@@ -736,22 +729,21 @@ export default function OneOnOnes() {
           onClick={() => setShowImportModal(false)}
         >
           <div
-            className="modal-content"
             style={{
               background: '#ffffff',
               borderRadius: '12px',
-              padding: '32px',
-              maxWidth: '800px',
+              padding: '24px',
+              maxWidth: '700px',
               width: '100%',
               maxHeight: '80vh',
               overflow: 'auto',
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: '600', color: '#111827' }}>
+            <h2 style={{ margin: '0 0 8px 0', fontSize: '20px', fontWeight: '600', color: '#111827' }}>
               Sync from Google Calendar
             </h2>
-            <p style={{ margin: '0 0 24px 0', fontSize: '14px', color: '#6b7280' }}>
+            <p style={{ margin: '0 0 20px 0', fontSize: '14px', color: '#6b7280' }}>
               Select recurring meetings to track as 1:1s
             </p>
 
@@ -761,12 +753,12 @@ export default function OneOnOnes() {
               </div>
             ) : calendarEvents.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '40px', background: '#f9fafb', borderRadius: '8px' }}>
-                <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>
-                  No recurring 2-person meetings found. Only recurring meetings with one other attendee are shown as potential 1:1s.
+                <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
+                  No recurring 2-person meetings found.
                 </p>
               </div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {calendarEvents.map((event) => (
                   <div
                     key={event.id}
@@ -774,30 +766,25 @@ export default function OneOnOnes() {
                       padding: '16px',
                       border: '1px solid #e5e7eb',
                       borderRadius: '8px',
-                      background: '#ffffff',
                     }}
                   >
                     <div style={{ marginBottom: '12px' }}>
-                      <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', fontWeight: '600', color: '#111827' }}>
+                      <h3 style={{ margin: '0 0 4px 0', fontSize: '15px', fontWeight: '600', color: '#111827' }}>
                         {event.summary || 'Untitled Event'}
                       </h3>
-                      <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
+                      <p style={{ margin: 0, fontSize: '13px', color: '#6b7280' }}>
                         {new Date(event.start.dateTime || event.start.date).toLocaleString('en-US', {
                           weekday: 'short',
                           month: 'short',
                           day: 'numeric',
-                          year: 'numeric',
                           hour: 'numeric',
                           minute: '2-digit',
                         })}
-                        {event.recurringEventId && <span style={{ marginLeft: '8px', fontSize: '12px', color: '#f59e0b' }}>🔁 Recurring</span>}
+                        <span style={{ marginLeft: '8px', color: '#f59e0b' }}>🔁 Recurring</span>
                       </p>
                     </div>
 
-                    <div style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <label style={{ fontSize: '14px', fontWeight: '500', color: '#111827', minWidth: '100px' }}>
-                        Employee:
-                      </label>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                       <select
                         value={selectedEventEmployees[event.id] || ''}
                         onChange={(e) => setSelectedEventEmployees({ ...selectedEventEmployees, [event.id]: e.target.value })}
@@ -807,50 +794,32 @@ export default function OneOnOnes() {
                           border: '1px solid #e5e7eb',
                           borderRadius: '6px',
                           fontSize: '14px',
-                          outline: 'none',
-                        }}
-                        onFocus={(e) => {
-                          e.currentTarget.style.borderColor = '#3b82f6';
-                        }}
-                        onBlur={(e) => {
-                          e.currentTarget.style.borderColor = '#e5e7eb';
                         }}
                       >
                         <option value="">Select employee...</option>
                         {employees.map((emp) => (
                           <option key={emp.id} value={emp.id}>
-                            {emp.name} - {emp.title}
+                            {emp.name} {emp.title && `- ${emp.title}`}
                           </option>
                         ))}
                       </select>
+                      <button
+                        onClick={() => handleLinkCalendarEvent(event)}
+                        disabled={!selectedEventEmployees[event.id]}
+                        style={{
+                          padding: '8px 16px',
+                          background: selectedEventEmployees[event.id] ? '#10b981' : '#9ca3af',
+                          color: '#ffffff',
+                          border: 'none',
+                          borderRadius: '6px',
+                          cursor: selectedEventEmployees[event.id] ? 'pointer' : 'not-allowed',
+                          fontSize: '14px',
+                          fontWeight: '500',
+                        }}
+                      >
+                        Link
+                      </button>
                     </div>
-
-                    <button
-                      onClick={() => handleLinkCalendarEvent(event)}
-                      disabled={!selectedEventEmployees[event.id]}
-                      style={{
-                        padding: '8px 16px',
-                        background: selectedEventEmployees[event.id] ? '#10b981' : '#9ca3af',
-                        color: '#ffffff',
-                        border: 'none',
-                        borderRadius: '6px',
-                        cursor: selectedEventEmployees[event.id] ? 'pointer' : 'not-allowed',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                      }}
-                      onMouseEnter={(e) => {
-                        if (selectedEventEmployees[event.id]) {
-                          e.currentTarget.style.background = '#059669';
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (selectedEventEmployees[event.id]) {
-                          e.currentTarget.style.background = '#10b981';
-                        }
-                      }}
-                    >
-                      Link as 1:1
-                    </button>
                   </div>
                 ))}
               </div>
