@@ -377,18 +377,9 @@ export default function Library() {
                   </div>
                 </div>
                 {goal.description && (
-                  <p style={{ margin: '0 0 12px 0', fontSize: '14px', color: '#6b7280', lineHeight: '1.5' }}>
+                  <p style={{ margin: 0, fontSize: '14px', color: '#6b7280', lineHeight: '1.5' }}>
                     {goal.description}
                   </p>
-                )}
-                {(goal.createdByName || goal.updatedByName) && (
-                  <div style={{ fontSize: '12px', color: '#9ca3af', borderTop: '1px solid #f3f4f6', paddingTop: '12px' }}>
-                    {goal.updatedByName ? (
-                      <span>Last edited by {goal.updatedByName} on {new Date(goal.updatedAt).toLocaleDateString()}</span>
-                    ) : goal.createdByName ? (
-                      <span>Created by {goal.createdByName} on {new Date(goal.createdAt).toLocaleDateString()}</span>
-                    ) : null}
-                  </div>
                 )}
               </div>
             ))
@@ -520,18 +511,9 @@ export default function Library() {
                   </div>
                 </div>
                 {comp.description && (
-                  <p style={{ margin: '0 0 12px 0', fontSize: '14px', color: '#6b7280', lineHeight: '1.5' }}>
+                  <p style={{ margin: 0, fontSize: '14px', color: '#6b7280', lineHeight: '1.5' }}>
                     {comp.description}
                   </p>
-                )}
-                {(comp.createdByName || comp.updatedByName) && (
-                  <div style={{ fontSize: '12px', color: '#9ca3af', borderTop: '1px solid #f3f4f6', paddingTop: '12px' }}>
-                    {comp.updatedByName ? (
-                      <span>Last edited by {comp.updatedByName} on {new Date(comp.updatedAt).toLocaleDateString()}</span>
-                    ) : comp.createdByName ? (
-                      <span>Created by {comp.createdByName} on {new Date(comp.createdAt).toLocaleDateString()}</span>
-                    ) : null}
-                  </div>
                 )}
               </div>
             ))

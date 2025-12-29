@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { HelpCircle, ChevronDown, ChevronRight, BookOpen, MessageCircle } from 'lucide-react';
+import { HelpCircle, ChevronDown, ChevronRight, BookOpen, MessageCircle, Info } from 'lucide-react';
 
 interface FAQ {
   question: string;
@@ -335,6 +335,40 @@ export default function Help() {
 
   const categoryOrder = ['General', 'Reviews', 'Goals', '1:1s', 'Team', 'Library', 'Admin'];
 
+  // Define which categories are role-restricted
+  const getRoleBadgeText = (category: string): string | null => {
+    if (category === 'Team' || category === 'Library') {
+      return userRole === 'MANAGER' ? 'Manager' : userRole === 'HR_ADMIN' ? 'HR Admin' : userRole === 'SUPER_ADMIN' ? 'Admin' : null;
+    }
+    if (category === 'Admin') {
+      return userRole === 'HR_ADMIN' ? 'HR Admin' : userRole === 'SUPER_ADMIN' ? 'Admin' : null;
+    }
+    return null;
+  };
+
+  const RoleBadge = ({ category }: { category: string }) => {
+    const roleText = getRoleBadgeText(category);
+    if (!roleText) return null;
+
+    return (
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        padding: '8px 12px',
+        background: '#eff6ff',
+        border: '1px solid #bfdbfe',
+        borderRadius: '6px',
+        marginBottom: '12px',
+      }}>
+        <Info size={16} style={{ color: '#3b82f6', flexShrink: 0 }} />
+        <span style={{ fontSize: '13px', color: '#1e40af' }}>
+          You can see this section because you're a <strong>{roleText}</strong>
+        </span>
+      </div>
+    );
+  };
+
   return (
     <div style={{ padding: '32px', maxWidth: '900px', margin: '0 auto' }}>
       {/* Header */}
@@ -414,13 +448,14 @@ export default function Help() {
                     fontSize: '16px',
                     fontWeight: '600',
                     color: '#374151',
-                    marginBottom: '16px',
+                    marginBottom: '12px',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px',
                   }}
                 >
                   {category}
                 </h2>
+                <RoleBadge category={category} />
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   {faqsByCategory[category].map((faq, index) => {
                     const globalIndex = filteredFAQs.indexOf(faq);
@@ -498,13 +533,14 @@ export default function Help() {
                     fontSize: '16px',
                     fontWeight: '600',
                     color: '#374151',
-                    marginBottom: '16px',
+                    marginBottom: '12px',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px',
                   }}
                 >
                   {category}
                 </h2>
+                <RoleBadge category={category} />
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   {guidesByCategory[category].map((guide, index) => {
                     const globalIndex = filteredGuides.indexOf(guide);

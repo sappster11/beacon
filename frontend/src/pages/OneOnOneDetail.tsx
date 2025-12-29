@@ -149,6 +149,7 @@ export default function OneOnOneDetail() {
   const [saveMessage, setSaveMessage] = useState('');
   const [uploadProgress, setUploadProgress] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Local state for inline editing
@@ -257,8 +258,12 @@ export default function OneOnOneDetail() {
 
       // Load employee context (goals and competencies)
       loadEmployeeContext(data);
-    } catch (error) {
+    } catch (error: any) {
+      const errorMessage = error?.response?.data?.error || error?.message || 'Unknown error';
       console.error('Failed to load meeting:', error);
+      console.error('Meeting ID:', id);
+      console.error('Error details:', errorMessage);
+      setLoadError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -512,9 +517,38 @@ export default function OneOnOneDetail() {
 
   if (!meeting) {
     return (
-      <div style={{ padding: '48px' }}>
-        <p>Meeting not found</p>
-        <button onClick={() => navigate('/one-on-ones')}>Back to One-on-Ones</button>
+      <div style={{ padding: '48px', maxWidth: '600px' }}>
+        <h2 style={{ color: '#ef4444', marginBottom: '16px' }}>Meeting not found</h2>
+        {loadError && (
+          <div style={{
+            padding: '16px',
+            background: '#fef2f2',
+            border: '1px solid #fecaca',
+            borderRadius: '8px',
+            marginBottom: '16px',
+          }}>
+            <p style={{ margin: '0 0 8px 0', fontWeight: '600', color: '#991b1b' }}>Error details:</p>
+            <p style={{ margin: 0, color: '#7f1d1d', fontFamily: 'monospace', fontSize: '14px' }}>{loadError}</p>
+          </div>
+        )}
+        <p style={{ color: '#6b7280', marginBottom: '16px' }}>
+          Meeting ID: <code style={{ background: '#f3f4f6', padding: '2px 6px', borderRadius: '4px' }}>{id}</code>
+        </p>
+        <button
+          onClick={() => navigate('/one-on-ones')}
+          style={{
+            padding: '10px 20px',
+            background: '#3b82f6',
+            color: '#ffffff',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            fontWeight: '500',
+          }}
+        >
+          Back to One-on-Ones
+        </button>
       </div>
     );
   }

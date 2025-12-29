@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import type { User, Department } from '../../types/index';
-import { UserPlus, Upload, Search, Edit2, Power, PowerOff, MoreVertical, Mail, RefreshCw, X, Clock } from 'lucide-react';
-import CreateUserModal from './CreateUserModal';
+import { Upload, Search, Edit2, Power, PowerOff, MoreVertical, Mail, RefreshCw, X, Clock } from 'lucide-react';
 import EditUserModal from './EditUserModal';
 import BulkImportUsersModal from './BulkImportUsersModal';
 import InviteUserModal from './InviteUserModal';
@@ -31,7 +30,6 @@ export default function AdminUsersTab() {
   const [filterRole, setFilterRole] = useState('');
   const [filterStatus, setFilterStatus] = useState('active');
 
-  const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
   const [showBulkEditModal, setShowBulkEditModal] = useState(false);
@@ -265,26 +263,6 @@ export default function AdminUsersTab() {
         >
           <Mail size={18} />
           Invite User
-        </button>
-
-        <button
-          onClick={() => setShowCreateModal(true)}
-          style={{
-            padding: '10px 16px',
-            background: 'white',
-            color: '#374151',
-            border: '1px solid #e5e7eb',
-            borderRadius: '8px',
-            fontSize: '14px',
-            fontWeight: '500',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px'
-          }}
-        >
-          <UserPlus size={18} />
-          Add User Manually
         </button>
 
         <button
@@ -766,18 +744,6 @@ export default function AdminUsersTab() {
       )}
 
       {/* Modals */}
-      {showCreateModal && (
-        <CreateUserModal
-          onClose={() => setShowCreateModal(false)}
-          onSuccess={() => {
-            setShowCreateModal(false);
-            loadData();
-          }}
-          departments={departments}
-          users={users}
-        />
-      )}
-
       {showEditModal && selectedUser && (
         <EditUserModal
           user={selectedUser}
