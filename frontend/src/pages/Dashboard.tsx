@@ -60,7 +60,6 @@ export default function Dashboard() {
       icon: Target,
       path: '/goals',
       color: '#3b82f6',
-      comingSoon: true,
     },
     {
       title: 'Development',

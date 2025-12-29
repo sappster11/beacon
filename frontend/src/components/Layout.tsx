@@ -45,7 +45,7 @@ export default function Layout() {
     { path: '/dashboard', label: 'Dashboard', icon: Home },
     { path: '/reviews', label: 'Reviews', icon: ClipboardList },
     { path: '/one-on-ones', label: 'One-on-Ones', icon: Users },
-    { path: '/goals', label: 'Goals', icon: Target, comingSoon: true },
+    { path: '/goals', label: 'Goals', icon: Target },
     { path: '/development', label: 'Development', icon: TrendingUp, comingSoon: true },
     { path: '/employees', label: 'Org Chart', icon: UsersRound },
   ];

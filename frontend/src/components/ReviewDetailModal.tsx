@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Award, TrendingUp, Target, MessageSquare, Trash2, MoreVertical, Edit2, Check, Circle, Clock, Share2, ThumbsUp, Shield, CheckCircle } from 'lucide-react';
-import type { Review, Competency, SelfReflection, AssignedGoal, ReviewStatus } from '../types';
-import { reviews as reviewsApi } from '../lib/api';
+import { Award, TrendingUp, Target, MessageSquare, Trash2, MoreVertical, Edit2, Check, Circle, Clock, Share2, ThumbsUp, Shield, CheckCircle, BookOpen, X } from 'lucide-react';
+import type { Review, Competency, SelfReflection, AssignedGoal, ReviewStatus, GoalLibraryItem, CompetencyLibraryItem } from '../types';
+import { reviews as reviewsApi, goalLibrary, competencyLibrary } from '../lib/api';
 import TabNavigation from './TabNavigation';
 import CompetencyCard from './CompetencyCard';
 import GoalWithStatus from './GoalWithStatus';
@@ -133,11 +133,81 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
   const [showAddCompetency, setShowAddCompetency] = useState(false);
   const [newCompetencyName, setNewCompetencyName] = useState('');
   const [newCompetencyDescription, setNewCompetencyDescription] = useState('');
+  const [saveCompetencyToLibrary, setSaveCompetencyToLibrary] = useState(false);
 
   // Add goal form state
   const [showAddGoal, setShowAddGoal] = useState(false);
   const [newGoalTitle, setNewGoalTitle] = useState('');
   const [newGoalDescription, setNewGoalDescription] = useState('');
+  const [saveGoalToLibrary, setSaveGoalToLibrary] = useState(false);
+
+  // Library browser state
+  const [showCompetencyLibrary, setShowCompetencyLibrary] = useState(false);
+  const [showGoalLibrary, setShowGoalLibrary] = useState(false);
+  const [libraryCompetencies, setLibraryCompetencies] = useState<CompetencyLibraryItem[]>([]);
+  const [libraryGoals, setLibraryGoals] = useState<GoalLibraryItem[]>([]);
+  const [libraryLoading, setLibraryLoading] = useState(false);
+  const [librarySearch, setLibrarySearch] = useState('');
+
+  // Load library items
+  const loadLibraryCompetencies = async () => {
+    setLibraryLoading(true);
+    try {
+      const items = await competencyLibrary.getAll();
+      setLibraryCompetencies(items);
+    } catch (error) {
+      console.error('Failed to load competency library:', error);
+    } finally {
+      setLibraryLoading(false);
+    }
+  };
+
+  const loadLibraryGoals = async () => {
+    setLibraryLoading(true);
+    try {
+      const items = await goalLibrary.getAll();
+      setLibraryGoals(items);
+    } catch (error) {
+      console.error('Failed to load goal library:', error);
+    } finally {
+      setLibraryLoading(false);
+    }
+  };
+
+  // Handle selecting from library
+  const handleSelectCompetencyFromLibrary = (item: CompetencyLibraryItem) => {
+    const newCompetency: Competency = {
+      name: item.name,
+      description: item.description || '',
+    };
+
+    const updated = [...competencies, newCompetency];
+    setCompetencies(updated);
+    setShowCompetencyLibrary(false);
+    setLibrarySearch('');
+
+    if (review) {
+      saveCompetencies(review.id, updated, isReviewer);
+    }
+  };
+
+  const handleSelectGoalFromLibrary = (item: GoalLibraryItem) => {
+    const newGoal: AssignedGoal = {
+      id: crypto.randomUUID(),
+      title: item.title,
+      description: item.description || '',
+      status: 'not_achieved',
+    };
+
+    const updated = [...assignedGoals, newGoal];
+    setAssignedGoals(updated);
+    setShowGoalLibrary(false);
+    setLibrarySearch('');
+
+    if (review) {
+      saveGoals(review.id, updated);
+    }
+  };
 
   // Add self-reflection form state
   const [showAddReflection, setShowAddReflection] = useState(false);
@@ -255,7 +325,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
   };
 
   // Handle adding new competency
-  const handleAddCompetency = () => {
+  const handleAddCompetency = async () => {
     if (!newCompetencyName.trim()) return;
 
     const newCompetency: Competency = {
@@ -266,10 +336,23 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
     const updated = [...competencies, newCompetency];
     setCompetencies(updated);
 
+    // Save to library if checkbox is checked
+    if (saveCompetencyToLibrary) {
+      try {
+        await competencyLibrary.create({
+          name: newCompetencyName.trim(),
+          description: newCompetencyDescription.trim(),
+        });
+      } catch (error) {
+        console.error('Failed to save competency to library:', error);
+      }
+    }
+
     // Reset form
     setNewCompetencyName('');
     setNewCompetencyDescription('');
     setShowAddCompetency(false);
+    setSaveCompetencyToLibrary(false);
 
     // Save to backend
     if (review) {
@@ -278,7 +361,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
   };
 
   // Handle adding new goal
-  const handleAddGoal = () => {
+  const handleAddGoal = async () => {
     if (!newGoalTitle.trim()) return;
 
     const newGoal: AssignedGoal = {
@@ -291,10 +374,23 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
     const updated = [...assignedGoals, newGoal];
     setAssignedGoals(updated);
 
+    // Save to library if checkbox is checked
+    if (saveGoalToLibrary) {
+      try {
+        await goalLibrary.create({
+          title: newGoalTitle.trim(),
+          description: newGoalDescription.trim(),
+        });
+      } catch (error) {
+        console.error('Failed to save goal to library:', error);
+      }
+    }
+
     // Reset form
     setNewGoalTitle('');
     setNewGoalDescription('');
     setShowAddGoal(false);
+    setSaveGoalToLibrary(false);
 
     // Save to backend
     if (review) {
@@ -875,9 +971,40 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                   borderRadius: '8px',
                   marginBottom: '16px',
                 }}>
-                  <h4 style={{ margin: '0 0 16px 0', fontSize: '16px', fontWeight: '600', color: '#166534' }}>
-                    Add New Competency
-                  </h4>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                    <h4 style={{ margin: 0, fontSize: '16px', fontWeight: '600', color: '#166534' }}>
+                      Add New Competency
+                    </h4>
+                    <button
+                      onClick={() => {
+                        loadLibraryCompetencies();
+                        setShowCompetencyLibrary(true);
+                      }}
+                      style={{
+                        padding: '6px 12px',
+                        background: '#ffffff',
+                        color: '#166534',
+                        border: '1px solid #86efac',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        fontSize: '13px',
+                        fontWeight: '500',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        transition: 'all 0.15s',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = '#f0fdf4';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = '#ffffff';
+                      }}
+                    >
+                      <BookOpen size={14} />
+                      Browse Library
+                    </button>
+                  </div>
                   <div style={{ marginBottom: '12px' }}>
                     <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
                       Competency Name *
@@ -931,12 +1058,23 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       }}
                     />
                   </div>
-                  <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                      <input
+                        type="checkbox"
+                        checked={saveCompetencyToLibrary}
+                        onChange={(e) => setSaveCompetencyToLibrary(e.target.checked)}
+                        style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+                      />
+                      <span style={{ fontSize: '13px', color: '#374151' }}>Save to library for future use</span>
+                    </label>
+                    <div style={{ display: 'flex', gap: '8px' }}>
                     <button
                       onClick={() => {
                         setShowAddCompetency(false);
                         setNewCompetencyName('');
                         setNewCompetencyDescription('');
+                        setSaveCompetencyToLibrary(false);
                       }}
                       style={{
                         padding: '8px 16px',
@@ -985,6 +1123,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                     >
                       Add Competency
                     </button>
+                    </div>
                   </div>
                 </div>
               )}
@@ -1073,9 +1212,40 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                 borderRadius: '8px',
                 marginBottom: '16px',
               }}>
-                <h4 style={{ margin: '0 0 16px 0', fontSize: '16px', fontWeight: '600', color: '#92400e' }}>
-                  Add New Goal
-                </h4>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                  <h4 style={{ margin: 0, fontSize: '16px', fontWeight: '600', color: '#92400e' }}>
+                    Add New Goal
+                  </h4>
+                  <button
+                    onClick={() => {
+                      loadLibraryGoals();
+                      setShowGoalLibrary(true);
+                    }}
+                    style={{
+                      padding: '6px 12px',
+                      background: '#ffffff',
+                      color: '#92400e',
+                      border: '1px solid #fbbf24',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      fontSize: '13px',
+                      fontWeight: '500',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      transition: 'all 0.15s',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = '#fffbeb';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = '#ffffff';
+                    }}
+                  >
+                    <BookOpen size={14} />
+                    Browse Library
+                  </button>
+                </div>
                 <div style={{ marginBottom: '12px' }}>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
                     Goal Title *
@@ -1129,12 +1299,23 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                     }}
                   />
                 </div>
-                <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                    <input
+                      type="checkbox"
+                      checked={saveGoalToLibrary}
+                      onChange={(e) => setSaveGoalToLibrary(e.target.checked)}
+                      style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+                    />
+                    <span style={{ fontSize: '13px', color: '#374151' }}>Save to library for future use</span>
+                  </label>
+                  <div style={{ display: 'flex', gap: '8px' }}>
                   <button
                     onClick={() => {
                       setShowAddGoal(false);
                       setNewGoalTitle('');
                       setNewGoalDescription('');
+                      setSaveGoalToLibrary(false);
                     }}
                     style={{
                       padding: '8px 16px',
@@ -1183,6 +1364,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                   >
                     Add Goal
                   </button>
+                  </div>
                 </div>
               </div>
             )}
@@ -1869,13 +2051,8 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
     </div>
   );
 
-  // If rendering as a page, return content directly
-  if (isPage) {
-    return content;
-  }
-
-  // If rendering as a modal, wrap in overlay
-  return (
+  // Library browser modal for competencies
+  const competencyLibraryModal = showCompetencyLibrary && (
     <div
       style={{
         position: 'fixed',
@@ -1887,12 +2064,339 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        zIndex: 1000,
+        zIndex: 1100,
         padding: '20px',
       }}
-      onClick={onClose}
+      onClick={() => {
+        setShowCompetencyLibrary(false);
+        setLibrarySearch('');
+      }}
     >
-      {content}
+      <div
+        style={{
+          background: '#ffffff',
+          borderRadius: '12px',
+          maxWidth: '600px',
+          width: '100%',
+          maxHeight: '80vh',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div style={{
+          padding: '20px 24px',
+          borderBottom: '1px solid #e5e7eb',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+          <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: '#111827' }}>
+            Competency Library
+          </h3>
+          <button
+            onClick={() => {
+              setShowCompetencyLibrary(false);
+              setLibrarySearch('');
+            }}
+            style={{
+              padding: '6px',
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              borderRadius: '6px',
+            }}
+          >
+            <X size={20} color="#6b7280" />
+          </button>
+        </div>
+        <div style={{ padding: '16px 24px', borderBottom: '1px solid #e5e7eb' }}>
+          <input
+            type="text"
+            placeholder="Search competencies..."
+            value={librarySearch}
+            onChange={(e) => setLibrarySearch(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '10px 12px',
+              border: '1px solid #e5e7eb',
+              borderRadius: '8px',
+              fontSize: '14px',
+              outline: 'none',
+            }}
+          />
+        </div>
+        <div style={{ flex: 1, overflow: 'auto', padding: '16px 24px' }}>
+          {libraryLoading ? (
+            <p style={{ textAlign: 'center', color: '#6b7280' }}>Loading...</p>
+          ) : libraryCompetencies.filter(c =>
+            c.name.toLowerCase().includes(librarySearch.toLowerCase()) ||
+            (c.description?.toLowerCase().includes(librarySearch.toLowerCase()))
+          ).length === 0 ? (
+            <p style={{ textAlign: 'center', color: '#6b7280' }}>No competencies found in library</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {libraryCompetencies
+                .filter(c =>
+                  c.name.toLowerCase().includes(librarySearch.toLowerCase()) ||
+                  (c.description?.toLowerCase().includes(librarySearch.toLowerCase()))
+                )
+                .map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => handleSelectCompetencyFromLibrary(item)}
+                    style={{
+                      padding: '12px 16px',
+                      background: '#ffffff',
+                      border: '1px solid #e5e7eb',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      transition: 'all 0.15s',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = '#f9fafb';
+                      e.currentTarget.style.borderColor = '#10b981';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = '#ffffff';
+                      e.currentTarget.style.borderColor = '#e5e7eb';
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                      <span style={{ fontSize: '14px', fontWeight: '600', color: '#111827' }}>
+                        {item.name}
+                      </span>
+                      {item.isPlatformDefault && (
+                        <span style={{
+                          padding: '2px 6px',
+                          background: '#dbeafe',
+                          color: '#1d4ed8',
+                          fontSize: '10px',
+                          fontWeight: '600',
+                          borderRadius: '4px',
+                        }}>
+                          Default
+                        </span>
+                      )}
+                      {item.category && (
+                        <span style={{
+                          padding: '2px 6px',
+                          background: '#f3f4f6',
+                          color: '#6b7280',
+                          fontSize: '10px',
+                          fontWeight: '500',
+                          borderRadius: '4px',
+                        }}>
+                          {item.category}
+                        </span>
+                      )}
+                    </div>
+                    {item.description && (
+                      <p style={{ margin: 0, fontSize: '13px', color: '#6b7280' }}>
+                        {item.description}
+                      </p>
+                    )}
+                  </button>
+                ))}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
+  );
+
+  // Library browser modal for goals
+  const goalLibraryModal = showGoalLibrary && (
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1100,
+        padding: '20px',
+      }}
+      onClick={() => {
+        setShowGoalLibrary(false);
+        setLibrarySearch('');
+      }}
+    >
+      <div
+        style={{
+          background: '#ffffff',
+          borderRadius: '12px',
+          maxWidth: '600px',
+          width: '100%',
+          maxHeight: '80vh',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div style={{
+          padding: '20px 24px',
+          borderBottom: '1px solid #e5e7eb',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+          <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: '#111827' }}>
+            Goal Library
+          </h3>
+          <button
+            onClick={() => {
+              setShowGoalLibrary(false);
+              setLibrarySearch('');
+            }}
+            style={{
+              padding: '6px',
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              borderRadius: '6px',
+            }}
+          >
+            <X size={20} color="#6b7280" />
+          </button>
+        </div>
+        <div style={{ padding: '16px 24px', borderBottom: '1px solid #e5e7eb' }}>
+          <input
+            type="text"
+            placeholder="Search goals..."
+            value={librarySearch}
+            onChange={(e) => setLibrarySearch(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '10px 12px',
+              border: '1px solid #e5e7eb',
+              borderRadius: '8px',
+              fontSize: '14px',
+              outline: 'none',
+            }}
+          />
+        </div>
+        <div style={{ flex: 1, overflow: 'auto', padding: '16px 24px' }}>
+          {libraryLoading ? (
+            <p style={{ textAlign: 'center', color: '#6b7280' }}>Loading...</p>
+          ) : libraryGoals.filter(g =>
+            g.title.toLowerCase().includes(librarySearch.toLowerCase()) ||
+            (g.description?.toLowerCase().includes(librarySearch.toLowerCase()))
+          ).length === 0 ? (
+            <p style={{ textAlign: 'center', color: '#6b7280' }}>No goals found in library</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {libraryGoals
+                .filter(g =>
+                  g.title.toLowerCase().includes(librarySearch.toLowerCase()) ||
+                  (g.description?.toLowerCase().includes(librarySearch.toLowerCase()))
+                )
+                .map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => handleSelectGoalFromLibrary(item)}
+                    style={{
+                      padding: '12px 16px',
+                      background: '#ffffff',
+                      border: '1px solid #e5e7eb',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      transition: 'all 0.15s',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = '#f9fafb';
+                      e.currentTarget.style.borderColor = '#f59e0b';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = '#ffffff';
+                      e.currentTarget.style.borderColor = '#e5e7eb';
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                      <span style={{ fontSize: '14px', fontWeight: '600', color: '#111827' }}>
+                        {item.title}
+                      </span>
+                      {item.isPlatformDefault && (
+                        <span style={{
+                          padding: '2px 6px',
+                          background: '#dbeafe',
+                          color: '#1d4ed8',
+                          fontSize: '10px',
+                          fontWeight: '600',
+                          borderRadius: '4px',
+                        }}>
+                          Default
+                        </span>
+                      )}
+                      {item.category && (
+                        <span style={{
+                          padding: '2px 6px',
+                          background: '#f3f4f6',
+                          color: '#6b7280',
+                          fontSize: '10px',
+                          fontWeight: '500',
+                          borderRadius: '4px',
+                        }}>
+                          {item.category}
+                        </span>
+                      )}
+                    </div>
+                    {item.description && (
+                      <p style={{ margin: 0, fontSize: '13px', color: '#6b7280' }}>
+                        {item.description}
+                      </p>
+                    )}
+                  </button>
+                ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  // If rendering as a page, return content directly
+  if (isPage) {
+    return (
+      <>
+        {content}
+        {competencyLibraryModal}
+        {goalLibraryModal}
+      </>
+    );
+  }
+
+  // If rendering as a modal, wrap in overlay
+  return (
+    <>
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000,
+          padding: '20px',
+        }}
+        onClick={onClose}
+      >
+        {content}
+      </div>
+      {competencyLibraryModal}
+      {goalLibraryModal}
+    </>
   );
 }
