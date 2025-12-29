@@ -123,10 +123,14 @@ export default function OneOnOnes() {
 
     try {
       const { events } = await googleCalendar.getEvents(100);
-      // Show all events with a start time - user can pick which to track as 1:1s
+      // Filter to only show 2-person meetings (you + 1 other person)
       const filteredEvents = events.filter((event: any) => {
         if (!event.start) return false;
-        return true;
+        // Check attendees - should have exactly 2 people (including organizer)
+        if (event.attendees && event.attendees.length === 2) return true;
+        // Also include events with 1 attendee (might just show the other person)
+        if (event.attendees && event.attendees.length === 1) return true;
+        return false;
       });
       setCalendarEvents(filteredEvents);
     } catch (err) {
@@ -637,9 +641,27 @@ export default function OneOnOnes() {
               width: '100%',
               maxHeight: '80vh',
               overflow: 'auto',
+              position: 'relative',
             }}
             onClick={(e) => e.stopPropagation()}
           >
+            <button
+              onClick={() => setShowImportModal(false)}
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '4px',
+                color: '#6b7280',
+                fontSize: '24px',
+                lineHeight: 1,
+              }}
+            >
+              ×
+            </button>
             <h2 style={{ margin: '0 0 8px 0', fontSize: '20px', fontWeight: '600', color: '#111827' }}>
               Sync from Google Calendar
             </h2>
@@ -654,7 +676,7 @@ export default function OneOnOnes() {
             ) : calendarEvents.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '40px', background: '#f9fafb', borderRadius: '8px' }}>
                 <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
-                  No upcoming calendar events found.
+                  No 1:1 meetings found. Only showing meetings with 2 attendees.
                 </p>
               </div>
             ) : (
