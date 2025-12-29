@@ -2,13 +2,7 @@
 
 ## About the User
 
-Jacob is the product owner but **not technical**. He relies on Claude for all technical implementation details, code changes, debugging, and architecture decisions. Jacob provides:
-- UI/UX feedback and preferences
-- Business requirements and feature requests
-- Testing and QA from a user perspective
-- Final approval on changes
-
-**Communication style:** Keep explanations simple and non-technical when possible. When technical details are necessary, provide clear step-by-step instructions. Don't ask Jacob to write code or make technical decisions - just do it and explain what you did.
+Jacob is the product owner. He provides UI/UX feedback, business requirements, and final approval. Just build it and ship it.
 
 ---
 
