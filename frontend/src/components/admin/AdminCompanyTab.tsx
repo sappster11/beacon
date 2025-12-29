@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Save, Building2, Upload, Palette, CreditCard } from 'lucide-react';
-import api from '../../lib/api';
+import { settings as settingsApi } from '../../lib/api';
 
 export default function AdminCompanyTab() {
   const [loading, setLoading] = useState(true);
@@ -43,13 +43,12 @@ export default function AdminCompanyTab() {
   const loadSettings = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/admin/company-settings');
-      const settings = response.data;
+      const allSettings = await settingsApi.getAll();
 
-      if (settings.company) setCompanyInfo(settings.company);
-      if (settings.branding) setBrandSettings(settings.branding);
-      if (settings.billing) setBillingInfo(settings.billing);
-      if (settings.branding?.logo) setLogoPreview(settings.branding.logo);
+      if (allSettings.company) setCompanyInfo(allSettings.company as typeof companyInfo);
+      if (allSettings.branding) setBrandSettings(allSettings.branding as typeof brandSettings);
+      if (allSettings.billing) setBillingInfo(allSettings.billing as typeof billingInfo);
+      if ((allSettings.branding as any)?.logo) setLogoPreview((allSettings.branding as any).logo);
     } catch (error) {
       console.error('Failed to load company settings:', error);
     } finally {
@@ -57,13 +56,13 @@ export default function AdminCompanyTab() {
     }
   };
 
-  const saveSettings = async (category: string, settings: any) => {
+  const saveSettings = async (category: string, settingsData: any) => {
     try {
       setSaving(category);
-      await api.patch('/admin/company-settings', { category, settings });
+      await settingsApi.update(category, settingsData);
       alert('Settings saved successfully!');
     } catch (error: any) {
-      alert(error.response?.data?.error || 'Failed to save settings');
+      alert(error.message || 'Failed to save settings');
     } finally {
       setSaving(null);
     }

@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import AdminUsersTab from '../components/admin/AdminUsersTab';
 import AdminDepartmentsTab from '../components/admin/AdminDepartmentsTab';
 import AdminCompanyTab from '../components/admin/AdminCompanyTab';
@@ -10,9 +10,27 @@ import AdminBillingTab from '../components/admin/AdminBillingTab';
 
 type TabType = 'users' | 'departments' | 'company' | 'billing' | 'settings' | 'audit-logs';
 
+const validTabs: TabType[] = ['users', 'departments', 'company', 'billing', 'settings', 'audit-logs'];
+
 export default function Admin() {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState<TabType>('users');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabParam = searchParams.get('tab');
+  const initialTab = validTabs.includes(tabParam as TabType) ? (tabParam as TabType) : 'users';
+  const [activeTab, setActiveTab] = useState<TabType>(initialTab);
+
+  // Update URL when tab changes
+  const handleTabChange = (tab: TabType) => {
+    setActiveTab(tab);
+    setSearchParams({ tab });
+  };
+
+  // Sync with URL on mount
+  useEffect(() => {
+    if (tabParam && validTabs.includes(tabParam as TabType)) {
+      setActiveTab(tabParam as TabType);
+    }
+  }, [tabParam]);
 
   // Check if user has admin access
   const isAdmin = user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
@@ -48,7 +66,7 @@ export default function Admin() {
           {tabs.map(tab => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => handleTabChange(tab.id)}
               style={{
                 padding: '12px 20px',
                 border: 'none',

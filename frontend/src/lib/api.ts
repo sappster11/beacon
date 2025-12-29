@@ -324,6 +324,295 @@ export const users = {
     if (error) throw error;
     return transformUser(data);
   },
+
+  deactivate: async (id: string): Promise<User> => {
+    const { data, error } = await supabase
+      .from('users')
+      .update({ is_active: false })
+      .eq('id', id)
+      .select()
+      .single();
+    if (error) throw error;
+    return transformUser(data);
+  },
+
+  reactivate: async (id: string): Promise<User> => {
+    const { data, error } = await supabase
+      .from('users')
+      .update({ is_active: true })
+      .eq('id', id)
+      .select()
+      .single();
+    if (error) throw error;
+    return transformUser(data);
+  },
+};
+
+// Invitations API
+interface Invitation {
+  id: string;
+  email: string;
+  name: string;
+  title?: string;
+  role: string;
+  status: string;
+  expiresAt: string;
+  createdAt: string;
+  invitedBy: { id: string; name: string };
+  department?: { id: string; name: string };
+}
+
+const transformInvitation = (data: any): Invitation => ({
+  id: data.id,
+  email: data.email,
+  name: data.name,
+  title: data.title,
+  role: data.role,
+  status: data.status,
+  expiresAt: data.expires_at,
+  createdAt: data.created_at,
+  invitedBy: data.invited_by ? { id: data.invited_by.id, name: data.invited_by.name } : { id: '', name: '' },
+  department: data.department ? { id: data.department.id, name: data.department.name } : undefined,
+});
+
+export const invitations = {
+  getAll: async (): Promise<Invitation[]> => {
+    const userId = await getCurrentUserId();
+    const { data: currentUser } = await supabase
+      .from('users')
+      .select('organization_id')
+      .eq('id', userId)
+      .single();
+
+    const { data, error } = await supabase
+      .from('invitations')
+      .select(`
+        *,
+        invited_by:users!invitations_invited_by_id_fkey(id, name),
+        department:departments(id, name)
+      `)
+      .eq('organization_id', currentUser?.organization_id)
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    return data.map(transformInvitation);
+  },
+
+  cancel: async (id: string): Promise<void> => {
+    const { error } = await supabase
+      .from('invitations')
+      .delete()
+      .eq('id', id);
+    if (error) throw error;
+  },
+
+  resend: async (id: string): Promise<void> => {
+    // Update expiration date and trigger email resend via edge function
+    const newExpiresAt = new Date();
+    newExpiresAt.setDate(newExpiresAt.getDate() + 7);
+
+    const { error } = await supabase
+      .from('invitations')
+      .update({ expires_at: newExpiresAt.toISOString() })
+      .eq('id', id);
+    if (error) throw error;
+
+    // TODO: Trigger email resend via edge function
+  },
+
+  validateToken: async (token: string): Promise<{ valid: boolean; invitation?: any; error?: string }> => {
+    const { data, error } = await supabase
+      .from('invitations')
+      .select(`
+        *,
+        organization:organizations(id, name)
+      `)
+      .eq('token', token)
+      .eq('status', 'pending')
+      .single();
+
+    if (error || !data) {
+      return { valid: false, error: 'Invalid or expired invitation' };
+    }
+
+    // Check if expired
+    if (new Date(data.expires_at) < new Date()) {
+      return { valid: false, error: 'This invitation has expired' };
+    }
+
+    return {
+      valid: true,
+      invitation: {
+        email: data.email,
+        name: data.name,
+        organizationName: data.organization?.name || 'Unknown Organization',
+      },
+    };
+  },
+
+  accept: async (token: string, password: string): Promise<void> => {
+    // Get the invitation
+    const { data: invitation, error: inviteError } = await supabase
+      .from('invitations')
+      .select('*, organization:organizations(id, name)')
+      .eq('token', token)
+      .eq('status', 'pending')
+      .single();
+
+    if (inviteError || !invitation) {
+      throw new Error('Invalid or expired invitation');
+    }
+
+    // Check if expired
+    if (new Date(invitation.expires_at) < new Date()) {
+      throw new Error('This invitation has expired');
+    }
+
+    // Create the user account via Supabase Auth
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email: invitation.email,
+      password,
+      options: {
+        data: {
+          name: invitation.name,
+          organization_id: invitation.organization_id,
+        },
+      },
+    });
+
+    if (authError) throw authError;
+
+    // Create the user record in our users table
+    const { error: userError } = await supabase.from('users').insert({
+      id: authData.user?.id,
+      email: invitation.email,
+      name: invitation.name,
+      title: invitation.title,
+      role: invitation.role,
+      organization_id: invitation.organization_id,
+      department_id: invitation.department_id,
+      is_active: true,
+    });
+
+    if (userError) throw userError;
+
+    // Mark invitation as accepted
+    await supabase
+      .from('invitations')
+      .update({ status: 'accepted' })
+      .eq('id', invitation.id);
+  },
+};
+
+// Settings API
+export const settings = {
+  getAll: async (): Promise<{ review?: any; notifications?: any; features?: any }> => {
+    const userId = await getCurrentUserId();
+    const { data: currentUser } = await supabase
+      .from('users')
+      .select('organization_id')
+      .eq('id', userId)
+      .single();
+
+    const { data, error } = await supabase
+      .from('system_settings')
+      .select('*')
+      .eq('organization_id', currentUser?.organization_id);
+
+    if (error) throw error;
+
+    const result: any = {};
+    data?.forEach((setting: any) => {
+      result[setting.category] = setting.settings;
+    });
+    return result;
+  },
+
+  update: async (category: string, settingsData: any): Promise<void> => {
+    const userId = await getCurrentUserId();
+    const { data: currentUser } = await supabase
+      .from('users')
+      .select('organization_id')
+      .eq('id', userId)
+      .single();
+
+    const { error } = await supabase
+      .from('system_settings')
+      .upsert({
+        organization_id: currentUser?.organization_id,
+        category,
+        settings: settingsData,
+        updated_at: new Date().toISOString()
+      }, {
+        onConflict: 'organization_id,category'
+      });
+
+    if (error) throw error;
+  },
+};
+
+// Audit Logs API
+interface AuditLogFilters {
+  userId?: string;
+  action?: string;
+  resourceType?: string;
+  startDate?: string;
+  endDate?: string;
+  resourceId?: string;
+  ipAddress?: string;
+  search?: string;
+  status?: string;
+  limit?: number;
+  offset?: number;
+}
+
+export const auditLogs = {
+  getAll: async (filters: AuditLogFilters = {}): Promise<{ logs: any[]; total: number }> => {
+    const userId = await getCurrentUserId();
+    const { data: currentUser } = await supabase
+      .from('users')
+      .select('organization_id')
+      .eq('id', userId)
+      .single();
+
+    let query = supabase
+      .from('audit_logs')
+      .select('*, user:users(id, name, email)', { count: 'exact' })
+      .eq('organization_id', currentUser?.organization_id)
+      .order('created_at', { ascending: false });
+
+    if (filters.userId) query = query.eq('user_id', filters.userId);
+    if (filters.action) query = query.eq('action', filters.action);
+    if (filters.resourceType) query = query.eq('resource_type', filters.resourceType);
+    if (filters.status) query = query.eq('status', filters.status);
+    if (filters.resourceId) query = query.ilike('resource_id', `%${filters.resourceId}%`);
+    if (filters.startDate) query = query.gte('created_at', filters.startDate);
+    if (filters.endDate) query = query.lte('created_at', `${filters.endDate}T23:59:59`);
+    if (filters.search) {
+      query = query.or(`description.ilike.%${filters.search}%,changes.ilike.%${filters.search}%`);
+    }
+    if (filters.limit) query = query.limit(filters.limit);
+    if (filters.offset) query = query.range(filters.offset, filters.offset + (filters.limit || 100) - 1);
+
+    const { data, error, count } = await query;
+    if (error) throw error;
+
+    const logs = data?.map((log: any) => ({
+      id: log.id,
+      userId: log.user_id,
+      user: log.user,
+      action: log.action,
+      resourceType: log.resource_type,
+      resourceId: log.resource_id,
+      changes: log.changes,
+      metadata: log.metadata,
+      status: log.status,
+      errorMessage: log.error_message,
+      description: log.description,
+      createdAt: log.created_at,
+    })) || [];
+
+    return { logs, total: count || 0 };
+  },
 };
 
 // Profile API

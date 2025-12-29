@@ -78,7 +78,7 @@ export default function OnboardingChecklist({ userRole }: OnboardingChecklistPro
       title: 'Create your first department',
       description: 'Organize your team by department',
       completed: stats.departments > 0,
-      action: () => navigate('/admin'),
+      action: () => navigate('/admin?tab=departments'),
       icon: Building2,
     },
     {
@@ -86,7 +86,7 @@ export default function OnboardingChecklist({ userRole }: OnboardingChecklistPro
       title: 'Invite team members',
       description: 'Add employees to your organization',
       completed: stats.users > 1,
-      action: () => navigate('/admin'),
+      action: () => navigate('/admin?tab=users'),
       icon: Users,
     },
     {

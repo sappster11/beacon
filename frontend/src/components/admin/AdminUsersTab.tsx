@@ -8,7 +8,7 @@ import InviteUserModal from './InviteUserModal';
 import UserStatusBadge from './UserStatusBadge';
 import Avatar from '../Avatar';
 import { SkeletonTable } from '../Skeleton';
-import api from '../../lib/api';
+import { users as usersApi, departments as departmentsApi, invitations as invitationsApi } from '../../lib/api';
 
 interface Invitation {
   id: string;
@@ -62,13 +62,13 @@ export default function AdminUsersTab() {
     try {
       setLoading(true);
       const [usersData, deptData, invitesData] = await Promise.all([
-        api.get('/users'),
-        api.get('/departments'),
-        api.get('/users/invitations').catch(() => ({ data: [] }))
+        usersApi.getAll(),
+        departmentsApi.getAll(),
+        invitationsApi.getAll().catch(() => [])
       ]);
-      setUsers(usersData.data);
-      setDepartments(deptData.data);
-      setInvitations(invitesData.data);
+      setUsers(usersData);
+      setDepartments(deptData);
+      setInvitations(invitesData);
     } catch (error) {
       console.error('Failed to load data:', error);
     } finally {
@@ -78,7 +78,7 @@ export default function AdminUsersTab() {
 
   const handleResendInvite = async (inviteId: string) => {
     try {
-      await api.post(`/users/invitations/${inviteId}/resend`);
+      await invitationsApi.resend(inviteId);
       alert('Invitation resent successfully');
     } catch (error) {
       console.error('Failed to resend invitation:', error);
@@ -90,7 +90,7 @@ export default function AdminUsersTab() {
     if (!confirm('Are you sure you want to cancel this invitation?')) return;
 
     try {
-      await api.delete(`/users/invitations/${inviteId}`);
+      await invitationsApi.cancel(inviteId);
       setInvitations(invitations.filter(i => i.id !== inviteId));
     } catch (error) {
       console.error('Failed to cancel invitation:', error);
@@ -107,7 +107,7 @@ export default function AdminUsersTab() {
     if (!confirm('Are you sure you want to deactivate this user?')) return;
 
     try {
-      await api.patch(`/admin/users/${userId}/deactivate`);
+      await usersApi.deactivate(userId);
       await loadData();
     } catch (error) {
       console.error('Failed to deactivate user:', error);
@@ -117,7 +117,7 @@ export default function AdminUsersTab() {
 
   const handleReactivate = async (userId: string) => {
     try {
-      await api.patch(`/admin/users/${userId}/reactivate`);
+      await usersApi.reactivate(userId);
       await loadData();
     } catch (error) {
       console.error('Failed to reactivate user:', error);
@@ -150,7 +150,7 @@ export default function AdminUsersTab() {
     try {
       await Promise.all(
         Array.from(selectedUserIds).map(id =>
-          api.patch(`/admin/users/${id}/deactivate`)
+          usersApi.deactivate(id)
         )
       );
       setSelectedUserIds(new Set());
@@ -861,10 +861,10 @@ function BulkEditModal({
       const updateData: any = {};
       if (editField === 'role') updateData.role = newValue;
       if (editField === 'department') updateData.departmentId = newValue;
-      if (editField === 'manager') updateData.managerId = newValue;
+      if (editField === 'manager') updateData.managerId = newValue === 'null' ? null : newValue;
 
       await Promise.all(
-        userIds.map(id => api.patch(`/admin/users/${id}`, updateData))
+        userIds.map(id => usersApi.update(id, updateData))
       );
 
       onSuccess();

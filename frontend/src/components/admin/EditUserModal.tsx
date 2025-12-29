@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { User, Department, UserRole } from '../../types/index';
 import { X } from 'lucide-react';
-import api from '../../lib/api';
+import { users as usersApi } from '../../lib/api';
 
 interface EditUserModalProps {
   user: User;
@@ -35,15 +35,17 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
 
     try {
       setLoading(true);
-      await api.patch(`/users/${user.id}`, {
-        ...formData,
-        departmentId: formData.departmentId || null,
-        managerId: formData.managerId || null,
-        hireDate: formData.hireDate || null
+      await usersApi.update(user.id, {
+        name: formData.name,
+        title: formData.title || undefined,
+        role: formData.role,
+        departmentId: formData.departmentId || undefined,
+        managerId: formData.managerId || undefined,
+        hireDate: formData.hireDate || undefined
       });
       onSuccess();
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to update user');
+      setError(err.message || 'Failed to update user');
     } finally {
       setLoading(false);
     }

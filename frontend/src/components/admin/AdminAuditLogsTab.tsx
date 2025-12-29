@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import type { AuditLog, User } from '../../types/index';
 import { Download, Search, Filter } from 'lucide-react';
-import api from '../../lib/api';
+import { auditLogs as auditLogsApi, users as usersApi } from '../../lib/api';
 import AuditLogDetailModal from './AuditLogDetailModal';
 
 export default function AdminAuditLogsTab() {
@@ -46,27 +46,25 @@ export default function AdminAuditLogsTab() {
   const loadData = async () => {
     try {
       setLoading(true);
-      const [logsResponse, usersResponse] = await Promise.all([
-        api.get('/admin/audit-logs', {
-          params: {
-            userId: filterUserId || undefined,
-            action: filterAction || undefined,
-            resourceType: filterResourceType || undefined,
-            startDate: filterStartDate || undefined,
-            endDate: filterEndDate || undefined,
-            resourceId: filterResourceId || undefined,
-            ipAddress: filterIpAddress || undefined,
-            search: filterSearch || undefined,
-            status: filterStatus || undefined,
-            limit,
-            offset
-          }
+      const [logsResponse, usersData] = await Promise.all([
+        auditLogsApi.getAll({
+          userId: filterUserId || undefined,
+          action: filterAction || undefined,
+          resourceType: filterResourceType || undefined,
+          startDate: filterStartDate || undefined,
+          endDate: filterEndDate || undefined,
+          resourceId: filterResourceId || undefined,
+          ipAddress: filterIpAddress || undefined,
+          search: filterSearch || undefined,
+          status: filterStatus || undefined,
+          limit,
+          offset
         }),
-        api.get('/users')
+        usersApi.getAll()
       ]);
-      setLogs(logsResponse.data.logs);
-      setTotal(logsResponse.data.total);
-      setUsers(usersResponse.data);
+      setLogs(logsResponse.logs);
+      setTotal(logsResponse.total);
+      setUsers(usersData);
     } catch (error) {
       console.error('Failed to load audit logs:', error);
     } finally {
@@ -81,18 +79,22 @@ export default function AdminAuditLogsTab() {
     }
 
     try {
-      const response = await api.post('/admin/audit-logs/export', {
-        userId: filterUserId || undefined,
-        action: filterAction || undefined,
-        resourceType: filterResourceType || undefined,
-        startDate: filterStartDate || undefined,
-        endDate: filterEndDate || undefined,
-        format: 'csv'
-      }, {
-        responseType: 'blob'
-      });
+      // Generate CSV from current logs
+      const headers = ['Date', 'User', 'Action', 'Resource Type', 'Resource ID', 'Description', 'Status'];
+      const csvContent = [
+        headers.join(','),
+        ...logs.map(log => [
+          new Date(log.createdAt).toISOString(),
+          `"${log.user?.name || 'System'}"`,
+          log.action,
+          log.resourceType,
+          log.resourceId,
+          `"${(log.description || '').replace(/"/g, '""')}"`,
+          log.status || 'success'
+        ].join(','))
+      ].join('\n');
 
-      const blob = new Blob([response.data], { type: 'text/csv' });
+      const blob = new Blob([csvContent], { type: 'text/csv' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;

@@ -1,7 +1,7 @@
 import { useState, FormEvent, useEffect } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Lock, Check, CheckCircle, XCircle, Loader } from 'lucide-react';
-import api from '../lib/api';
+import { invitations as invitationsApi } from '../lib/api';
 
 export default function AcceptInvite() {
   const [searchParams] = useSearchParams();
@@ -43,14 +43,14 @@ export default function AcceptInvite() {
 
   const validateToken = async () => {
     try {
-      const response = await api.get(`/users/validate-invite/${token}`);
-      if (response.data.valid) {
-        setInvitation(response.data.invitation);
+      const result = await invitationsApi.validateToken(token!);
+      if (result.valid && result.invitation) {
+        setInvitation(result.invitation);
       } else {
-        setError(response.data.error || 'Invalid invitation');
+        setError(result.error || 'Invalid invitation');
       }
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Invalid or expired invitation');
+      setError(err.message || 'Invalid or expired invitation');
     } finally {
       setIsValidating(false);
     }
@@ -73,10 +73,10 @@ export default function AcceptInvite() {
     setIsLoading(true);
 
     try {
-      await api.post('/users/accept-invite', { token, password });
+      await invitationsApi.accept(token!, password);
       setIsSuccess(true);
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to create account. Please try again.');
+      setError(err.message || 'Failed to create account. Please try again.');
     } finally {
       setIsLoading(false);
     }

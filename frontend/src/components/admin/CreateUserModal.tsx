@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { User, Department, UserRole } from '../../types/index';
 import { X } from 'lucide-react';
-import api from '../../lib/api';
+import { users as usersApi } from '../../lib/api';
 
 interface CreateUserModalProps {
   onClose: () => void;
@@ -34,15 +34,15 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
 
     try {
       setLoading(true);
-      await api.post('/users', {
+      await usersApi.create({
         ...formData,
-        departmentId: formData.departmentId || null,
-        managerId: formData.managerId || null,
-        hireDate: formData.hireDate || null
+        departmentId: formData.departmentId || undefined,
+        managerId: formData.managerId || undefined,
+        hireDate: formData.hireDate || undefined
       });
       onSuccess();
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to create user');
+      setError(err.message || 'Failed to create user');
     } finally {
       setLoading(false);
     }

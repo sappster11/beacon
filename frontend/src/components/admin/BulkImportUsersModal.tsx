@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { X, Download, Upload } from 'lucide-react';
 import type { BulkImportResult } from '../../types/index';
-import api from '../../lib/api';
+import { users as usersApi, departments as departmentsApi } from '../../lib/api';
 
 interface BulkImportUsersModalProps {
   onClose: () => void;
@@ -41,24 +41,79 @@ export default function BulkImportUsersModal({ onClose, onSuccess }: BulkImportU
       setLoading(true);
       setError('');
 
-      const formData = new FormData();
-      formData.append('file', file);
+      // Parse CSV file
+      const text = await file.text();
+      const lines = text.split('\n').map(line => line.trim()).filter(line => line);
 
-      const response = await api.post('/admin/users/bulk-import', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+      if (lines.length < 2) {
+        setError('CSV file must have a header row and at least one data row');
+        return;
+      }
+
+      const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+      const nameIdx = headers.indexOf('name');
+      const emailIdx = headers.indexOf('email');
+      const titleIdx = headers.indexOf('title');
+      const deptIdx = headers.indexOf('department');
+      const roleIdx = headers.indexOf('role');
+
+      if (nameIdx === -1 || emailIdx === -1) {
+        setError('CSV must have "name" and "email" columns');
+        return;
+      }
+
+      // Load departments for matching
+      const departments = await departmentsApi.getAll();
+      const deptMap = new Map(departments.map(d => [d.name.toLowerCase(), d.id]));
+
+      const errors: { row: number; error: string }[] = [];
+      let successCount = 0;
+
+      // Process each row
+      for (let i = 1; i < lines.length && i <= 1000; i++) {
+        const values = lines[i].split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+        const name = values[nameIdx];
+        const email = values[emailIdx];
+        const title = titleIdx !== -1 ? values[titleIdx] : undefined;
+        const deptName = deptIdx !== -1 ? values[deptIdx] : undefined;
+        const role = roleIdx !== -1 ? values[roleIdx]?.toUpperCase() : 'EMPLOYEE';
+
+        if (!name || !email) {
+          errors.push({ row: i + 1, error: 'Missing name or email' });
+          continue;
         }
-      });
 
-      setResult(response.data);
+        const validRoles = ['EMPLOYEE', 'MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'];
+        if (role && !validRoles.includes(role)) {
+          errors.push({ row: i + 1, error: `Invalid role: ${role}` });
+          continue;
+        }
 
-      if (response.data.success > 0 && response.data.errors.length === 0) {
+        const departmentId = deptName ? deptMap.get(deptName.toLowerCase()) : undefined;
+
+        try {
+          await usersApi.create({
+            name,
+            email,
+            title,
+            role: role as any,
+            departmentId,
+          });
+          successCount++;
+        } catch (err: any) {
+          errors.push({ row: i + 1, error: err.message || 'Failed to create user' });
+        }
+      }
+
+      setResult({ success: successCount, errors });
+
+      if (successCount > 0 && errors.length === 0) {
         setTimeout(() => {
           onSuccess();
         }, 1500);
       }
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to import users');
+      setError(err.message || 'Failed to import users');
     } finally {
       setLoading(false);
     }

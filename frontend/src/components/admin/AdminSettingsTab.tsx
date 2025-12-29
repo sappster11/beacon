@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { Save, Settings as SettingsIcon } from 'lucide-react';
-import api from '../../lib/api';
+import { settings as settingsApi } from '../../lib/api';
 
 export default function AdminSettingsTab() {
   const { user } = useAuth();
@@ -62,12 +62,11 @@ export default function AdminSettingsTab() {
   const loadSettings = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/admin/settings');
-      const settings = response.data;
+      const allSettings = await settingsApi.getAll();
 
-      if (settings.review) setReviewSettings(settings.review);
-      if (settings.notifications) setNotificationSettings(settings.notifications);
-      if (settings.features) setFeatureFlags(settings.features);
+      if (allSettings.review) setReviewSettings(allSettings.review);
+      if (allSettings.notifications) setNotificationSettings(allSettings.notifications);
+      if (allSettings.features) setFeatureFlags(allSettings.features);
     } catch (error) {
       console.error('Failed to load settings:', error);
     } finally {
@@ -75,13 +74,13 @@ export default function AdminSettingsTab() {
     }
   };
 
-  const saveSettings = async (category: string, settings: any) => {
+  const saveSettings = async (category: string, settingsData: any) => {
     try {
       setSaving(category);
-      await api.patch('/admin/settings', { category, settings });
+      await settingsApi.update(category, settingsData);
       alert('Settings saved successfully!');
     } catch (error: any) {
-      alert(error.response?.data?.error || 'Failed to save settings');
+      alert(error.message || 'Failed to save settings');
     } finally {
       setSaving(null);
     }

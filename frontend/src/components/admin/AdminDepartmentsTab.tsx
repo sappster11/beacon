@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import type { Department } from '../../types/index';
 import { Plus, Edit2, Trash2, Building2, MoreVertical } from 'lucide-react';
-import api from '../../lib/api';
+import { departments as departmentsApi } from '../../lib/api';
 
 export default function AdminDepartmentsTab() {
   const [departments, setDepartments] = useState<Department[]>([]);
@@ -29,8 +29,8 @@ export default function AdminDepartmentsTab() {
   const loadDepartments = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/departments');
-      setDepartments(response.data);
+      const data = await departmentsApi.getAll();
+      setDepartments(data);
     } catch (error) {
       console.error('Failed to load departments:', error);
     } finally {
@@ -44,10 +44,10 @@ export default function AdminDepartmentsTab() {
     }
 
     try {
-      await api.delete(`/departments/${id}`);
+      await departmentsApi.delete(id);
       await loadDepartments();
     } catch (error: any) {
-      alert(error.response?.data?.error || 'Failed to delete department');
+      alert(error.message || 'Failed to delete department');
     }
   };
 
@@ -402,19 +402,19 @@ function DepartmentModal({ department, departments, onClose, onSuccess }: Depart
     try {
       setLoading(true);
       if (department) {
-        await api.patch(`/departments/${department.id}`, {
+        await departmentsApi.update(department.id, {
           name,
           parentDepartmentId: parentDepartmentId || null
         });
       } else {
-        await api.post('/departments', {
+        await departmentsApi.create({
           name,
           parentDepartmentId: parentDepartmentId || null
         });
       }
       onSuccess();
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to save department');
+      setError(err.message || 'Failed to save department');
     } finally {
       setLoading(false);
     }
