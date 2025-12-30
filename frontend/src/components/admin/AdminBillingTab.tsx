@@ -312,7 +312,7 @@ export default function AdminBillingTab() {
           disabled={savingEmail}
           style={{
             padding: '10px 20px',
-            background: savingEmail ? '#9ca3af' : '#3b82f6',
+            background: savingEmail ? 'var(--text-faint)' : '#3b82f6',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
@@ -441,7 +441,7 @@ export default function AdminBillingTab() {
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '14px', color: '#374151' }}>
+              <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
                 {userCount} user{userCount !== 1 ? 's' : ''} × ${pricePerSeat}/{isYearly ? 'year' : 'month'}
               </span>
               <span style={{ fontSize: '20px', fontWeight: '700', color: 'var(--text-primary)' }}>

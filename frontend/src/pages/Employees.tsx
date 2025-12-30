@@ -114,7 +114,7 @@ export default function Employees() {
         <div style={{ flex: 1, maxWidth: '400px', position: 'relative' }}>
           <Search
             size={18}
-            color="#6b7280"
+            color="var(--text-muted)"
             style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }}
           />
           <input
@@ -206,7 +206,7 @@ export default function Employees() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                       {employee.department && (
                         <>
-                          <Building size={14} color="#6b7280" />
+                          <Building size={14} color="var(--text-muted)" />
                           {employee.department.name}
                         </>
                       )}
@@ -218,7 +218,7 @@ export default function Employees() {
                   </td>
                   <td style={{ padding: '16px', fontSize: '14px', color: 'var(--text-secondary)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <Mail size={14} color="#6b7280" />
+                      <Mail size={14} color="var(--text-muted)" />
                       {employee.email}
                     </div>
                   </td>

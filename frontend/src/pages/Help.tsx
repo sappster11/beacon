@@ -356,17 +356,17 @@ export default function Help() {
         alignItems: 'center',
         gap: '4px',
         padding: '3px 8px',
-        background: '#eff6ff',
-        border: '1px solid #bfdbfe',
+        background: 'var(--bg-tertiary)',
+        border: '1px solid var(--border-color)',
         borderRadius: '4px',
         marginLeft: '10px',
         fontSize: '10px',
-        color: '#1e40af',
+        color: 'var(--text-muted)',
         fontWeight: '500',
         textTransform: 'none',
         letterSpacing: '0',
       }}>
-        <Info size={12} style={{ color: '#3b82f6' }} />
+        <Info size={12} style={{ color: 'var(--color-primary)' }} />
         Visible because you're a {roleText}
       </span>
     );

@@ -513,7 +513,7 @@ function DepartmentModal({ department, departments, onClose, onSuccess }: Depart
                 fontSize: '14px',
                 fontWeight: '500',
                 cursor: 'pointer',
-                color: '#374151'
+                color: 'var(--text-secondary)'
               }}
             >
               Cancel
@@ -523,7 +523,7 @@ function DepartmentModal({ department, departments, onClose, onSuccess }: Depart
               disabled={loading}
               style={{
                 padding: '10px 20px',
-                background: loading ? '#9ca3af' : '#3b82f6',
+                background: loading ? 'var(--text-faint)' : '#3b82f6',
                 color: 'white',
                 border: 'none',
                 borderRadius: '8px',

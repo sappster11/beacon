@@ -137,7 +137,7 @@ export default function OrgChart() {
         >
           {hasChildren && (
             <div style={{ flexShrink: 0 }}>
-              {isExpanded ? <ChevronDown size={18} color="#6b7280" /> : <ChevronRight size={18} color="#6b7280" />}
+              {isExpanded ? <ChevronDown size={18} color="var(--text-muted)" /> : <ChevronRight size={18} color="var(--text-muted)" />}
             </div>
           )}
           {!hasChildren && <div style={{ width: '18px', flexShrink: 0 }} />}
@@ -301,13 +301,13 @@ export default function OrgChart() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '4px 8px', borderRadius: '6px', background: 'var(--bg-tertiary)' }}>
                 {isExpanded ? (
                   <>
-                    <ChevronDown size={16} color="#6b7280" />
-                    <span style={{ fontSize: '12px', fontWeight: '500', color: '#6b7280' }}>Collapse</span>
+                    <ChevronDown size={16} color="var(--text-muted)" />
+                    <span style={{ fontSize: '12px', fontWeight: '500', color: 'var(--text-muted)' }}>Collapse</span>
                   </>
                 ) : (
                   <>
-                    <ChevronRight size={16} color="#6b7280" />
-                    <span style={{ fontSize: '12px', fontWeight: '500', color: '#6b7280' }}>Expand</span>
+                    <ChevronRight size={16} color="var(--text-muted)" />
+                    <span style={{ fontSize: '12px', fontWeight: '500', color: 'var(--text-muted)' }}>Expand</span>
                   </>
                 )}
               </div>

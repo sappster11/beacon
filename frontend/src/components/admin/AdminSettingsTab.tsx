@@ -179,7 +179,7 @@ export default function AdminSettingsTab() {
           style={{
             marginTop: '20px',
             padding: '10px 20px',
-            background: saving === 'review' ? '#9ca3af' : '#3b82f6',
+            background: saving === 'review' ? 'var(--text-faint)' : '#3b82f6',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
@@ -493,7 +493,7 @@ export default function AdminSettingsTab() {
           style={{
             marginTop: '24px',
             padding: '10px 20px',
-            background: saving === 'notifications' ? '#9ca3af' : '#3b82f6',
+            background: saving === 'notifications' ? 'var(--text-faint)' : '#3b82f6',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
@@ -552,7 +552,7 @@ export default function AdminSettingsTab() {
             style={{
               marginTop: '20px',
               padding: '10px 20px',
-              background: saving === 'features' ? '#9ca3af' : '#3b82f6',
+              background: saving === 'features' ? 'var(--text-faint)' : '#3b82f6',
               color: 'white',
               border: 'none',
               borderRadius: '8px',

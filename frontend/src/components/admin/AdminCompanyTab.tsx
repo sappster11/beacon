@@ -334,7 +334,7 @@ export default function AdminCompanyTab() {
           style={{
             marginTop: '20px',
             padding: '10px 20px',
-            background: saving === 'company' ? '#9ca3af' : '#3b82f6',
+            background: saving === 'company' ? 'var(--text-faint)' : '#3b82f6',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
@@ -407,7 +407,7 @@ export default function AdminCompanyTab() {
                     fontSize: '14px',
                     fontWeight: '500',
                     cursor: 'pointer',
-                    color: '#374151'
+                    color: 'var(--text-secondary)'
                   }}
                 >
                   <Upload size={16} />
@@ -639,7 +639,7 @@ export default function AdminCompanyTab() {
           style={{
             marginTop: '20px',
             padding: '10px 20px',
-            background: saving === 'branding' ? '#9ca3af' : '#3b82f6',
+            background: saving === 'branding' ? 'var(--text-faint)' : '#3b82f6',
             color: 'white',
             border: 'none',
             borderRadius: '8px',

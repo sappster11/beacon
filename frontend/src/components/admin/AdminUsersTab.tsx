@@ -701,7 +701,7 @@ export default function AdminUsersTab() {
                             Expired
                           </span>
                         ) : (
-                          <span style={{ color: daysLeft <= 2 ? '#f59e0b' : '#6b7280', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <span style={{ color: daysLeft <= 2 ? '#f59e0b' : 'var(--text-muted)', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                             <Clock size={14} />
                             {daysLeft} day{daysLeft !== 1 ? 's' : ''} left
                           </span>
@@ -1062,7 +1062,7 @@ function BulkEditModal({
               disabled={isSubmitting || !editField || !newValue}
               style={{
                 padding: '10px 20px',
-                background: isSubmitting || !editField || !newValue ? '#9ca3af' : '#3b82f6',
+                background: isSubmitting || !editField || !newValue ? 'var(--text-faint)' : '#3b82f6',
                 color: 'white',
                 border: 'none',
                 borderRadius: '8px',

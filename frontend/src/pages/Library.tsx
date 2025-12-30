@@ -224,7 +224,7 @@ export default function Library() {
 
       {/* Category Filter */}
       <div style={{ marginTop: '24px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <Filter size={16} color="#6b7280" />
+        <Filter size={16} color="var(--text-muted)" />
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
@@ -253,7 +253,7 @@ export default function Library() {
         {activeTab === 'goals' ? (
           filteredGoals.length === 0 ? (
             <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '60px 20px', background: 'var(--bg-tertiary)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-              <Target size={32} color="#9ca3af" style={{ marginBottom: '12px' }} />
+              <Target size={32} color="var(--text-faint)" style={{ marginBottom: '12px' }} />
               <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '14px' }}>No goals in library. Add your first goal template.</p>
             </div>
           ) : (
@@ -297,7 +297,7 @@ export default function Library() {
                       onMouseEnter={(e) => e.currentTarget.style.background = '#f3f4f6'}
                       onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                     >
-                      <MoreVertical size={18} color="#6b7280" />
+                      <MoreVertical size={18} color="var(--text-muted)" />
                     </button>
                     {openMenuId === goal.id && (
                       <div style={{
@@ -387,7 +387,7 @@ export default function Library() {
         ) : (
           filteredCompetencies.length === 0 ? (
             <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '60px 20px', background: 'var(--bg-tertiary)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-              <TrendingUp size={32} color="#9ca3af" style={{ marginBottom: '12px' }} />
+              <TrendingUp size={32} color="var(--text-faint)" style={{ marginBottom: '12px' }} />
               <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '14px' }}>No competencies in library. Add your first competency template.</p>
             </div>
           ) : (
@@ -431,7 +431,7 @@ export default function Library() {
                       onMouseEnter={(e) => e.currentTarget.style.background = '#f3f4f6'}
                       onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                     >
-                      <MoreVertical size={18} color="#6b7280" />
+                      <MoreVertical size={18} color="var(--text-muted)" />
                     </button>
                     {openMenuId === comp.id && (
                       <div style={{
@@ -701,7 +701,7 @@ export default function Library() {
                 disabled={activeTab === 'goals' ? !formData.title.trim() : !formData.name.trim()}
                 style={{
                   padding: '10px 20px',
-                  background: (activeTab === 'goals' ? formData.title.trim() : formData.name.trim()) ? '#3b82f6' : '#9ca3af',
+                  background: (activeTab === 'goals' ? formData.title.trim() : formData.name.trim()) ? '#3b82f6' : 'var(--text-faint)',
                   color: '#ffffff',
                   border: 'none',
                   borderRadius: '8px',
