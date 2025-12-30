@@ -82,7 +82,8 @@ serve(async (req) => {
       )
     }
 
-    const { email, name, title, role, departmentId, managerId }: InviteRequest = await req.json()
+    const { email: rawEmail, name, title, role, departmentId, managerId }: InviteRequest = await req.json()
+    const email = rawEmail?.toLowerCase().trim()
 
     // Validate input
     if (!email || !name || !role) {
