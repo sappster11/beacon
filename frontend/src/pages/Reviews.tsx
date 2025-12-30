@@ -119,18 +119,18 @@ export default function Reviews() {
         key={review.id}
         className="review-card"
         style={{
-          border: '1px solid #e5e7eb',
+          border: '1px solid var(--border-color)',
           borderRadius: '12px',
           padding: '24px',
           marginBottom: '16px',
-          background: '#ffffff',
+          background: 'var(--bg-primary)',
           transition: 'all 0.2s',
         }}
       >
         <div className="review-card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '12px', gap: '12px', flexWrap: 'wrap' }}>
           <div style={{ flex: 1 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-              <h3 style={{ margin: '0', fontSize: '18px', fontWeight: '600', color: '#111827' }}>{review.cycle.name}</h3>
+              <h3 style={{ margin: '0', fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)' }}>{review.cycle.name}</h3>
               <span
                 style={{
                   padding: '4px 8px',
@@ -145,7 +145,7 @@ export default function Reviews() {
                 {isReviewee ? 'My Review' : 'Team Review'}
               </span>
             </div>
-            <p style={{ margin: '0', color: '#6b7280', fontSize: '14px' }}>
+            <p style={{ margin: '0', color: 'var(--text-muted)', fontSize: '14px' }}>
               {roleLabel}: <strong>{otherPerson.name}</strong> {otherPerson.title && `(${otherPerson.title})`}
             </p>
           </div>
@@ -181,7 +181,7 @@ export default function Reviews() {
         )}
 
         {review.peerFeedback && review.peerFeedback.length > 0 && (
-          <div style={{ marginTop: '12px', fontSize: '14px', color: '#6b7280' }}>
+          <div style={{ marginTop: '12px', fontSize: '14px', color: 'var(--text-muted)' }}>
             📝 {review.peerFeedback.length} peer feedback received
           </div>
         )}
@@ -243,8 +243,8 @@ export default function Reviews() {
           }}
         >
           <h3 style={{ margin: '0 0 8px 0', color: '#1e40af', fontSize: '16px', fontWeight: '600' }}>Active Review Cycle</h3>
-          <p style={{ margin: '0 0 8px 0', fontWeight: '600', color: '#111827' }}>{activeCycle.name}</p>
-          <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
+          <p style={{ margin: '0 0 8px 0', fontWeight: '600', color: 'var(--text-primary)' }}>{activeCycle.name}</p>
+          <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-muted)' }}>
             {new Date(activeCycle.startDate).toLocaleDateString()} -{' '}
             {new Date(activeCycle.endDate).toLocaleDateString()}
           </p>
@@ -304,7 +304,7 @@ export default function Reviews() {
               padding: '8px 20px',
               background: statusFilter === 'current' ? '#3b82f6' : '#ffffff',
               color: statusFilter === 'current' ? '#ffffff' : '#374151',
-              border: '1px solid #e5e7eb',
+              border: '1px solid var(--border-color)',
               borderRadius: '8px',
               cursor: 'pointer',
               fontSize: '14px',
@@ -320,7 +320,7 @@ export default function Reviews() {
               padding: '8px 20px',
               background: statusFilter === 'completed' ? '#3b82f6' : '#ffffff',
               color: statusFilter === 'completed' ? '#ffffff' : '#374151',
-              border: '1px solid #e5e7eb',
+              border: '1px solid var(--border-color)',
               borderRadius: '8px',
               cursor: 'pointer',
               fontSize: '14px',
@@ -378,19 +378,19 @@ export default function Reviews() {
             style={{
               textAlign: 'center',
               padding: '60px 20px',
-              background: '#f9fafb',
+              background: 'var(--bg-tertiary)',
               borderRadius: '12px',
-              border: '1px solid #e5e7eb',
+              border: '1px solid var(--border-color)',
             }}
           >
-            <h3 style={{ margin: '0 0 8px 0', color: '#111827', fontSize: '18px', fontWeight: '600' }}>No reviews found</h3>
-            <p style={{ margin: '0', color: '#6b7280', fontSize: '14px' }}>
+            <h3 style={{ margin: '0 0 8px 0', color: 'var(--text-primary)', fontSize: '18px', fontWeight: '600' }}>No reviews found</h3>
+            <p style={{ margin: '0', color: 'var(--text-muted)', fontSize: '14px' }}>
               {statusFilter === 'current' && 'You don\'t have any current reviews.'}
               {statusFilter === 'completed' && 'You don\'t have any completed reviews yet.'}
               {statusFilter === 'all' && 'You don\'t have any reviews yet.'}
             </p>
             {activeCycle && statusFilter === 'current' && (
-              <p style={{ marginTop: '12px', color: '#6b7280', fontSize: '14px' }}>Reviews for {activeCycle.name} will appear here.</p>
+              <p style={{ marginTop: '12px', color: 'var(--text-muted)', fontSize: '14px' }}>Reviews for {activeCycle.name} will appear here.</p>
             )}
           </div>
         ) : (

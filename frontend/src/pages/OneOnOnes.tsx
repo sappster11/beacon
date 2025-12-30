@@ -228,32 +228,11 @@ export default function OneOnOnes() {
 
   const employeesWithMeetings = getEmployeesWithMeetings();
 
-  // Placeholder data for preview
-  const placeholderData: EmployeeWithMeetings[] = employeesWithMeetings.length > 0 ? [] : [
-    {
-      employee: { id: 'placeholder-1', name: 'Sarah Chen', title: 'Senior Software Engineer' },
-      nextMeeting: { scheduledAt: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString() },
-      meetings: [{}, {}, {}, {}],
-    },
-    {
-      employee: { id: 'placeholder-2', name: 'Marcus Johnson', title: 'Product Designer' },
-      nextMeeting: { scheduledAt: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString() },
-      meetings: [{}, {}],
-    },
-    {
-      employee: { id: 'placeholder-3', name: 'Emily Rodriguez', title: 'Frontend Developer' },
-      nextMeeting: undefined,
-      meetings: [{}, {}],
-    },
-  ];
-
-  const displayData = employeesWithMeetings.length > 0 ? employeesWithMeetings : placeholderData;
-
   if (isLoading) {
     return (
       <div style={{ padding: '48px' }}>
         <h1 style={{ fontSize: '32px', marginBottom: '8px' }}>1:1s</h1>
-        <p style={{ color: '#6b7280' }}>Loading...</p>
+        <p style={{ color: 'var(--text-muted)' }}>Loading...</p>
       </div>
     );
   }
@@ -263,8 +242,8 @@ export default function OneOnOnes() {
       {/* Header */}
       <div style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: '16px', flexWrap: 'wrap' }}>
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: '600', color: '#111827', margin: '0 0 8px 0' }}>1:1s</h1>
-          <p style={{ fontSize: '16px', color: '#6b7280', margin: 0 }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', color: 'var(--text-primary)', margin: '0 0 8px 0' }}>1:1s</h1>
+          <p style={{ fontSize: '16px', color: 'var(--text-muted)', margin: 0 }}>
             Track your 1:1 meetings with your team
           </p>
         </div>
@@ -276,8 +255,8 @@ export default function OneOnOnes() {
                 onClick={handleOpenImportModal}
                 style={{
                   padding: '10px 16px',
-                  background: '#ffffff',
-                  color: '#374151',
+                  background: 'var(--bg-primary)',
+                  color: 'var(--text-secondary)',
                   border: '1px solid #d1d5db',
                   borderRadius: '8px',
                   cursor: 'pointer',
@@ -303,8 +282,8 @@ export default function OneOnOnes() {
                 onClick={handleConnectCalendar}
                 style={{
                   padding: '10px 16px',
-                  background: '#ffffff',
-                  color: '#374151',
+                  background: 'var(--bg-primary)',
+                  color: 'var(--text-secondary)',
                   border: '1px solid #d1d5db',
                   borderRadius: '8px',
                   cursor: 'pointer',
@@ -367,17 +346,17 @@ export default function OneOnOnes() {
       )}
 
       {/* Simple Employee Cards */}
-      {displayData.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '60px 20px', background: '#f9fafb', borderRadius: '12px', border: '1px solid #e5e7eb' }}>
+      {employeesWithMeetings.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '60px 20px', background: 'var(--bg-tertiary)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
           <Users size={32} color="#9ca3af" style={{ marginBottom: '12px' }} />
-          <h3 style={{ margin: '0 0 8px 0', color: '#111827', fontSize: '18px', fontWeight: '600' }}>No 1:1s yet</h3>
-          <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>
+          <h3 style={{ margin: '0 0 8px 0', color: 'var(--text-primary)', fontSize: '18px', fontWeight: '600' }}>No 1:1s yet</h3>
+          <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '14px' }}>
             {isManager ? 'Sync from Google Calendar or add a 1:1 manually to get started.' : 'Your manager hasn\'t scheduled any 1:1s yet.'}
           </p>
         </div>
       ) : (
         <div style={{ display: 'grid', gap: '12px' }}>
-          {displayData.map(({ employee, nextMeeting, meetings: empMeetings }) => {
+          {employeesWithMeetings.map(({ employee, nextMeeting, meetings: empMeetings }) => {
             // Get linked documents from localStorage
             const storedDocs = localStorage.getItem(`1on1-docs-${user?.id}-${employee.id}`);
             const documents: { title: string; url: string }[] = storedDocs ? JSON.parse(storedDocs) : [];
@@ -386,8 +365,8 @@ export default function OneOnOnes() {
               <div
                 key={employee.id}
                 style={{
-                  background: '#ffffff',
-                  border: '1px solid #e5e7eb',
+                  background: 'var(--bg-primary)',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '12px',
                   padding: '20px',
                   display: 'flex',
@@ -412,11 +391,11 @@ export default function OneOnOnes() {
                 />
 
                 <div style={{ flex: 1 }}>
-                  <h3 style={{ margin: '0 0 2px 0', fontSize: '16px', fontWeight: '600', color: '#111827' }}>
+                  <h3 style={{ margin: '0 0 2px 0', fontSize: '16px', fontWeight: '600', color: 'var(--text-primary)' }}>
                     {employee.name}
                   </h3>
                   {employee.title && (
-                    <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>{employee.title}</p>
+                    <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-muted)' }}>{employee.title}</p>
                   )}
                 </div>
 
@@ -435,9 +414,9 @@ export default function OneOnOnes() {
                         style={{
                           padding: '6px 10px',
                           background: '#f3f4f6',
-                          border: '1px solid #e5e7eb',
+                          border: '1px solid var(--border-color)',
                           borderRadius: '6px',
-                          color: '#374151',
+                          color: 'var(--text-secondary)',
                           textDecoration: 'none',
                           fontSize: '12px',
                           fontWeight: '500',
@@ -459,7 +438,7 @@ export default function OneOnOnes() {
                       </a>
                     ))}
                     {documents.length > 2 && (
-                      <span style={{ fontSize: '12px', color: '#6b7280', alignSelf: 'center' }}>
+                      <span style={{ fontSize: '12px', color: 'var(--text-muted)', alignSelf: 'center' }}>
                         +{documents.length - 2}
                       </span>
                     )}
@@ -468,7 +447,7 @@ export default function OneOnOnes() {
 
                 {nextMeeting ? (
                   <div style={{ textAlign: 'right', marginRight: '8px' }}>
-                    <p style={{ margin: '0 0 2px 0', fontSize: '12px', color: '#6b7280' }}>Next 1:1</p>
+                    <p style={{ margin: '0 0 2px 0', fontSize: '12px', color: 'var(--text-muted)' }}>Next 1:1</p>
                     <p style={{ margin: 0, fontSize: '14px', fontWeight: '500', color: '#3b82f6' }}>
                       {formatNextDate(nextMeeting.scheduledAt)}
                     </p>
@@ -505,7 +484,7 @@ export default function OneOnOnes() {
         >
           <div
             style={{
-              background: '#ffffff',
+              background: 'var(--bg-primary)',
               borderRadius: '12px',
               padding: '24px',
               maxWidth: '400px',
@@ -513,13 +492,13 @@ export default function OneOnOnes() {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 style={{ margin: '0 0 20px 0', fontSize: '20px', fontWeight: '600', color: '#111827' }}>
+            <h2 style={{ margin: '0 0 20px 0', fontSize: '20px', fontWeight: '600', color: 'var(--text-primary)' }}>
               Add 1:1
             </h2>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', fontWeight: '500', color: '#374151' }}>
+                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)' }}>
                   Employee
                 </label>
                 <select
@@ -543,7 +522,7 @@ export default function OneOnOnes() {
               </div>
 
               <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', fontWeight: '500', color: '#374151' }}>
+                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)' }}>
                   Date
                 </label>
                 <input
@@ -561,7 +540,7 @@ export default function OneOnOnes() {
               </div>
 
               <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', fontWeight: '500', color: '#374151' }}>
+                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)' }}>
                   Time
                 </label>
                 <input
@@ -584,8 +563,8 @@ export default function OneOnOnes() {
                 onClick={() => setShowAddModal(false)}
                 style={{
                   padding: '10px 16px',
-                  background: '#ffffff',
-                  color: '#374151',
+                  background: 'var(--bg-primary)',
+                  color: 'var(--text-secondary)',
                   border: '1px solid #d1d5db',
                   borderRadius: '6px',
                   cursor: 'pointer',
@@ -634,7 +613,7 @@ export default function OneOnOnes() {
         >
           <div
             style={{
-              background: '#ffffff',
+              background: 'var(--bg-primary)',
               borderRadius: '12px',
               padding: '24px',
               maxWidth: '700px',
@@ -655,27 +634,27 @@ export default function OneOnOnes() {
                 border: 'none',
                 cursor: 'pointer',
                 padding: '4px',
-                color: '#6b7280',
+                color: 'var(--text-muted)',
                 fontSize: '24px',
                 lineHeight: 1,
               }}
             >
               ×
             </button>
-            <h2 style={{ margin: '0 0 8px 0', fontSize: '20px', fontWeight: '600', color: '#111827' }}>
+            <h2 style={{ margin: '0 0 8px 0', fontSize: '20px', fontWeight: '600', color: 'var(--text-primary)' }}>
               Sync from Google Calendar
             </h2>
-            <p style={{ margin: '0 0 20px 0', fontSize: '14px', color: '#6b7280' }}>
+            <p style={{ margin: '0 0 20px 0', fontSize: '14px', color: 'var(--text-muted)' }}>
               Showing meetings with you and one other person
             </p>
 
             {loadingEvents ? (
               <div style={{ textAlign: 'center', padding: '40px' }}>
-                <p style={{ fontSize: '14px', color: '#6b7280' }}>Loading calendar events...</p>
+                <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>Loading calendar events...</p>
               </div>
             ) : calendarEvents.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '40px', background: '#f9fafb', borderRadius: '8px' }}>
-                <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
+              <div style={{ textAlign: 'center', padding: '40px', background: 'var(--bg-tertiary)', borderRadius: '8px' }}>
+                <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-muted)' }}>
                   No 1:1 meetings found. Only showing meetings with 2 attendees.
                 </p>
               </div>
@@ -686,15 +665,15 @@ export default function OneOnOnes() {
                     key={event.id}
                     style={{
                       padding: '16px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                     }}
                   >
                     <div style={{ marginBottom: '12px' }}>
-                      <h3 style={{ margin: '0 0 4px 0', fontSize: '15px', fontWeight: '600', color: '#111827' }}>
+                      <h3 style={{ margin: '0 0 4px 0', fontSize: '15px', fontWeight: '600', color: 'var(--text-primary)' }}>
                         {event.summary || 'Untitled Event'}
                       </h3>
-                      <p style={{ margin: 0, fontSize: '13px', color: '#6b7280' }}>
+                      <p style={{ margin: 0, fontSize: '13px', color: 'var(--text-muted)' }}>
                         {new Date(event.start.dateTime || event.start.date).toLocaleString('en-US', {
                           weekday: 'short',
                           month: 'short',
@@ -715,7 +694,7 @@ export default function OneOnOnes() {
                         style={{
                           flex: 1,
                           padding: '8px 12px',
-                          border: '1px solid #e5e7eb',
+                          border: '1px solid var(--border-color)',
                           borderRadius: '6px',
                           fontSize: '14px',
                         }}

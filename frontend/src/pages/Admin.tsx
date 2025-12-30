@@ -52,10 +52,10 @@ export default function Admin() {
     <div style={{ padding: '32px' }}>
       {/* Header */}
       <div style={{ marginBottom: '32px' }}>
-        <h1 style={{ fontSize: '28px', fontWeight: '600', color: '#111827', marginBottom: '8px' }}>
+        <h1 style={{ fontSize: '28px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '8px' }}>
           System Administration
         </h1>
-        <p style={{ color: '#6b7280', fontSize: '14px' }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
           Manage users, departments, company settings, and system configuration
         </p>
       </div>

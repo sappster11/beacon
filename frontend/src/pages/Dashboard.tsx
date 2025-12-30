@@ -125,10 +125,10 @@ export default function Dashboard() {
     <div style={{ padding: '48px' }}>
       {/* Header */}
       <div style={{ marginBottom: '32px' }}>
-        <h1 style={{ fontSize: '32px', fontWeight: '600', color: '#111827', marginBottom: '8px', letterSpacing: '-0.5px' }}>
+        <h1 style={{ fontSize: '32px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '8px', letterSpacing: '-0.5px' }}>
           Welcome back, {user?.name}
         </h1>
-        <p style={{ fontSize: '16px', color: '#6b7280', margin: 0 }}>
+        <p style={{ fontSize: '16px', color: 'var(--text-muted)', margin: 0 }}>
           {user?.title && `${user.title}`}
         </p>
       </div>
@@ -145,12 +145,12 @@ export default function Dashboard() {
               key={card.path}
               onClick={() => navigate(card.path)}
               style={{
-                background: '#ffffff',
+                background: 'var(--bg-primary)',
                 borderRadius: '12px',
                 padding: '24px',
                 cursor: 'pointer',
                 transition: 'all 0.2s',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 position: 'relative',
               }}
               onMouseEnter={(e) => {
@@ -159,7 +159,7 @@ export default function Dashboard() {
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.boxShadow = 'none';
-                e.currentTarget.style.borderColor = '#e5e7eb';
+                e.currentTarget.style.borderColor = 'var(--border-color)';
               }}
             >
               {(card as any).comingSoon && (
@@ -195,10 +195,10 @@ export default function Dashboard() {
               >
                 <Icon size={24} color={card.color} />
               </div>
-              <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', marginBottom: '8px', margin: 0 }}>
+              <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '8px', margin: 0 }}>
                 {card.title}
               </h3>
-              <p style={{ fontSize: '14px', color: '#6b7280', margin: 0, lineHeight: '1.5' }}>
+              <p style={{ fontSize: '14px', color: 'var(--text-muted)', margin: 0, lineHeight: '1.5' }}>
                 {card.description}
               </p>
             </div>
@@ -210,10 +210,10 @@ export default function Dashboard() {
       {managementCards.length > 0 && (
         <>
           <div style={{ marginBottom: '20px' }}>
-            <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#111827', marginBottom: '4px', margin: 0 }}>
+            <h2 style={{ fontSize: '20px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '4px', margin: 0 }}>
               Management
             </h2>
-            <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>
+            <p style={{ fontSize: '14px', color: 'var(--text-muted)', margin: 0 }}>
               Tools for managing your team and organization
             </p>
           </div>
@@ -225,12 +225,12 @@ export default function Dashboard() {
                   key={card.path}
                   onClick={() => navigate(card.path)}
                   style={{
-                    background: '#ffffff',
+                    background: 'var(--bg-primary)',
                     borderRadius: '12px',
                     padding: '24px',
                     cursor: 'pointer',
                     transition: 'all 0.2s',
-                    border: '1px solid #e5e7eb',
+                    border: '1px solid var(--border-color)',
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)';
@@ -238,7 +238,7 @@ export default function Dashboard() {
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.boxShadow = 'none';
-                    e.currentTarget.style.borderColor = '#e5e7eb';
+                    e.currentTarget.style.borderColor = 'var(--border-color)';
                   }}
                 >
                   <div
@@ -255,10 +255,10 @@ export default function Dashboard() {
                   >
                     <Icon size={24} color={card.color} />
                   </div>
-                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', marginBottom: '8px', margin: 0 }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '8px', margin: 0 }}>
                     {card.title}
                   </h3>
-                  <p style={{ fontSize: '14px', color: '#6b7280', margin: 0, lineHeight: '1.5' }}>
+                  <p style={{ fontSize: '14px', color: 'var(--text-muted)', margin: 0, lineHeight: '1.5' }}>
                     {card.description}
                   </p>
                 </div>
@@ -275,13 +275,13 @@ export default function Dashboard() {
           {(todos.reviewsDue.length > 0 || todos.goalsToSet.length > 0) && (
             <div
               style={{
-                background: '#ffffff',
-                border: '1px solid #e5e7eb',
+                background: 'var(--bg-primary)',
+                border: '1px solid var(--border-color)',
                 borderRadius: '12px',
                 padding: '24px',
               }}
             >
-              <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#111827', marginBottom: '16px', margin: '0 0 16px 0' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '16px', margin: '0 0 16px 0' }}>
                 Your To-Dos ({todos.summary.totalTodos})
               </h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -291,8 +291,8 @@ export default function Dashboard() {
                     onClick={() => navigate(`/reviews`)}
                     style={{
                       padding: '16px 20px',
-                      background: '#ffffff',
-                      border: '1px solid #e5e7eb',
+                      background: 'var(--bg-primary)',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       cursor: 'pointer',
                       transition: 'all 0.15s',
@@ -305,7 +305,7 @@ export default function Dashboard() {
                       e.currentTarget.style.boxShadow = '0 2px 4px rgba(59,130,246,0.1)';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = '#e5e7eb';
+                      e.currentTarget.style.borderColor = 'var(--border-color)';
                       e.currentTarget.style.boxShadow = 'none';
                     }}
                   >
@@ -323,10 +323,10 @@ export default function Dashboard() {
                       <AlertCircle size={20} color="#f59e0b" />
                     </div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: '15px', fontWeight: '500', color: '#111827', marginBottom: '4px' }}>
+                      <div style={{ fontSize: '15px', fontWeight: '500', color: 'var(--text-primary)', marginBottom: '4px' }}>
                         Complete review for {item.reviewee.name}
                       </div>
-                      <div style={{ fontSize: '13px', color: '#6b7280' }}>
+                      <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
                         {item.cycle.name} • Self-assessment completed
                       </div>
                     </div>
@@ -350,8 +350,8 @@ export default function Dashboard() {
                     onClick={() => navigate(`/goals`)}
                     style={{
                       padding: '16px 20px',
-                      background: '#ffffff',
-                      border: '1px solid #e5e7eb',
+                      background: 'var(--bg-primary)',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       cursor: 'pointer',
                       transition: 'all 0.15s',
@@ -364,7 +364,7 @@ export default function Dashboard() {
                       e.currentTarget.style.boxShadow = '0 2px 4px rgba(59,130,246,0.1)';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = '#e5e7eb';
+                      e.currentTarget.style.borderColor = 'var(--border-color)';
                       e.currentTarget.style.boxShadow = 'none';
                     }}
                   >
@@ -382,10 +382,10 @@ export default function Dashboard() {
                       <Target size={20} color="#3b82f6" />
                     </div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: '15px', fontWeight: '500', color: '#111827', marginBottom: '4px' }}>
+                      <div style={{ fontSize: '15px', fontWeight: '500', color: 'var(--text-primary)', marginBottom: '4px' }}>
                         Set goals with {item.employee.name}
                       </div>
-                      <div style={{ fontSize: '13px', color: '#6b7280' }}>
+                      <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
                         {item.reason}
                       </div>
                     </div>
@@ -411,13 +411,13 @@ export default function Dashboard() {
           {teamActivity.length > 0 && (
             <div
               style={{
-                background: '#ffffff',
-                border: '1px solid #e5e7eb',
+                background: 'var(--bg-primary)',
+                border: '1px solid var(--border-color)',
                 borderRadius: '12px',
                 padding: '24px',
               }}
             >
-              <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#111827', marginBottom: '16px', margin: '0 0 16px 0' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '16px', margin: '0 0 16px 0' }}>
                 Team Activity
               </h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -426,8 +426,8 @@ export default function Dashboard() {
                     key={activity.id}
                     style={{
                       padding: '12px 16px',
-                      background: '#ffffff',
-                      border: '1px solid #e5e7eb',
+                      background: 'var(--bg-primary)',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       display: 'flex',
                       alignItems: 'center',
@@ -451,7 +451,7 @@ export default function Dashboard() {
                       {activity.type === 'one_on_one' && <Users size={16} color="#f59e0b" />}
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: '14px', color: '#111827', marginBottom: '2px' }}>
+                      <div style={{ fontSize: '14px', color: 'var(--text-primary)', marginBottom: '2px' }}>
                         <strong>{activity.employee.name}</strong>{' '}
                         {activity.action === 'completed' && 'completed'}
                         {activity.action === 'updated' && 'updated'}
@@ -462,7 +462,7 @@ export default function Dashboard() {
                         {activity.type === 'goal' && activity.details.title}
                         {activity.type === 'one_on_one' && 'a 1:1 meeting'}
                       </div>
-                      <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                      <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
                         {new Date(activity.timestamp).toLocaleDateString('en-US', {
                           month: 'short',
                           day: 'numeric',

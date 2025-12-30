@@ -90,7 +90,7 @@ export default function Goals() {
     return (
       <div style={{ padding: '48px' }}>
         <h1 style={{ fontSize: '32px', marginBottom: '8px' }}>My Goals</h1>
-        <p style={{ color: '#6b7280' }}>Loading goals...</p>
+        <p style={{ color: 'var(--text-muted)' }}>Loading goals...</p>
       </div>
     );
   }
@@ -111,9 +111,9 @@ export default function Goals() {
       <div style={{ marginBottom: '32px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
           <Target size={28} color="#f59e0b" />
-          <h1 style={{ fontSize: '32px', fontWeight: '600', color: '#111827', margin: 0 }}>My Goals</h1>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>My Goals</h1>
         </div>
-        <p style={{ fontSize: '16px', color: '#6b7280', margin: 0 }}>
+        <p style={{ fontSize: '16px', color: 'var(--text-muted)', margin: 0 }}>
           Goals assigned to you from performance reviews
         </p>
       </div>
@@ -129,16 +129,16 @@ export default function Goals() {
           style={{
             textAlign: 'center',
             padding: '60px 20px',
-            background: '#f9fafb',
+            background: 'var(--bg-tertiary)',
             borderRadius: '12px',
-            border: '1px solid #e5e7eb',
+            border: '1px solid var(--border-color)',
           }}
         >
           <Target size={40} color="#9ca3af" style={{ marginBottom: '16px' }} />
-          <h3 style={{ margin: '0 0 8px 0', color: '#111827', fontSize: '18px', fontWeight: '600' }}>
+          <h3 style={{ margin: '0 0 8px 0', color: 'var(--text-primary)', fontSize: '18px', fontWeight: '600' }}>
             No goals assigned yet
           </h3>
-          <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>
+          <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '14px' }}>
             Goals will appear here once they are assigned in your performance reviews.
           </p>
         </div>
@@ -149,8 +149,8 @@ export default function Goals() {
               key={review.id}
               style={{
                 marginBottom: '24px',
-                background: '#ffffff',
-                border: '1px solid #e5e7eb',
+                background: 'var(--bg-primary)',
+                border: '1px solid var(--border-color)',
                 borderRadius: '12px',
                 overflow: 'hidden',
               }}
@@ -159,18 +159,18 @@ export default function Goals() {
               <div
                 style={{
                   padding: '16px 20px',
-                  background: '#f9fafb',
-                  borderBottom: '1px solid #e5e7eb',
+                  background: 'var(--bg-tertiary)',
+                  borderBottom: '1px solid var(--border-color)',
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
                 }}
               >
                 <div>
-                  <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', fontWeight: '600', color: '#111827' }}>
+                  <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', fontWeight: '600', color: 'var(--text-primary)' }}>
                     {cycleName}
                   </h3>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#6b7280' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--text-muted)' }}>
                     <Calendar size={14} />
                     <span>Manager: {review.reviewer?.name || 'Unknown'}</span>
                   </div>
@@ -179,9 +179,9 @@ export default function Goals() {
                   onClick={() => navigate(`/reviews/${review.id}`)}
                   style={{
                     padding: '8px 14px',
-                    background: '#ffffff',
-                    color: '#374151',
-                    border: '1px solid #e5e7eb',
+                    background: 'var(--bg-primary)',
+                    color: 'var(--text-secondary)',
+                    border: '1px solid var(--border-color)',
                     borderRadius: '6px',
                     cursor: 'pointer',
                     fontSize: '13px',
@@ -213,12 +213,12 @@ export default function Goals() {
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                         <Target size={16} color="#f59e0b" />
-                        <h4 style={{ margin: 0, fontSize: '15px', fontWeight: '500', color: '#111827' }}>
+                        <h4 style={{ margin: 0, fontSize: '15px', fontWeight: '500', color: 'var(--text-primary)' }}>
                           {goal.title}
                         </h4>
                       </div>
                       {goal.description && (
-                        <p style={{ margin: '4px 0 0 24px', fontSize: '14px', color: '#6b7280', lineHeight: '1.5' }}>
+                        <p style={{ margin: '4px 0 0 24px', fontSize: '14px', color: 'var(--text-muted)', lineHeight: '1.5' }}>
                           {goal.description}
                         </p>
                       )}

@@ -212,10 +212,10 @@ export default function Settings() {
     <div style={{ padding: '48px', maxWidth: '1200px' }}>
       {/* Header */}
       <div style={{ marginBottom: '32px' }}>
-        <h1 style={{ fontSize: '32px', fontWeight: '600', color: '#111827', marginBottom: '8px', letterSpacing: '-0.5px' }}>
+        <h1 style={{ fontSize: '32px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '8px', letterSpacing: '-0.5px' }}>
           Settings
         </h1>
-        <p style={{ fontSize: '16px', color: '#6b7280', margin: 0 }}>
+        <p style={{ fontSize: '16px', color: 'var(--text-muted)', margin: 0 }}>
           Manage your profile and account settings
         </p>
       </div>
@@ -223,14 +223,14 @@ export default function Settings() {
       {/* Profile Picture Section */}
       <div
         style={{
-          background: '#ffffff',
+          background: 'var(--bg-primary)',
           borderRadius: '12px',
-          border: '1px solid #e5e7eb',
+          border: '1px solid var(--border-color)',
           padding: '32px',
           marginBottom: '24px',
         }}
       >
-        <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#111827', marginBottom: '24px', margin: '0 0 24px 0' }}>
+        <h2 style={{ fontSize: '20px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '24px', margin: '0 0 24px 0' }}>
           Profile Picture
         </h2>
 
@@ -294,7 +294,7 @@ export default function Settings() {
               )}
             </div>
 
-            <p style={{ fontSize: '13px', color: '#6b7280', margin: 0 }}>
+            <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>
               JPG, PNG, GIF or WebP. Max 5MB.
             </p>
           </div>
@@ -311,21 +311,21 @@ export default function Settings() {
       {/* Profile Information Section */}
       <div
         style={{
-          background: '#ffffff',
+          background: 'var(--bg-primary)',
           borderRadius: '12px',
-          border: '1px solid #e5e7eb',
+          border: '1px solid var(--border-color)',
           padding: '32px',
           marginBottom: '24px',
         }}
       >
-        <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#111827', marginBottom: '24px', margin: '0 0 24px 0' }}>
+        <h2 style={{ fontSize: '20px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '24px', margin: '0 0 24px 0' }}>
           Profile Information
         </h2>
 
         <form onSubmit={handleProfileUpdate}>
           {/* Bio */}
           <div style={{ marginBottom: '24px' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
               <FileText size={16} />
               Bio / About Me
             </label>
@@ -345,14 +345,14 @@ export default function Settings() {
                 minHeight: '120px',
               }}
             />
-            <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '4px', textAlign: 'right' }}>
+            <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px', textAlign: 'right' }}>
               {bio.length}/500 characters
             </div>
           </div>
 
           {/* Phone Number */}
           <div style={{ marginBottom: '24px' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
               <Phone size={16} />
               Phone Number
             </label>
@@ -373,7 +373,7 @@ export default function Settings() {
 
           {/* Location */}
           <div style={{ marginBottom: '24px' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
               <MapPin size={16} />
               Location
             </label>
@@ -435,21 +435,21 @@ export default function Settings() {
       {/* Password Change Section */}
       <div
         style={{
-          background: '#ffffff',
+          background: 'var(--bg-primary)',
           borderRadius: '12px',
-          border: '1px solid #e5e7eb',
+          border: '1px solid var(--border-color)',
           padding: '32px',
           marginBottom: '24px',
         }}
       >
-        <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#111827', marginBottom: '24px', margin: '0 0 24px 0' }}>
+        <h2 style={{ fontSize: '20px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '24px', margin: '0 0 24px 0' }}>
           Change Password
         </h2>
 
         <form onSubmit={handlePasswordChange}>
           {/* Current Password */}
           <div style={{ marginBottom: '24px' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
               <Lock size={16} />
               Current Password
             </label>
@@ -470,7 +470,7 @@ export default function Settings() {
 
           {/* New Password */}
           <div style={{ marginBottom: '24px' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
               <Lock size={16} />
               New Password
             </label>
@@ -488,14 +488,14 @@ export default function Settings() {
                 fontSize: '14px',
               }}
             />
-            <p style={{ fontSize: '12px', color: '#6b7280', margin: '4px 0 0 0' }}>
+            <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>
               Must be at least 8 characters
             </p>
           </div>
 
           {/* Confirm Password */}
           <div style={{ marginBottom: '24px' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
               <Lock size={16} />
               Confirm New Password
             </label>
@@ -559,47 +559,47 @@ export default function Settings() {
         style={{
           background: '#f9fafb',
           borderRadius: '12px',
-          border: '1px solid #e5e7eb',
+          border: '1px solid var(--border-color)',
           padding: '32px',
         }}
       >
-        <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#111827', marginBottom: '24px', margin: '0 0 24px 0' }}>
+        <h2 style={{ fontSize: '20px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '24px', margin: '0 0 24px 0' }}>
           Account Information
         </h2>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
           <div>
-            <label style={{ fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px', display: 'block' }}>
+            <label style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px', display: 'block' }}>
               Full Name
             </label>
-            <p style={{ fontSize: '14px', color: '#111827', margin: 0 }}>{user.name}</p>
+            <p style={{ fontSize: '14px', color: 'var(--text-primary)', margin: 0 }}>{user.name}</p>
           </div>
 
           <div>
-            <label style={{ fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px', display: 'block' }}>
+            <label style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px', display: 'block' }}>
               Email
             </label>
-            <p style={{ fontSize: '14px', color: '#111827', margin: 0 }}>{user.email}</p>
+            <p style={{ fontSize: '14px', color: 'var(--text-primary)', margin: 0 }}>{user.email}</p>
           </div>
 
           <div>
-            <label style={{ fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px', display: 'block' }}>
+            <label style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px', display: 'block' }}>
               Role
             </label>
-            <p style={{ fontSize: '14px', color: '#111827', margin: 0 }}>{user.role.replace('_', ' ')}</p>
+            <p style={{ fontSize: '14px', color: 'var(--text-primary)', margin: 0 }}>{user.role.replace('_', ' ')}</p>
           </div>
 
           {user.title && (
             <div>
-              <label style={{ fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px', display: 'block' }}>
+              <label style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px', display: 'block' }}>
                 Title
               </label>
-              <p style={{ fontSize: '14px', color: '#111827', margin: 0 }}>{user.title}</p>
+              <p style={{ fontSize: '14px', color: 'var(--text-primary)', margin: 0 }}>{user.title}</p>
             </div>
           )}
         </div>
 
-        <p style={{ fontSize: '13px', color: '#6b7280', marginTop: '16px', marginBottom: 0 }}>
+        <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '16px', marginBottom: 0 }}>
           Contact your administrator to update your name, email, role, or title.
         </p>
       </div>
@@ -607,17 +607,17 @@ export default function Settings() {
       {/* Data & Privacy Section */}
       <div
         style={{
-          background: '#ffffff',
+          background: 'var(--bg-primary)',
           borderRadius: '12px',
-          border: '1px solid #e5e7eb',
+          border: '1px solid var(--border-color)',
           padding: '32px',
           marginTop: '24px',
         }}
       >
-        <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#111827', marginBottom: '8px', margin: '0 0 8px 0' }}>
+        <h2 style={{ fontSize: '20px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '8px', margin: '0 0 8px 0' }}>
           Data & Privacy
         </h2>
-        <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '24px', margin: '0 0 24px 0' }}>
+        <p style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '24px', margin: '0 0 24px 0' }}>
           Manage your personal data. Learn more in our{' '}
           <Link to="/privacy" style={{ color: '#3b82f6', textDecoration: 'underline' }}>
             Privacy Policy
@@ -642,10 +642,10 @@ export default function Settings() {
               <Database size={24} color="#3b82f6" />
             </div>
             <div style={{ flex: 1 }}>
-              <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#111827', margin: '0 0 4px 0' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: '600', color: 'var(--text-primary)', margin: '0 0 4px 0' }}>
                 Export Your Data
               </h3>
-              <p style={{ fontSize: '14px', color: '#6b7280', margin: '0 0 16px 0' }}>
+              <p style={{ fontSize: '14px', color: 'var(--text-muted)', margin: '0 0 16px 0' }}>
                 Download a copy of all your personal data including goals, reviews, one-on-ones, and development plans.
               </p>
 
@@ -660,20 +660,20 @@ export default function Settings() {
                   gap: '16px',
                 }}>
                   <div>
-                    <div style={{ fontSize: '24px', fontWeight: '600', color: '#111827' }}>{dataSummary.goals}</div>
-                    <div style={{ fontSize: '12px', color: '#6b7280' }}>Goals</div>
+                    <div style={{ fontSize: '24px', fontWeight: '600', color: 'var(--text-primary)' }}>{dataSummary.goals}</div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Goals</div>
                   </div>
                   <div>
-                    <div style={{ fontSize: '24px', fontWeight: '600', color: '#111827' }}>{dataSummary.reviews}</div>
-                    <div style={{ fontSize: '12px', color: '#6b7280' }}>Reviews</div>
+                    <div style={{ fontSize: '24px', fontWeight: '600', color: 'var(--text-primary)' }}>{dataSummary.reviews}</div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Reviews</div>
                   </div>
                   <div>
-                    <div style={{ fontSize: '24px', fontWeight: '600', color: '#111827' }}>{dataSummary.oneOnOnes}</div>
-                    <div style={{ fontSize: '12px', color: '#6b7280' }}>1:1 Meetings</div>
+                    <div style={{ fontSize: '24px', fontWeight: '600', color: 'var(--text-primary)' }}>{dataSummary.oneOnOnes}</div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>1:1 Meetings</div>
                   </div>
                   <div>
-                    <div style={{ fontSize: '24px', fontWeight: '600', color: '#111827' }}>{dataSummary.developmentPlans}</div>
-                    <div style={{ fontSize: '12px', color: '#6b7280' }}>Dev Plans</div>
+                    <div style={{ fontSize: '24px', fontWeight: '600', color: 'var(--text-primary)' }}>{dataSummary.developmentPlans}</div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Dev Plans</div>
                   </div>
                 </div>
               )}
@@ -752,10 +752,10 @@ export default function Settings() {
               <Trash2 size={24} color="#dc2626" />
             </div>
             <div style={{ flex: 1 }}>
-              <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#111827', margin: '0 0 4px 0' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: '600', color: 'var(--text-primary)', margin: '0 0 4px 0' }}>
                 Delete Account
               </h3>
-              <p style={{ fontSize: '14px', color: '#6b7280', margin: '0 0 16px 0' }}>
+              <p style={{ fontSize: '14px', color: 'var(--text-muted)', margin: '0 0 16px 0' }}>
                 Permanently delete your account and all associated data. This action cannot be undone.
               </p>
 
@@ -796,7 +796,7 @@ export default function Settings() {
                   </ul>
 
                   <div style={{ marginBottom: '16px' }}>
-                    <label style={{ fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px', display: 'block' }}>
+                    <label style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block' }}>
                       Type your email to confirm: <strong>{user.email}</strong>
                     </label>
                     <input
@@ -830,8 +830,8 @@ export default function Settings() {
                       }}
                       style={{
                         padding: '10px 20px',
-                        background: '#ffffff',
-                        color: '#374151',
+                        background: 'var(--bg-primary)',
+                        color: 'var(--text-secondary)',
                         border: '1px solid #d1d5db',
                         borderRadius: '8px',
                         cursor: 'pointer',
