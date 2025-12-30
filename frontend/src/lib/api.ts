@@ -256,7 +256,7 @@ export const users = {
 
     const { data, error } = await supabase
       .from('users')
-      .select('*, department:departments(id, name), manager:users!users_manager_id_fkey(id, name)')
+      .select('*, department:departments(id, name)')
       .eq('organization_id', currentUser.organization_id)
       .order('name');
     if (error) {
@@ -291,7 +291,7 @@ export const users = {
 
     const { data, error } = await supabase
       .from('users')
-      .select('*, department:departments(id, name), manager:users!users_manager_id_fkey(id, name)')
+      .select('*, department:departments(id, name)')
       .eq('organization_id', currentUser.organization_id)
       .eq('is_active', true)
       .order('name');
