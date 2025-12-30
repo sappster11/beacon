@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Save, Building2, Upload, Palette, Mail } from 'lucide-react';
 import { settings as settingsApi } from '../../lib/api';
+import { useBranding } from '../../hooks/useBranding';
 
 export default function AdminCompanyTab() {
+  const { refresh: refreshBranding } = useBranding();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState<string | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
@@ -55,6 +57,10 @@ export default function AdminCompanyTab() {
     try {
       setSaving(category);
       await settingsApi.update(category, settingsData);
+      // Refresh branding if we just saved branding settings
+      if (category === 'branding') {
+        await refreshBranding();
+      }
       alert('Settings saved successfully!');
     } catch (error: any) {
       alert(error.message || 'Failed to save settings');

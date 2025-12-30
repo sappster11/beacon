@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { useBranding } from '../hooks/useBranding';
 import { Home, Target, ClipboardList, Users, TrendingUp, LogOut, Menu, X, Building2, UsersRound, Settings, Globe, BookOpen, HelpCircle } from 'lucide-react';
 import Avatar from './Avatar';
 import { supabase } from '../lib/supabase';
 
 export default function Layout() {
   const { user, logout } = useAuth();
+  const { branding } = useBranding();
   const navigate = useNavigate();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -133,21 +135,41 @@ export default function Layout() {
         {/* Logo */}
         <div
           style={{
-            padding: '24px 20px',
+            padding: '20px',
             borderBottom: '1px solid #e5e7eb',
           }}
         >
           <div
             onClick={() => navigate('/')}
             style={{
-              fontSize: '20px',
-              fontWeight: '600',
-              color: '#000000',
               cursor: 'pointer',
-              letterSpacing: '-0.5px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
             }}
           >
-            Beacon
+            {branding.logo ? (
+              <img
+                src={branding.logo}
+                alt="Company logo"
+                style={{
+                  maxHeight: '36px',
+                  maxWidth: '160px',
+                  objectFit: 'contain',
+                }}
+              />
+            ) : (
+              <div
+                style={{
+                  fontSize: '20px',
+                  fontWeight: '600',
+                  color: '#000000',
+                  letterSpacing: '-0.5px',
+                }}
+              >
+                Beacon
+              </div>
+            )}
           </div>
         </div>
 
