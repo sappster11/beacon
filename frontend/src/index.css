@@ -101,6 +101,31 @@ html.dark .admin-users-table td::before {
   color: var(--text-faint) !important;
 }
 
+/* Help page tabs */
+.help-tab {
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: -1px;
+}
+
+.help-tab.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+.help-tab svg {
+  color: inherit;
+}
+
 /* Mobile responsive styles */
 @media (max-width: 768px) {
   .mobile-menu-button {

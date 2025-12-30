@@ -399,42 +399,16 @@ export default function Help() {
       >
         <button
           onClick={() => setActiveTab('faqs')}
-          style={{
-            padding: '12px 20px',
-            background: 'transparent',
-            border: 'none',
-            borderBottom: activeTab === 'faqs' ? '2px solid var(--color-primary)' : '2px solid transparent',
-            color: activeTab === 'faqs' ? 'var(--color-primary)' : 'var(--text-secondary)',
-            fontSize: '14px',
-            fontWeight: '500',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            marginBottom: '-1px',
-          }}
+          className={`help-tab ${activeTab === 'faqs' ? 'active' : ''}`}
         >
-          <MessageCircle size={18} color={activeTab === 'faqs' ? 'var(--color-primary)' : 'var(--text-secondary)'} />
+          <MessageCircle size={18} />
           FAQs
         </button>
         <button
           onClick={() => setActiveTab('guides')}
-          style={{
-            padding: '12px 20px',
-            background: 'transparent',
-            border: 'none',
-            borderBottom: activeTab === 'guides' ? '2px solid var(--color-primary)' : '2px solid transparent',
-            color: activeTab === 'guides' ? 'var(--color-primary)' : 'var(--text-secondary)',
-            fontSize: '14px',
-            fontWeight: '500',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            marginBottom: '-1px',
-          }}
+          className={`help-tab ${activeTab === 'guides' ? 'active' : ''}`}
         >
-          <BookOpen size={18} color={activeTab === 'guides' ? 'var(--color-primary)' : 'var(--text-secondary)'} />
+          <BookOpen size={18} />
           Step-by-Step Guides
         </button>
       </div>
