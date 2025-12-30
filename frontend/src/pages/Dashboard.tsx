@@ -126,7 +126,7 @@ export default function Dashboard() {
       {/* Header */}
       <div style={{ marginBottom: '32px' }}>
         <h1 style={{ fontSize: '32px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '8px', letterSpacing: '-0.5px' }}>
-          Welcome back, {user?.name}
+          Welcome back, {user?.name?.split(' ')[0]}
         </h1>
         <p style={{ fontSize: '16px', color: 'var(--text-muted)', margin: 0 }}>
           {user?.title && `${user.title}`}
