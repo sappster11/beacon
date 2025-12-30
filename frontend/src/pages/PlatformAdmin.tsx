@@ -693,7 +693,7 @@ export default function PlatformAdmin() {
                                   color: user.role === 'ADMIN' ? '#92400e' : user.role === 'MANAGER' ? '#1e40af' : 'var(--text-secondary)',
                                 }}
                               >
-                                {user.role.replace('_', ' ')}
+                                {user.role.charAt(0) + user.role.slice(1).toLowerCase()}
                               </span>
                             </td>
                             <td style={{ padding: '10px 12px', fontSize: '13px', color: 'var(--text-muted)' }}>

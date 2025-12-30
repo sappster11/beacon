@@ -461,7 +461,7 @@ export default function Settings() {
             <label style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px', display: 'block' }}>
               Role
             </label>
-            <p style={{ fontSize: '14px', color: 'var(--text-primary)', margin: 0 }}>{user.role.replace('_', ' ')}</p>
+            <p style={{ fontSize: '14px', color: 'var(--text-primary)', margin: 0 }}>{user.role.charAt(0) + user.role.slice(1).toLowerCase()}</p>
           </div>
 
           {user.title && (

@@ -233,7 +233,7 @@ export default function Employees() {
                         color: employee.role === 'ADMIN' ? '#92400e' : employee.role === 'MANAGER' ? '#1e40af' : 'var(--text-secondary)',
                       }}
                     >
-                      {employee.role.replace('_', ' ')}
+                      {employee.role.charAt(0) + employee.role.slice(1).toLowerCase()}
                     </span>
                   </td>
                 </tr>

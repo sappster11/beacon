@@ -135,7 +135,7 @@ export default function EmployeeDetailModal({ employee, onClose }: EmployeeDetai
                     color: employee.role === 'ADMIN' ? '#92400e' : employee.role === 'MANAGER' ? '#1e40af' : '#374151',
                   }}
                 >
-                  {employee.role.replace('_', ' ')}
+                  {employee.role.charAt(0) + employee.role.slice(1).toLowerCase()}
                 </span>
               </div>
             </div>

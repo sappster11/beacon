@@ -490,7 +490,7 @@ export default function AdminUsersTab() {
                       background: user.orgRole === 'LEADERSHIP' ? '#fef3c7' : user.orgRole === 'MANAGER' ? '#dbeafe' : 'var(--bg-tertiary)',
                       color: user.orgRole === 'LEADERSHIP' ? '#92400e' : user.orgRole === 'MANAGER' ? '#1e40af' : 'var(--text-secondary)'
                     }}>
-                      {user.orgRole || 'Employee'}
+                      {user.orgRole ? user.orgRole.charAt(0) + user.orgRole.slice(1).toLowerCase() : 'Employee'}
                     </span>
                   </td>
                   <td data-label="Access" style={{ padding: '12px 16px', fontSize: '14px' }}>
@@ -502,7 +502,7 @@ export default function AdminUsersTab() {
                       background: user.role === 'ADMIN' ? '#fce7f3' : user.role === 'MANAGER' ? '#d1fae5' : 'var(--bg-tertiary)',
                       color: user.role === 'ADMIN' ? '#9d174d' : user.role === 'MANAGER' ? '#065f46' : 'var(--text-secondary)'
                     }}>
-                      {user.role}
+                      {user.role.charAt(0) + user.role.slice(1).toLowerCase()}
                     </span>
                   </td>
                   <td data-label="Status" style={{ padding: '12px 16px' }}>
@@ -700,7 +700,7 @@ export default function AdminUsersTab() {
                           background: invite.role === 'ADMIN' ? '#fef3c7' : invite.role === 'MANAGER' ? '#dbeafe' : 'var(--bg-tertiary)',
                           color: invite.role === 'ADMIN' ? '#92400e' : invite.role === 'MANAGER' ? '#1e40af' : 'var(--text-secondary)'
                         }}>
-                          {invite.role.replace('_', ' ')}
+                          {invite.role.charAt(0) + invite.role.slice(1).toLowerCase()}
                         </span>
                       </td>
                       <td data-label="Invited By" style={{ padding: '12px 16px', fontSize: '14px', color: 'var(--text-muted)' }}>
