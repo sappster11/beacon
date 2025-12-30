@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { reviewCycles } from '../lib/api';
 import type { ReviewCycle } from '../types';
-import { Plus, Calendar, Users, CheckCircle, Star } from 'lucide-react';
+import { Plus, Calendar, Users, CheckCircle, Star, ChevronDown } from 'lucide-react';
 import CreateReviewCycleModal from '../components/CreateReviewCycleModal';
 import AssignReviewsModal from '../components/AssignReviewsModal';
 
@@ -14,6 +14,8 @@ export default function ReviewManagement() {
   const [showCreateCycleModal, setShowCreateCycleModal] = useState(false);
   const [showAssignReviewsModal, setShowAssignReviewsModal] = useState(false);
   const [selectedCycle, setSelectedCycle] = useState<ReviewCycle | null>(null);
+  const [statusDropdownOpen, setStatusDropdownOpen] = useState<string | null>(null);
+  const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
 
   const isAdmin = user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
 
@@ -51,35 +53,160 @@ export default function ReviewManagement() {
     }
   };
 
+  const handleStatusChange = async (cycleId: string, newStatus: string) => {
+    try {
+      setUpdatingStatus(cycleId);
+      setStatusDropdownOpen(null);
+      await reviewCycles.update(cycleId, { status: newStatus } as any);
+      await loadCycles();
+    } catch (err: any) {
+      setError(err.message || 'Failed to update status');
+    } finally {
+      setUpdatingStatus(null);
+    }
+  };
+
+  const statusConfig: Record<string, { label: string; color: string }> = {
+    active: { label: 'Active', color: '#10b981' },
+    scheduled: { label: 'Scheduled', color: '#3b82f6' },
+    completed: { label: 'Completed', color: '#6b7280' },
+    cancelled: { label: 'Cancelled', color: '#ef4444' },
+  };
+
   const getStatusBadge = (cycle: ReviewCycle) => {
     const status = cycle.status || 'completed';
     const isActive = status === 'active';
-
-    const statusConfig: Record<string, { label: string; color: string }> = {
-      active: { label: 'Active', color: '#10b981' },
-      completed: { label: 'Completed', color: '#6b7280' },
-      cancelled: { label: 'Cancelled', color: '#ef4444' },
-    };
-
     const config = statusConfig[status] || statusConfig.completed;
+    const isDropdownOpen = statusDropdownOpen === cycle.id;
+    const isUpdating = updatingStatus === cycle.id;
+
+    if (!isAdmin) {
+      return (
+        <span
+          style={{
+            padding: '4px 12px',
+            borderRadius: '6px',
+            fontSize: '12px',
+            fontWeight: '500',
+            background: `${config.color}20`,
+            color: config.color,
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '4px',
+          }}
+        >
+          {isActive && <Star size={12} fill={config.color} />}
+          {config.label}
+        </span>
+      );
+    }
 
     return (
-      <span
-        style={{
-          padding: '4px 12px',
-          borderRadius: '6px',
-          fontSize: '12px',
-          fontWeight: '500',
-          background: `${config.color}20`,
-          color: config.color,
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '4px',
-        }}
-      >
-        {isActive && <Star size={12} fill={config.color} />}
-        {config.label}
-      </span>
+      <div style={{ position: 'relative' }}>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setStatusDropdownOpen(isDropdownOpen ? null : cycle.id);
+          }}
+          disabled={isUpdating}
+          style={{
+            padding: '4px 10px',
+            borderRadius: '6px',
+            fontSize: '12px',
+            fontWeight: '500',
+            background: `${config.color}20`,
+            color: config.color,
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '4px',
+            border: `1px solid ${config.color}40`,
+            cursor: isUpdating ? 'not-allowed' : 'pointer',
+            opacity: isUpdating ? 0.6 : 1,
+          }}
+        >
+          {isActive && <Star size={12} fill={config.color} />}
+          {isUpdating ? 'Updating...' : config.label}
+          <ChevronDown size={12} style={{ marginLeft: '2px' }} />
+        </button>
+
+        {isDropdownOpen && (
+          <>
+            <div
+              style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                zIndex: 99,
+              }}
+              onClick={() => setStatusDropdownOpen(null)}
+            />
+            <div
+              style={{
+                position: 'absolute',
+                top: '100%',
+                left: 0,
+                marginTop: '4px',
+                background: 'white',
+                border: '1px solid #e5e7eb',
+                borderRadius: '8px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                zIndex: 100,
+                minWidth: '140px',
+                overflow: 'hidden',
+              }}
+            >
+              {Object.entries(statusConfig).map(([key, val]) => (
+                <button
+                  key={key}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (key !== status) {
+                      handleStatusChange(cycle.id, key);
+                    } else {
+                      setStatusDropdownOpen(null);
+                    }
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '10px 14px',
+                    background: key === status ? '#f3f4f6' : 'white',
+                    border: 'none',
+                    borderBottom: '1px solid #f3f4f6',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontSize: '13px',
+                    color: '#374151',
+                    textAlign: 'left',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (key !== status) e.currentTarget.style.background = '#f9fafb';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = key === status ? '#f3f4f6' : 'white';
+                  }}
+                >
+                  <span
+                    style={{
+                      width: '8px',
+                      height: '8px',
+                      borderRadius: '50%',
+                      background: val.color,
+                    }}
+                  />
+                  {val.label}
+                  {key === status && (
+                    <CheckCircle size={14} style={{ marginLeft: 'auto', color: '#10b981' }} />
+                  )}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
     );
   };
 
@@ -127,36 +254,6 @@ export default function ReviewManagement() {
 
           {isAdmin && (
             <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
-              {cycle.status !== 'active' && (
-                <button
-                  onClick={() => handleSetActive(cycle.id)}
-                  style={{
-                    padding: '8px 16px',
-                    background: '#ffffff',
-                    color: '#10b981',
-                    border: '1px solid #10b981',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    transition: 'all 0.15s',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = '#10b981';
-                    e.currentTarget.style.color = '#ffffff';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = '#ffffff';
-                    e.currentTarget.style.color = '#10b981';
-                  }}
-                >
-                  <Star size={16} />
-                  Set Active
-                </button>
-              )}
               <button
                 onClick={() => {
                   setSelectedCycle(cycle);

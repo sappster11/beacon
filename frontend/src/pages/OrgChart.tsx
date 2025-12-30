@@ -148,11 +148,25 @@ export default function OrgChart() {
             backgroundColor={level === 0 ? '#8b5cf6' : level === 1 ? '#3b82f6' : '#10b981'}
           />
 
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: '15px', fontWeight: '600', color: '#111827', marginBottom: '2px' }}>
+          <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
+            <div style={{
+              fontSize: '15px',
+              fontWeight: '600',
+              color: '#111827',
+              marginBottom: '2px',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}>
               {node.user.name}
             </div>
-            <div style={{ fontSize: '13px', color: '#6b7280' }}>
+            <div style={{
+              fontSize: '13px',
+              color: '#6b7280',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}>
               {node.user.title || 'No title'}
               {node.user.department && ` • ${node.user.department.name}`}
             </div>
@@ -246,11 +260,26 @@ export default function OrgChart() {
               backgroundColor={deptColor}
               style={{ boxShadow: `0 4px 8px ${deptColor}30` }}
             />
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: '16px', fontWeight: '700', color: '#111827', marginBottom: '4px' }}>
+            <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
+              <div style={{
+                fontSize: '16px',
+                fontWeight: '700',
+                color: '#111827',
+                marginBottom: '4px',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}>
                 {node.user.name}
               </div>
-              <div style={{ fontSize: '13px', color: '#6b7280', fontWeight: '500' }}>
+              <div style={{
+                fontSize: '13px',
+                color: '#6b7280',
+                fontWeight: '500',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}>
                 {node.user.title || 'No title'}
               </div>
             </div>
