@@ -243,14 +243,19 @@ async function getCurrentUserId(): Promise<string> {
 export const users = {
   getAll: async (): Promise<User[]> => {
     const userId = await getCurrentUserId();
-    const { data: currentUser } = await supabase
+    const { data: currentUser, error: userError } = await supabase
       .from('users')
       .select('organization_id')
       .eq('id', userId)
       .single();
 
+    if (userError) {
+      console.error('users.getAll: Failed to get current user:', userError);
+      throw userError;
+    }
+
     if (!currentUser?.organization_id) {
-      console.warn('users.getAll: No organization_id found for current user');
+      console.warn('users.getAll: No organization_id found for current user', userId);
       return [];
     }
 
@@ -263,6 +268,7 @@ export const users = {
       console.error('users.getAll error:', error);
       throw error;
     }
+    console.log('users.getAll: Found', data?.length, 'users');
     return data.map(transformUser);
   },
 
