@@ -50,9 +50,6 @@ html.dark select {
   color: var(--text-primary);
 }
 
-html.dark button {
-  color: inherit;
-}
 
 html.dark input::placeholder,
 html.dark textarea::placeholder {
