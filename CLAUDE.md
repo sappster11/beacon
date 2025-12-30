@@ -169,6 +169,7 @@ GOOGLE_CLIENT_ID=xxx.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=GOCSPX-xxx
 GOOGLE_REDIRECT_URI=https://bunpyytlgpdcpcfhjjut.supabase.co/functions/v1/google-calendar-callback
 FRONTEND_URL=https://beacon.homesteadapps.net
+RESEND_API_KEY=re_...
 ```
 
 ### Supabase (Automatic)
@@ -250,7 +251,7 @@ git add -A && git commit -m "message" && git push
 
 ## Known Issues / TODOs
 
-- [ ] Email sending for invitations (needs Resend API key)
+- [x] Email sending for invitations (Resend - from: noreply@beacon.homesteadapps.net)
 - [x] Google Calendar integration (edge functions created, needs OAuth credentials)
 - [ ] File uploads for transcripts
 - [ ] Real-time notifications
