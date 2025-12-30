@@ -24,7 +24,7 @@ export default function OnboardingChecklist({ userRole }: OnboardingChecklistPro
     users: 0,
     reviewCycles: 0,
     hasProfilePicture: false,
-    hasBio: false,
+    hasDisplayName: false,
   });
   const [loading, setLoading] = useState(true);
 
@@ -56,7 +56,7 @@ export default function OnboardingChecklist({ userRole }: OnboardingChecklistPro
         users: usersList?.length || 0,
         reviewCycles: cyclesList?.length || 0,
         hasProfilePicture: !!(me as any)?.profilePicture,
-        hasBio: !!(me as any)?.bio,
+        hasDisplayName: !!(me as any)?.displayName,
       });
     } catch (error) {
       console.error('Failed to load onboarding stats:', error);
@@ -100,8 +100,8 @@ export default function OnboardingChecklist({ userRole }: OnboardingChecklistPro
     {
       id: 'profile',
       title: 'Complete your profile',
-      description: 'Add a photo and bio',
-      completed: stats.hasProfilePicture && stats.hasBio,
+      description: 'Add a photo and set your display name',
+      completed: stats.hasProfilePicture && stats.hasDisplayName,
       action: () => navigate('/settings'),
       icon: User,
     },
@@ -111,8 +111,8 @@ export default function OnboardingChecklist({ userRole }: OnboardingChecklistPro
     {
       id: 'profile',
       title: 'Complete your profile',
-      description: 'Add a photo and bio to help your team know you',
-      completed: stats.hasProfilePicture && stats.hasBio,
+      description: 'Add a photo and set your display name',
+      completed: stats.hasProfilePicture && stats.hasDisplayName,
       action: () => navigate('/settings'),
       icon: User,
     },
