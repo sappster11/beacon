@@ -4,7 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { reviews, reviewCycles, manager } from '../lib/api';
 import type { Review, ReviewCycle, User } from '../types';
 import { ReviewsSkeleton } from '../components/Skeleton';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Info } from 'lucide-react';
 
 export default function Reviews() {
   const { user } = useAuth();
@@ -298,42 +298,32 @@ export default function Reviews() {
         <div
           className="hr-admin-banner"
           style={{
-            background: '#fef3c7',
-            border: '1px solid #fbbf24',
-            borderRadius: '8px',
-            padding: '12px 16px',
-            marginBottom: '24px',
             display: 'flex',
             alignItems: 'center',
-            gap: '8px',
-            flexWrap: 'wrap',
+            gap: '6px',
+            marginBottom: '16px',
+            fontSize: '13px',
+            color: 'var(--text-muted)',
           }}
         >
-          <span style={{ fontSize: '14px', color: '#92400e', fontWeight: '500', flex: 1, minWidth: '200px' }}>
-            ℹ️ HR Admin View: Showing all reviews
-          </span>
-          <button
+          <Info size={14} />
+          <span>HR Admin View: Showing all reviews.</span>
+          <a
             onClick={() => navigate('/review-management')}
             style={{
-              padding: '6px 12px',
-              background: '#3b82f6',
-              color: '#ffffff',
-              border: 'none',
-              borderRadius: '6px',
+              color: 'var(--color-primary)',
               cursor: 'pointer',
-              fontSize: '13px',
-              fontWeight: '500',
-              transition: 'background 0.15s',
+              textDecoration: 'none',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#2563eb';
+              e.currentTarget.style.textDecoration = 'underline';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#3b82f6';
+              e.currentTarget.style.textDecoration = 'none';
             }}
           >
             Manage Reviews
-          </button>
+          </a>
         </div>
       )}
 
