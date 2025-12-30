@@ -163,140 +163,142 @@ export default function Settings() {
           Profile
         </h2>
 
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '32px', marginBottom: '24px' }}>
-          {/* Avatar */}
-          <div>
-            <Avatar user={user} size="xl" />
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              style={{ display: 'none' }}
-            />
-            <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                disabled={isUploadingImage}
-                style={{
-                  padding: '8px 12px',
-                  background: 'var(--color-primary)',
-                  color: '#ffffff',
-                  border: 'none',
-                  borderRadius: '6px',
-                  cursor: isUploadingImage ? 'not-allowed' : 'pointer',
-                  fontSize: '13px',
-                  fontWeight: '500',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  opacity: isUploadingImage ? 0.6 : 1,
-                }}
-              >
-                <Camera size={14} />
-                {isUploadingImage ? '...' : 'Upload'}
-              </button>
+        <form onSubmit={handleProfileUpdate}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '32px', marginBottom: '24px' }}>
+            {/* Avatar */}
+            <div>
+              <Avatar user={user} size="xl" />
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                style={{ display: 'none' }}
+              />
+            </div>
 
-              {user.profilePicture && (
-                <button
-                  onClick={handleRemoveImage}
-                  disabled={isUploadingImage}
-                  style={{
-                    padding: '8px 12px',
-                    background: 'transparent',
-                    color: 'var(--text-muted)',
-                    border: '1px solid var(--border-color)',
-                    borderRadius: '6px',
-                    cursor: isUploadingImage ? 'not-allowed' : 'pointer',
-                    fontSize: '13px',
-                    fontWeight: '500',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    opacity: isUploadingImage ? 0.6 : 1,
-                  }}
-                >
-                  <X size={14} />
-                  Remove
-                </button>
-              )}
+            {/* Display Name */}
+            <div style={{ flex: 1 }}>
+              <label style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block' }}>
+                Display Name
+              </label>
+              <input
+                type="text"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                placeholder="How you'd like to be greeted"
+                maxLength={50}
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  background: 'var(--bg-primary)',
+                  color: 'var(--text-primary)',
+                }}
+              />
+              <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>
+                This is how you'll be greeted (e.g., "Welcome back, {displayName || 'Your Name'}")
+              </div>
             </div>
           </div>
 
-          {/* Display Name Form */}
-          <div style={{ flex: 1 }}>
-            <form onSubmit={handleProfileUpdate}>
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block' }}>
-                  Display Name
-                </label>
-                <input
-                  type="text"
-                  value={displayName}
-                  onChange={(e) => setDisplayName(e.target.value)}
-                  placeholder="How you'd like to be greeted"
-                  maxLength={50}
-                  style={{
-                    width: '100%',
-                    padding: '12px',
-                    border: '1px solid var(--border-color)',
-                    borderRadius: '8px',
-                    fontSize: '14px',
-                    background: 'var(--bg-primary)',
-                    color: 'var(--text-primary)',
-                  }}
-                />
-                <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>
-                  This is how you'll be greeted (e.g., "Welcome back, {displayName || 'Your Name'}")
-                </div>
-              </div>
+          {/* Success/Error Messages */}
+          {profileSuccess && (
+            <div style={{ padding: '12px', background: '#d1fae5', color: '#065f46', borderRadius: '8px', marginBottom: '16px', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Check size={16} />
+              {profileSuccess}
+            </div>
+          )}
 
-              {/* Success/Error Messages */}
-              {profileSuccess && (
-                <div style={{ padding: '12px', background: '#d1fae5', color: '#065f46', borderRadius: '8px', marginBottom: '16px', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Check size={16} />
-                  {profileSuccess}
-                </div>
-              )}
+          {profileError && (
+            <div style={{ padding: '12px', background: '#fee2e2', color: '#991b1b', borderRadius: '8px', marginBottom: '16px', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <AlertCircle size={16} />
+              {profileError}
+            </div>
+          )}
 
-              {profileError && (
-                <div style={{ padding: '12px', background: '#fee2e2', color: '#991b1b', borderRadius: '8px', marginBottom: '16px', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <AlertCircle size={16} />
-                  {profileError}
-                </div>
-              )}
+          {imageError && (
+            <div style={{ padding: '12px', background: '#fee2e2', color: '#991b1b', borderRadius: '8px', marginBottom: '16px', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <AlertCircle size={16} />
+              {imageError}
+            </div>
+          )}
 
+          {/* Buttons on same line */}
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUploadingImage}
+              style={{
+                padding: '10px 20px',
+                background: 'var(--bg-primary)',
+                color: 'var(--text-secondary)',
+                border: '1px solid var(--border-color)',
+                borderRadius: '8px',
+                cursor: isUploadingImage ? 'not-allowed' : 'pointer',
+                fontSize: '14px',
+                fontWeight: '500',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                opacity: isUploadingImage ? 0.6 : 1,
+              }}
+            >
+              <Camera size={16} />
+              {isUploadingImage ? 'Uploading...' : 'Upload Photo'}
+            </button>
+
+            {user.profilePicture && (
               <button
-                type="submit"
-                disabled={isUpdatingProfile}
+                type="button"
+                onClick={handleRemoveImage}
+                disabled={isUploadingImage}
                 style={{
                   padding: '10px 20px',
-                  background: 'var(--color-primary)',
-                  color: '#ffffff',
-                  border: 'none',
+                  background: 'transparent',
+                  color: 'var(--text-muted)',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
-                  cursor: isUpdatingProfile ? 'not-allowed' : 'pointer',
+                  cursor: isUploadingImage ? 'not-allowed' : 'pointer',
                   fontSize: '14px',
                   fontWeight: '500',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px',
-                  opacity: isUpdatingProfile ? 0.6 : 1,
+                  opacity: isUploadingImage ? 0.6 : 1,
                 }}
               >
-                <Save size={16} />
-                {isUpdatingProfile ? 'Saving...' : 'Save'}
+                <X size={16} />
+                Remove
               </button>
-            </form>
-          </div>
-        </div>
+            )}
 
-        {imageError && (
-          <div style={{ padding: '12px', background: '#fee2e2', color: '#991b1b', borderRadius: '8px', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <AlertCircle size={16} />
-            {imageError}
+            <button
+              type="submit"
+              disabled={isUpdatingProfile}
+              style={{
+                padding: '10px 20px',
+                background: 'var(--color-primary)',
+                color: '#ffffff',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: isUpdatingProfile ? 'not-allowed' : 'pointer',
+                fontSize: '14px',
+                fontWeight: '500',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                opacity: isUpdatingProfile ? 0.6 : 1,
+              }}
+            >
+              <Save size={16} />
+              {isUpdatingProfile ? 'Saving...' : 'Save'}
+            </button>
           </div>
-        )}
+        </form>
       </div>
 
       {/* Password Change Section */}
