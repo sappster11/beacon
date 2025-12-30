@@ -2047,14 +2047,43 @@ export const manager = {
   getTeamSummary: async (): Promise<any> => {
     const userId = await getCurrentUserId();
 
+    // Get direct reports
     const { data: directReports } = await supabase
       .from('users')
       .select('id')
       .eq('manager_id', userId)
       .eq('is_active', true);
 
+    const reportIds = directReports?.map(r => r.id) || [];
+
+    // Get active goals for team members
+    const { count: activeGoals } = await supabase
+      .from('goals')
+      .select('id', { count: 'exact', head: true })
+      .in('owner_id', reportIds.length > 0 ? reportIds : ['none'])
+      .eq('status', 'ACTIVE');
+
+    // Get completed reviews for team members
+    const { count: completedReviews } = await supabase
+      .from('reviews')
+      .select('id', { count: 'exact', head: true })
+      .in('reviewee_id', reportIds.length > 0 ? reportIds : ['none'])
+      .eq('status', 'COMPLETED');
+
+    // Get upcoming 1:1s
+    const { count: upcomingOneOnOnes } = await supabase
+      .from('one_on_ones')
+      .select('id', { count: 'exact', head: true })
+      .eq('manager_id', userId)
+      .eq('status', 'scheduled')
+      .gte('scheduled_at', new Date().toISOString());
+
     return {
+      totalTeamMembers: directReports?.length || 0,
       totalReports: directReports?.length || 0,
+      activeGoals: activeGoals || 0,
+      completedReviews: completedReviews || 0,
+      upcomingOneOnOnes: upcomingOneOnOnes || 0,
     };
   },
 };
