@@ -728,11 +728,12 @@ export const profile = {
     return transformUser(data);
   },
 
-  updateProfile: async (updates: { bio?: string; phoneNumber?: string; location?: string }): Promise<User> => {
+  updateProfile: async (updates: { displayName?: string; bio?: string; phoneNumber?: string; location?: string }): Promise<User> => {
     const userId = await getCurrentUserId();
     const { data, error } = await supabase
       .from('users')
       .update({
+        display_name: updates.displayName,
         bio: updates.bio,
         phone_number: updates.phoneNumber,
         location: updates.location,

@@ -11,6 +11,7 @@ export default function Settings() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Profile form state
+  const [displayName, setDisplayName] = useState(user?.displayName || user?.name?.split(' ')[0] || '');
   const [bio, setBio] = useState(user?.bio || '');
   const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber || '');
   const [location, setLocation] = useState(user?.location || '');
@@ -44,6 +45,7 @@ export default function Settings() {
 
   useEffect(() => {
     if (user) {
+      setDisplayName(user.displayName || user.name?.split(' ')[0] || '');
       setBio(user.bio || '');
       setPhoneNumber(user.phoneNumber || '');
       setLocation(user.location || '');
@@ -57,7 +59,7 @@ export default function Settings() {
     setProfileSuccess('');
 
     try {
-      await profile.updateProfile({ bio, phoneNumber, location });
+      await profile.updateProfile({ displayName, bio, phoneNumber, location });
       await refreshUser();
       setProfileSuccess('Profile updated successfully!');
       setTimeout(() => setProfileSuccess(''), 3000);
@@ -323,6 +325,32 @@ export default function Settings() {
         </h2>
 
         <form onSubmit={handleProfileUpdate}>
+          {/* Display Name */}
+          <div style={{ marginBottom: '24px' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
+              Display Name
+            </label>
+            <input
+              type="text"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              placeholder="How you'd like to be greeted"
+              maxLength={50}
+              style={{
+                width: '100%',
+                padding: '12px',
+                border: '1px solid var(--border-color)',
+                borderRadius: '8px',
+                fontSize: '14px',
+                background: 'var(--bg-primary)',
+                color: 'var(--text-primary)',
+              }}
+            />
+            <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>
+              This is how you'll be greeted on the Dashboard (e.g., "Welcome back, {displayName || 'Your Name'}")
+            </div>
+          </div>
+
           {/* Bio */}
           <div style={{ marginBottom: '24px' }}>
             <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>

@@ -21,6 +21,7 @@ function transformUser(dbUser: any, org?: any): User {
     id: dbUser.id,
     email: dbUser.email,
     name: dbUser.name,
+    displayName: dbUser.display_name,
     title: dbUser.title,
     role: dbUser.role,
     organizationId: dbUser.organization_id,
