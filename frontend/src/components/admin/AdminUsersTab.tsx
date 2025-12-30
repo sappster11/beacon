@@ -487,8 +487,8 @@ export default function AdminUsersTab() {
                       borderRadius: '6px',
                       fontSize: '12px',
                       fontWeight: '500',
-                      background: user.role === 'SUPER_ADMIN' ? '#fef3c7' : user.role === 'HR_ADMIN' ? '#dbeafe' : '#f3f4f6',
-                      color: user.role === 'SUPER_ADMIN' ? '#92400e' : user.role === 'HR_ADMIN' ? '#1e40af' : '#374151'
+                      background: user.role === 'SUPER_ADMIN' ? '#fef3c7' : user.role === 'HR_ADMIN' ? '#dbeafe' : 'var(--bg-tertiary)',
+                      color: user.role === 'SUPER_ADMIN' ? '#92400e' : user.role === 'HR_ADMIN' ? '#1e40af' : 'var(--text-secondary)'
                     }}>
                       {user.role.replace('_', ' ')}
                     </span>
@@ -685,8 +685,8 @@ export default function AdminUsersTab() {
                           borderRadius: '6px',
                           fontSize: '12px',
                           fontWeight: '500',
-                          background: invite.role === 'SUPER_ADMIN' ? '#fef3c7' : invite.role === 'HR_ADMIN' ? '#dbeafe' : '#f3f4f6',
-                          color: invite.role === 'SUPER_ADMIN' ? '#92400e' : invite.role === 'HR_ADMIN' ? '#1e40af' : '#374151'
+                          background: invite.role === 'SUPER_ADMIN' ? '#fef3c7' : invite.role === 'HR_ADMIN' ? '#dbeafe' : 'var(--bg-tertiary)',
+                          color: invite.role === 'SUPER_ADMIN' ? '#92400e' : invite.role === 'HR_ADMIN' ? '#1e40af' : 'var(--text-secondary)'
                         }}>
                           {invite.role.replace('_', ' ')}
                         </span>

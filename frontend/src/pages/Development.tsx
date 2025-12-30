@@ -15,24 +15,22 @@ export default function Development() {
       </div>
 
       {/* Coming Soon Card */}
-      <div style={{ maxWidth: '900px' }}>
-        <div
-          style={{
-            textAlign: 'center',
-            padding: '60px 20px',
-            background: 'var(--bg-tertiary)',
-            borderRadius: '12px',
-            border: '1px solid var(--border-color)',
-          }}
-        >
-          <Rocket size={40} style={{ marginBottom: '16px', color: 'var(--text-faint)' }} />
-          <h3 style={{ margin: '0 0 8px 0', color: 'var(--text-primary)', fontSize: '18px', fontWeight: '600' }}>
-            Coming Soon
-          </h3>
-          <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '14px', maxWidth: '400px', marginLeft: 'auto', marginRight: 'auto' }}>
-            We're building an exciting new way to help you track your career goals and skill development. Stay tuned!
-          </p>
-        </div>
+      <div
+        style={{
+          textAlign: 'center',
+          padding: '60px 20px',
+          background: 'var(--bg-tertiary)',
+          borderRadius: '12px',
+          border: '1px solid var(--border-color)',
+        }}
+      >
+        <Rocket size={40} style={{ marginBottom: '16px', color: 'var(--text-faint)' }} />
+        <h3 style={{ margin: '0 0 8px 0', color: 'var(--text-primary)', fontSize: '18px', fontWeight: '600' }}>
+          Coming Soon
+        </h3>
+        <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '14px', maxWidth: '400px', marginLeft: 'auto', marginRight: 'auto' }}>
+          We're building an exciting new way to help you track your career goals and skill development. Stay tuned!
+        </p>
       </div>
     </div>
   );

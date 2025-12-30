@@ -393,7 +393,7 @@ export default function Help() {
           display: 'flex',
           gap: '8px',
           marginBottom: '24px',
-          borderBottom: '1px solid #e5e7eb',
+          borderBottom: '1px solid var(--border-color)',
           paddingBottom: '0',
         }}
       >
@@ -404,7 +404,7 @@ export default function Help() {
             background: 'transparent',
             border: 'none',
             borderBottom: activeTab === 'faqs' ? '2px solid var(--color-primary)' : '2px solid transparent',
-            color: activeTab === 'faqs' ? 'var(--color-primary)' : '#6b7280',
+            color: activeTab === 'faqs' ? 'var(--color-primary)' : 'var(--text-muted)',
             fontSize: '14px',
             fontWeight: '500',
             cursor: 'pointer',
@@ -424,7 +424,7 @@ export default function Help() {
             background: 'transparent',
             border: 'none',
             borderBottom: activeTab === 'guides' ? '2px solid var(--color-primary)' : '2px solid transparent',
-            color: activeTab === 'guides' ? 'var(--color-primary)' : '#6b7280',
+            color: activeTab === 'guides' ? 'var(--color-primary)' : 'var(--text-muted)',
             fontSize: '14px',
             fontWeight: '500',
             cursor: 'pointer',
@@ -510,7 +510,7 @@ export default function Help() {
                             style={{
                               padding: '0 16px 16px 46px',
                               fontSize: '14px',
-                              color: '#4b5563',
+                              color: 'var(--text-secondary)',
                               lineHeight: '1.6',
                             }}
                           >
@@ -623,7 +623,7 @@ export default function Help() {
                                   key={stepIndex}
                                   style={{
                                     fontSize: '14px',
-                                    color: '#4b5563',
+                                    color: 'var(--text-secondary)',
                                     lineHeight: '1.5',
                                   }}
                                 >

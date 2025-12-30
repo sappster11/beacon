@@ -179,7 +179,7 @@ export default function OrgChart() {
                 borderRadius: '6px',
                 fontSize: '12px',
                 fontWeight: '500',
-                background: '#f3f4f6',
+                background: 'var(--bg-tertiary)',
                 color: 'var(--text-secondary)',
                 flexShrink: 0,
               }}
@@ -290,7 +290,7 @@ export default function OrgChart() {
             {hasChildren && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Users size={16} color={deptColor} />
-                <span style={{ fontSize: '13px', fontWeight: '600', color: '#374151' }}>
+                <span style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-secondary)' }}>
                   {node.children.length} Direct {node.children.length === 1 ? 'Report' : 'Reports'}
                 </span>
               </div>
@@ -298,7 +298,7 @@ export default function OrgChart() {
             {!hasChildren && <div />}
 
             {hasChildren && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '4px 8px', borderRadius: '6px', background: '#f9fafb' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '4px 8px', borderRadius: '6px', background: 'var(--bg-tertiary)' }}>
                 {isExpanded ? (
                   <>
                     <ChevronDown size={16} color="#6b7280" />
@@ -588,7 +588,7 @@ export default function OrgChart() {
             style={{
               textAlign: 'center',
               padding: '60px 20px',
-              background: '#f9fafb',
+              background: 'var(--bg-tertiary)',
               borderRadius: '12px',
               border: '1px solid var(--border-color)',
             }}
