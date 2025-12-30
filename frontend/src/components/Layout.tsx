@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useBranding } from '../hooks/useBranding';
-import { Home, Target, ClipboardList, Users, TrendingUp, LogOut, Menu, X, Building2, UsersRound, Settings, Globe, BookOpen, HelpCircle } from 'lucide-react';
+import { Home, Target, ClipboardList, Users, TrendingUp, LogOut, Menu, X, Building2, UsersRound, Settings, Globe, BookOpen, HelpCircle, Moon, Sun } from 'lucide-react';
 import Avatar from './Avatar';
 import { supabase } from '../lib/supabase';
 
@@ -13,6 +13,20 @@ export default function Layout() {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isPlatformAdmin, setIsPlatformAdmin] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const saved = localStorage.getItem('darkMode');
+    return saved === 'true';
+  });
+
+  // Apply dark mode to document
+  useEffect(() => {
+    localStorage.setItem('darkMode', isDarkMode.toString());
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
 
   // Check platform admin status
   useEffect(() => {
@@ -79,7 +93,7 @@ export default function Layout() {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#f3f4f6' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-secondary)' }}>
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -89,15 +103,15 @@ export default function Layout() {
           left: '16px',
           zIndex: 1001,
           padding: '8px',
-          background: '#ffffff',
-          border: '1px solid #e5e7eb',
+          background: 'var(--bg-primary)',
+          border: '1px solid var(--border-color)',
           borderRadius: '8px',
           cursor: 'pointer',
           display: 'none',
         }}
         className="mobile-menu-button"
       >
-        {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+        {isMobileMenuOpen ? <X size={20} color="var(--text-primary)" /> : <Menu size={20} color="var(--text-primary)" />}
       </button>
 
       {/* Mobile Overlay */}
@@ -119,8 +133,8 @@ export default function Layout() {
       <aside
         style={{
           width: '240px',
-          background: '#ffffff',
-          borderRight: '1px solid #e5e7eb',
+          background: 'var(--bg-primary)',
+          borderRight: '1px solid var(--border-color)',
           display: 'flex',
           flexDirection: 'column',
           position: 'fixed',
@@ -136,7 +150,7 @@ export default function Layout() {
         <div
           style={{
             padding: '20px',
-            borderBottom: '1px solid #e5e7eb',
+            borderBottom: '1px solid var(--border-color)',
           }}
         >
           <div
@@ -163,7 +177,7 @@ export default function Layout() {
                 style={{
                   fontSize: '20px',
                   fontWeight: '600',
-                  color: '#000000',
+                  color: 'var(--text-primary)',
                   letterSpacing: '-0.5px',
                 }}
               >
@@ -192,7 +206,7 @@ export default function Layout() {
                   marginBottom: '4px',
                   border: 'none',
                   background: active ? 'var(--color-primary)' : 'transparent',
-                  color: active ? '#ffffff' : '#6b7280',
+                  color: active ? '#ffffff' : 'var(--text-muted)',
                   borderRadius: '8px',
                   cursor: 'pointer',
                   fontSize: '14px',
@@ -206,14 +220,14 @@ export default function Layout() {
                 }}
                 onMouseEnter={(e) => {
                   if (!active) {
-                    e.currentTarget.style.background = '#f3f4f6';
-                    e.currentTarget.style.color = '#111827';
+                    e.currentTarget.style.background = 'var(--bg-hover)';
+                    e.currentTarget.style.color = 'var(--text-primary)';
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!active) {
                     e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.color = '#6b7280';
+                    e.currentTarget.style.color = 'var(--text-muted)';
                   }
                 }}
               >
@@ -246,14 +260,14 @@ export default function Layout() {
                 style={{
                   padding: '16px 8px 8px 8px',
                   marginTop: '8px',
-                  borderTop: '1px solid #e5e7eb',
+                  borderTop: '1px solid var(--border-color)',
                 }}
               >
                 <div
                   style={{
                     fontSize: '11px',
                     fontWeight: '600',
-                    color: '#9ca3af',
+                    color: 'var(--text-faint)',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px',
                   }}
@@ -278,7 +292,7 @@ export default function Layout() {
                       marginBottom: '4px',
                       border: 'none',
                       background: active ? 'var(--color-secondary)' : 'transparent',
-                      color: active ? '#ffffff' : '#6b7280',
+                      color: active ? '#ffffff' : 'var(--text-muted)',
                       borderRadius: '8px',
                       cursor: 'pointer',
                       fontSize: '14px',
@@ -291,14 +305,14 @@ export default function Layout() {
                     }}
                     onMouseEnter={(e) => {
                       if (!active) {
-                        e.currentTarget.style.background = '#f3f4f6';
-                        e.currentTarget.style.color = '#111827';
+                        e.currentTarget.style.background = 'var(--bg-hover)';
+                        e.currentTarget.style.color = 'var(--text-primary)';
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!active) {
                         e.currentTarget.style.background = 'transparent';
-                        e.currentTarget.style.color = '#6b7280';
+                        e.currentTarget.style.color = 'var(--text-muted)';
                       }
                     }}
                   >
@@ -317,14 +331,14 @@ export default function Layout() {
                 style={{
                   padding: '16px 8px 8px 8px',
                   marginTop: '8px',
-                  borderTop: '1px solid #e5e7eb',
+                  borderTop: '1px solid var(--border-color)',
                 }}
               >
                 <div
                   style={{
                     fontSize: '11px',
                     fontWeight: '600',
-                    color: '#9ca3af',
+                    color: 'var(--text-faint)',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px',
                   }}
@@ -349,7 +363,7 @@ export default function Layout() {
                       marginBottom: '4px',
                       border: 'none',
                       background: active ? 'var(--color-accent)' : 'transparent',
-                      color: active ? '#ffffff' : '#6b7280',
+                      color: active ? '#ffffff' : 'var(--text-muted)',
                       borderRadius: '8px',
                       cursor: 'pointer',
                       fontSize: '14px',
@@ -362,14 +376,14 @@ export default function Layout() {
                     }}
                     onMouseEnter={(e) => {
                       if (!active) {
-                        e.currentTarget.style.background = '#f3f4f6';
-                        e.currentTarget.style.color = '#111827';
+                        e.currentTarget.style.background = 'var(--bg-hover)';
+                        e.currentTarget.style.color = 'var(--text-primary)';
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!active) {
                         e.currentTarget.style.background = 'transparent';
-                        e.currentTarget.style.color = '#6b7280';
+                        e.currentTarget.style.color = 'var(--text-muted)';
                       }
                     }}
                   >
@@ -386,7 +400,7 @@ export default function Layout() {
         <div
           style={{
             padding: '16px',
-            borderTop: '1px solid #e5e7eb',
+            borderTop: '1px solid var(--border-color)',
           }}
         >
           <button
@@ -397,7 +411,7 @@ export default function Layout() {
             style={{
               width: '100%',
               padding: '12px',
-              background: '#f9fafb',
+              background: 'var(--bg-tertiary)',
               border: 'none',
               borderRadius: '8px',
               marginBottom: '8px',
@@ -408,10 +422,10 @@ export default function Layout() {
               transition: 'all 0.15s',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#f3f4f6';
+              e.currentTarget.style.background = 'var(--bg-hover)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#f9fafb';
+              e.currentTarget.style.background = 'var(--bg-tertiary)';
             }}
           >
             <Avatar
@@ -419,23 +433,81 @@ export default function Layout() {
               size="sm"
             />
             <div style={{ flex: 1, textAlign: 'left' }}>
-              <div style={{ fontSize: '14px', fontWeight: '500', color: '#111827', marginBottom: '2px' }}>
+              <div style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-primary)', marginBottom: '2px' }}>
                 {user?.name}
               </div>
-              <div style={{ fontSize: '12px', color: '#6b7280' }}>
+              <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
                 {user?.role.replace('_', ' ')}
               </div>
             </div>
-            <Settings size={16} style={{ color: '#9ca3af' }} />
+            <Settings size={16} style={{ color: 'var(--text-faint)' }} />
           </button>
+
+          {/* Dark Mode Toggle */}
+          <button
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            style={{
+              width: '100%',
+              padding: '10px 16px',
+              background: 'transparent',
+              color: 'var(--text-muted)',
+              border: '1px solid var(--border-color)',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontSize: '14px',
+              fontWeight: '400',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '8px',
+              marginBottom: '8px',
+              transition: 'all 0.15s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'var(--bg-hover)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {isDarkMode ? <Moon size={16} /> : <Sun size={16} />}
+              <span>{isDarkMode ? 'Dark Mode' : 'Light Mode'}</span>
+            </div>
+            <div
+              style={{
+                width: '36px',
+                height: '20px',
+                borderRadius: '10px',
+                background: isDarkMode ? '#3b82f6' : '#d1d5db',
+                position: 'relative',
+                transition: 'background 0.2s',
+              }}
+            >
+              <div
+                style={{
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '50%',
+                  background: '#ffffff',
+                  position: 'absolute',
+                  top: '2px',
+                  left: isDarkMode ? '18px' : '2px',
+                  transition: 'left 0.2s',
+                  boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
+                }}
+              />
+            </div>
+          </button>
+
           <button
             onClick={logout}
             style={{
               width: '100%',
               padding: '10px 16px',
               background: 'transparent',
-              color: '#6b7280',
-              border: '1px solid #e5e7eb',
+              color: 'var(--text-muted)',
+              border: '1px solid var(--border-color)',
               borderRadius: '8px',
               cursor: 'pointer',
               fontSize: '14px',
@@ -453,8 +525,8 @@ export default function Layout() {
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = 'transparent';
-              e.currentTarget.style.borderColor = '#e5e7eb';
-              e.currentTarget.style.color = '#6b7280';
+              e.currentTarget.style.borderColor = 'var(--border-color)';
+              e.currentTarget.style.color = 'var(--text-muted)';
             }}
           >
             <LogOut size={16} />
@@ -469,7 +541,7 @@ export default function Layout() {
           marginLeft: '240px',
           flex: 1,
           minHeight: '100vh',
-          background: '#f3f4f6',
+          background: 'var(--bg-secondary)',
         }}
       >
         <Outlet />
