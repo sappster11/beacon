@@ -134,7 +134,7 @@ serve(async (req) => {
         role,
         department_id: departmentId || null,
         manager_id: managerId || null,
-        invited_by: user.id,
+        invited_by_id: user.id,
         token,
         expires_at: expiresAt.toISOString(),
         status: 'PENDING',
