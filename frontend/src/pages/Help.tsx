@@ -414,7 +414,7 @@ export default function Help() {
             marginBottom: '-1px',
           }}
         >
-          <MessageCircle size={18} />
+          <MessageCircle size={18} color={activeTab === 'faqs' ? 'var(--color-primary)' : 'var(--text-secondary)'} />
           FAQs
         </button>
         <button
@@ -434,7 +434,7 @@ export default function Help() {
             marginBottom: '-1px',
           }}
         >
-          <BookOpen size={18} />
+          <BookOpen size={18} color={activeTab === 'guides' ? 'var(--color-primary)' : 'var(--text-secondary)'} />
           Step-by-Step Guides
         </button>
       </div>
