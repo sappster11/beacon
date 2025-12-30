@@ -467,17 +467,17 @@ export const invitations = {
   },
 
   resend: async (id: string): Promise<void> => {
-    // Update expiration date and trigger email resend via edge function
-    const newExpiresAt = new Date();
-    newExpiresAt.setDate(newExpiresAt.getDate() + 7);
+    const { data, error } = await supabase.functions.invoke('resend-invitation', {
+      body: { invitationId: id },
+    });
 
-    const { error } = await supabase
-      .from('invitations')
-      .update({ expires_at: newExpiresAt.toISOString() })
-      .eq('id', id);
-    if (error) throw error;
+    if (error) {
+      throw new Error(error.message || 'Failed to resend invitation');
+    }
 
-    // TODO: Trigger email resend via edge function
+    if (!data?.success) {
+      throw new Error(data?.error || 'Failed to resend invitation');
+    }
   },
 
   validateToken: async (token: string): Promise<{ valid: boolean; invitation?: any; error?: string }> => {

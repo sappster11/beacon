@@ -37,7 +37,9 @@ export default function AdminUsersTab() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [selectedUserIds, setSelectedUserIds] = useState<Set<string>>(new Set());
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+  const [openInviteDropdownId, setOpenInviteDropdownId] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const inviteDropdownRef = useRef<HTMLDivElement>(null);
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [activeTab, setActiveTab] = useState<'users' | 'invitations'>('users');
 
@@ -49,6 +51,9 @@ export default function AdminUsersTab() {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setOpenDropdownId(null);
+      }
+      if (inviteDropdownRef.current && !inviteDropdownRef.current.contains(event.target as Node)) {
+        setOpenInviteDropdownId(null);
       }
     };
 
@@ -703,35 +708,88 @@ export default function AdminUsersTab() {
                         )}
                       </td>
                       <td data-label="Actions" style={{ padding: '12px 16px', textAlign: 'center' }}>
-                        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                        <div style={{ position: 'relative', display: 'inline-block' }} ref={openInviteDropdownId === invite.id ? inviteDropdownRef : null}>
                           <button
-                            onClick={() => handleResendInvite(invite.id)}
-                            title="Resend invitation"
+                            onClick={() => setOpenInviteDropdownId(openInviteDropdownId === invite.id ? null : invite.id)}
                             style={{
                               padding: '6px',
-                              background: '#dbeafe',
-                              border: 'none',
+                              background: 'transparent',
+                              border: '1px solid #e5e7eb',
                               borderRadius: '6px',
                               cursor: 'pointer',
-                              color: '#3b82f6',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              color: '#6b7280'
                             }}
                           >
-                            <RefreshCw size={16} />
+                            <MoreVertical size={16} />
                           </button>
-                          <button
-                            onClick={() => handleCancelInvite(invite.id)}
-                            title="Cancel invitation"
-                            style={{
-                              padding: '6px',
-                              background: '#fee2e2',
-                              border: 'none',
-                              borderRadius: '6px',
-                              cursor: 'pointer',
-                              color: '#dc2626',
-                            }}
-                          >
-                            <X size={16} />
-                          </button>
+
+                          {openInviteDropdownId === invite.id && (
+                            <div style={{
+                              position: 'absolute',
+                              right: 0,
+                              top: '100%',
+                              marginTop: '4px',
+                              background: 'white',
+                              border: '1px solid #e5e7eb',
+                              borderRadius: '8px',
+                              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                              minWidth: '160px',
+                              zIndex: 10,
+                              overflow: 'hidden'
+                            }}>
+                              <button
+                                onClick={() => {
+                                  handleResendInvite(invite.id);
+                                  setOpenInviteDropdownId(null);
+                                }}
+                                style={{
+                                  width: '100%',
+                                  padding: '10px 16px',
+                                  background: 'transparent',
+                                  border: 'none',
+                                  textAlign: 'left',
+                                  cursor: 'pointer',
+                                  fontSize: '14px',
+                                  color: '#374151',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '8px'
+                                }}
+                                onMouseEnter={(e) => e.currentTarget.style.background = '#f3f4f6'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                              >
+                                <RefreshCw size={14} />
+                                Resend
+                              </button>
+                              <button
+                                onClick={() => {
+                                  handleCancelInvite(invite.id);
+                                  setOpenInviteDropdownId(null);
+                                }}
+                                style={{
+                                  width: '100%',
+                                  padding: '10px 16px',
+                                  background: 'transparent',
+                                  border: 'none',
+                                  textAlign: 'left',
+                                  cursor: 'pointer',
+                                  fontSize: '14px',
+                                  color: '#dc2626',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '8px'
+                                }}
+                                onMouseEnter={(e) => e.currentTarget.style.background = '#fee2e2'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                              >
+                                <X size={14} />
+                                Cancel
+                              </button>
+                            </div>
+                          )}
                         </div>
                       </td>
                     </tr>
