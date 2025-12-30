@@ -270,14 +270,14 @@ export default function OnboardingChecklist({ userRole }: OnboardingChecklistPro
                 <div style={{
                   fontSize: '14px',
                   fontWeight: '500',
-                  color: item.completed ? 'rgba(255,255,255,0.9)' : 'var(--text-primary)',
+                  color: item.completed ? 'rgba(255,255,255,0.9)' : '#1f2937',
                   textDecoration: item.completed ? 'line-through' : 'none',
                 }}>
                   {item.title}
                 </div>
                 <div style={{
                   fontSize: '13px',
-                  color: item.completed ? 'rgba(255,255,255,0.6)' : 'var(--text-muted)',
+                  color: item.completed ? 'rgba(255,255,255,0.6)' : '#6b7280',
                 }}>
                   {item.description}
                 </div>
