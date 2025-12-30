@@ -103,7 +103,7 @@ export default function AdminDepartmentsTab() {
               style={{
                 padding: '20px',
                 background: 'white',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '12px'
               }}
             >
@@ -118,11 +118,11 @@ export default function AdminDepartmentsTab() {
                   <Building2 size={20} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: '16px', fontWeight: '600', color: '#111827', marginBottom: '4px' }}>
+                  <div style={{ fontSize: '16px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '4px' }}>
                     {topDept.name}
                   </div>
                   {subDepts.length > 0 && (
-                    <div style={{ fontSize: '13px', color: '#6b7280' }}>
+                    <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
                       {subDepts.length} sub-department{subDepts.length !== 1 ? 's' : ''}
                     </div>
                   )}
@@ -133,10 +133,10 @@ export default function AdminDepartmentsTab() {
                     style={{
                       padding: '6px',
                       background: 'transparent',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '6px',
                       cursor: 'pointer',
-                      color: '#6b7280',
+                      color: 'var(--text-muted)',
                       display: 'flex',
                       alignItems: 'center'
                     }}
@@ -151,7 +151,7 @@ export default function AdminDepartmentsTab() {
                       top: '100%',
                       marginTop: '4px',
                       background: 'white',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
                       minWidth: '140px',
@@ -171,12 +171,12 @@ export default function AdminDepartmentsTab() {
                           textAlign: 'left',
                           cursor: 'pointer',
                           fontSize: '14px',
-                          color: '#374151',
+                          color: 'var(--text-secondary)',
                           display: 'flex',
                           alignItems: 'center',
                           gap: '8px'
                         }}
-                        onMouseEnter={(e) => e.currentTarget.style.background = '#f3f4f6'}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
                         onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                       >
                         <Edit2 size={14} />
@@ -214,12 +214,12 @@ export default function AdminDepartmentsTab() {
               {/* Sub-departments List */}
               {subDepts.length > 0 && (
                 <div style={{
-                  background: '#f9fafb',
+                  background: 'var(--bg-tertiary)',
                   borderRadius: '8px',
                   padding: '12px',
                   marginBottom: '16px'
                 }}>
-                  <div style={{ fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.05em' }}>
+                  <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.05em' }}>
                     Sub-departments
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -233,10 +233,10 @@ export default function AdminDepartmentsTab() {
                           padding: '8px 12px',
                           background: 'white',
                           borderRadius: '6px',
-                          border: '1px solid #e5e7eb'
+                          border: '1px solid var(--border-color)'
                         }}
                       >
-                        <span style={{ fontSize: '14px', color: '#374151', fontWeight: '500' }}>
+                        <span style={{ fontSize: '14px', color: 'var(--text-secondary)', fontWeight: '500' }}>
                           {subDept.name}
                         </span>
                         <div style={{ position: 'relative' }} ref={openDropdownId === subDept.id ? dropdownRef : null}>
@@ -248,7 +248,7 @@ export default function AdminDepartmentsTab() {
                               border: 'none',
                               borderRadius: '4px',
                               cursor: 'pointer',
-                              color: '#6b7280',
+                              color: 'var(--text-muted)',
                               display: 'flex',
                               alignItems: 'center'
                             }}
@@ -263,7 +263,7 @@ export default function AdminDepartmentsTab() {
                               top: '100%',
                               marginTop: '4px',
                               background: 'white',
-                              border: '1px solid #e5e7eb',
+                              border: '1px solid var(--border-color)',
                               borderRadius: '8px',
                               boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
                               minWidth: '140px',
@@ -283,12 +283,12 @@ export default function AdminDepartmentsTab() {
                                   textAlign: 'left',
                                   cursor: 'pointer',
                                   fontSize: '14px',
-                                  color: '#374151',
+                                  color: 'var(--text-secondary)',
                                   display: 'flex',
                                   alignItems: 'center',
                                   gap: '8px'
                                 }}
-                                onMouseEnter={(e) => e.currentTarget.style.background = '#f3f4f6'}
+                                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
                                 onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                               >
                                 <Edit2 size={14} />
@@ -332,12 +332,12 @@ export default function AdminDepartmentsTab() {
       </div>
 
       {departments.length === 0 && (
-        <div style={{ padding: '60px', textAlign: 'center', background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb' }}>
-          <Building2 size={48} style={{ margin: '0 auto 16px', color: '#9ca3af' }} />
-          <div style={{ fontSize: '16px', fontWeight: '500', color: '#111827', marginBottom: '8px' }}>
+        <div style={{ padding: '60px', textAlign: 'center', background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+          <Building2 size={48} style={{ margin: '0 auto 16px', color: 'var(--text-faint)' }} />
+          <div style={{ fontSize: '16px', fontWeight: '500', color: 'var(--text-primary)', marginBottom: '8px' }}>
             No departments yet
           </div>
-          <div style={{ fontSize: '14px', color: '#6b7280', marginBottom: '16px' }}>
+          <div style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '16px' }}>
             Create your first department to organize your team
           </div>
           <button
@@ -447,7 +447,7 @@ function DepartmentModal({ department, departments, onClose, onSuccess }: Depart
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#111827', marginBottom: '20px' }}>
+        <h2 style={{ fontSize: '20px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '20px' }}>
           {department ? 'Edit Department' : 'Create Department'}
         </h2>
 
@@ -459,7 +459,7 @@ function DepartmentModal({ department, departments, onClose, onSuccess }: Depart
           )}
 
           <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
               Department Name *
             </label>
             <input
@@ -469,7 +469,7 @@ function DepartmentModal({ department, departments, onClose, onSuccess }: Depart
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px'
               }}
@@ -478,7 +478,7 @@ function DepartmentModal({ department, departments, onClose, onSuccess }: Depart
           </div>
 
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
               Parent Department
             </label>
             <select
@@ -487,7 +487,7 @@ function DepartmentModal({ department, departments, onClose, onSuccess }: Depart
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px'
               }}
@@ -508,7 +508,7 @@ function DepartmentModal({ department, departments, onClose, onSuccess }: Depart
               style={{
                 padding: '10px 20px',
                 background: 'white',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 fontWeight: '500',

@@ -202,7 +202,7 @@ export default function OneOnOneDetailModal({
   const content = (
     <div
       style={{
-        background: '#ffffff',
+        background: 'var(--bg-primary)',
         borderRadius: '12px',
         padding: '0',
         maxWidth: '1000px',
@@ -218,17 +218,17 @@ export default function OneOnOneDetailModal({
       <div
         style={{
           padding: '24px 32px',
-          borderBottom: '1px solid #e5e7eb',
+          borderBottom: '1px solid var(--border-color)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
         }}
       >
         <div>
-          <h2 style={{ margin: '0 0 4px 0', fontSize: '24px', fontWeight: '600', color: '#111827' }}>
+          <h2 style={{ margin: '0 0 4px 0', fontSize: '24px', fontWeight: '600', color: 'var(--text-primary)' }}>
             One-on-One with {otherPerson?.name}
           </h2>
-          <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
+          <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-muted)' }}>
             {meetingDate}
             {meeting.googleEventUrl && (
               <>
@@ -278,13 +278,13 @@ export default function OneOnOneDetailModal({
               justifyContent: 'center',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#f3f4f6';
+              e.currentTarget.style.background = 'var(--bg-hover)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = 'transparent';
             }}
           >
-            <X size={20} color="#6b7280" />
+            <X size={20} style={{ color: 'var(--text-muted)' }} />
           </button>
         </div>
       </div>
@@ -307,7 +307,7 @@ export default function OneOnOneDetailModal({
           <div>
             {/* Agenda */}
             <div style={{ marginBottom: '24px' }}>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: '#111827', marginBottom: '8px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '8px' }}>
                 Agenda
               </label>
               <textarea
@@ -321,7 +321,7 @@ export default function OneOnOneDetailModal({
                 style={{
                   width: '100%',
                   padding: '12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '6px',
                   fontSize: '14px',
                   outline: 'none',
@@ -329,17 +329,17 @@ export default function OneOnOneDetailModal({
                   fontFamily: 'inherit',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = '#3b82f6';
+                  e.currentTarget.style.borderColor = 'var(--color-primary)';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = '#e5e7eb';
+                  e.currentTarget.style.borderColor = 'var(--border-color)';
                 }}
               />
             </div>
 
             {/* Document URL */}
             <div style={{ marginBottom: '24px' }}>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: '#111827', marginBottom: '8px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '8px' }}>
                 <LinkIcon size={14} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle' }} />
                 Shared Document
               </label>
@@ -355,17 +355,17 @@ export default function OneOnOneDetailModal({
                   style={{
                     flex: 1,
                     padding: '12px',
-                    border: '1px solid #e5e7eb',
+                    border: '1px solid var(--border-color)',
                     borderRadius: '6px',
                     fontSize: '14px',
                     outline: 'none',
                     fontFamily: 'inherit',
                   }}
                   onFocus={(e) => {
-                    e.currentTarget.style.borderColor = '#3b82f6';
+                    e.currentTarget.style.borderColor = 'var(--color-primary)';
                   }}
                   onBlur={(e) => {
-                    e.currentTarget.style.borderColor = '#e5e7eb';
+                    e.currentTarget.style.borderColor = 'var(--border-color)';
                   }}
                 />
                 {documentUrl && (
@@ -403,10 +403,10 @@ export default function OneOnOneDetailModal({
 
             {/* Shared Notes */}
             <div style={{ marginBottom: '24px' }}>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: '#111827', marginBottom: '8px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '8px' }}>
                 Shared Notes
               </label>
-              <p style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#6b7280' }}>
+              <p style={{ margin: '0 0 8px 0', fontSize: '12px', color: 'var(--text-muted)' }}>
                 Notes visible to both participants
               </p>
               <textarea
@@ -420,7 +420,7 @@ export default function OneOnOneDetailModal({
                 style={{
                   width: '100%',
                   padding: '12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '6px',
                   fontSize: '14px',
                   outline: 'none',
@@ -429,10 +429,10 @@ export default function OneOnOneDetailModal({
                   lineHeight: '1.6',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = '#3b82f6';
+                  e.currentTarget.style.borderColor = 'var(--color-primary)';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = '#e5e7eb';
+                  e.currentTarget.style.borderColor = 'var(--border-color)';
                 }}
               />
             </div>
@@ -440,10 +440,10 @@ export default function OneOnOneDetailModal({
             {/* Manager Notes (Manager Only) */}
             {isManager && (
               <div style={{ marginBottom: '24px' }}>
-                <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: '#111827', marginBottom: '8px' }}>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '8px' }}>
                   Manager-Only Notes
                 </label>
-                <p style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#6b7280' }}>
+                <p style={{ margin: '0 0 8px 0', fontSize: '12px', color: 'var(--text-muted)' }}>
                   Private notes only visible to you
                 </p>
                 <textarea
@@ -482,7 +482,7 @@ export default function OneOnOneDetailModal({
         {activeTab === 'transcript' && (
           <div>
             <div style={{ marginBottom: '24px' }}>
-              <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: '600', color: '#111827', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <FileText size={20} color="#3b82f6" />
                 Meeting Transcript
               </h3>
@@ -522,7 +522,7 @@ export default function OneOnOneDetailModal({
                   <Upload size={16} />
                   {uploadProgress ? 'Uploading...' : 'Upload Transcript File'}
                 </button>
-                <p style={{ margin: '8px 0 0 0', fontSize: '12px', color: '#6b7280' }}>
+                <p style={{ margin: '8px 0 0 0', fontSize: '12px', color: 'var(--text-muted)' }}>
                   Supported formats: .txt, .doc, .docx, .pdf (max 10MB)
                 </p>
                 {meeting.transcriptFileUrl && (
@@ -534,7 +534,7 @@ export default function OneOnOneDetailModal({
 
               {/* Or Paste Transcript */}
               <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: '#111827', marginBottom: '8px' }}>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '8px' }}>
                   Or Paste Transcript
                 </label>
                 <textarea
@@ -548,7 +548,7 @@ export default function OneOnOneDetailModal({
                   style={{
                     width: '100%',
                     padding: '12px',
-                    border: '1px solid #e5e7eb',
+                    border: '1px solid var(--border-color)',
                     borderRadius: '6px',
                     fontSize: '13px',
                     outline: 'none',
@@ -557,10 +557,10 @@ export default function OneOnOneDetailModal({
                     lineHeight: '1.6',
                   }}
                   onFocus={(e) => {
-                    e.currentTarget.style.borderColor = '#3b82f6';
+                    e.currentTarget.style.borderColor = 'var(--color-primary)';
                   }}
                   onBlur={(e) => {
-                    e.currentTarget.style.borderColor = '#e5e7eb';
+                    e.currentTarget.style.borderColor = 'var(--border-color)';
                   }}
                 />
               </div>
@@ -569,13 +569,13 @@ export default function OneOnOneDetailModal({
               <div
                 style={{
                   padding: '16px',
-                  background: '#f9fafb',
+                  background: 'var(--bg-tertiary)',
                   borderRadius: '8px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   textAlign: 'center',
                 }}
               >
-                <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
+                <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-muted)' }}>
                   AI summarization coming soon!
                 </p>
               </div>
@@ -599,7 +599,7 @@ export default function OneOnOneDetailModal({
                   style={{
                     fontSize: '14px',
                     fontWeight: '600',
-                    color: '#374151',
+                    color: 'var(--text-secondary)',
                   }}
                 >
                   Action Items
@@ -609,7 +609,7 @@ export default function OneOnOneDetailModal({
                   disabled={!actionItems.trim()}
                   style={{
                     padding: '8px 16px',
-                    background: actionItems.trim() ? '#3b82f6' : '#e5e7eb',
+                    background: actionItems.trim() ? 'var(--color-primary)' : 'var(--border-color)',
                     color: actionItems.trim() ? '#ffffff' : '#9ca3af',
                     border: 'none',
                     borderRadius: '6px',
@@ -620,12 +620,12 @@ export default function OneOnOneDetailModal({
                   }}
                   onMouseEnter={(e) => {
                     if (actionItems.trim()) {
-                      e.currentTarget.style.background = '#2563eb';
+                      e.currentTarget.style.background = 'var(--color-primary-hover)';
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (actionItems.trim()) {
-                      e.currentTarget.style.background = '#3b82f6';
+                      e.currentTarget.style.background = 'var(--color-primary)';
                     }
                   }}
                 >
@@ -643,7 +643,7 @@ export default function OneOnOneDetailModal({
                   width: '100%',
                   minHeight: '250px',
                   padding: '16px',
-                  border: '1px solid #d1d5db',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px',
                   fontFamily: 'inherit',
@@ -652,17 +652,17 @@ export default function OneOnOneDetailModal({
                   transition: 'border-color 0.15s',
                 }}
                 onFocus={(e) => {
-                  e.target.style.borderColor = '#3b82f6';
+                  e.target.style.borderColor = 'var(--color-primary)';
                 }}
                 onBlur={(e) => {
-                  e.target.style.borderColor = '#d1d5db';
+                  e.target.style.borderColor = 'var(--border-color)';
                 }}
               />
               <p
                 style={{
                   marginTop: '8px',
                   fontSize: '12px',
-                  color: '#6b7280',
+                  color: 'var(--text-muted)',
                 }}
               >
                 Type or paste action items, then use the "Copy to Clipboard" button to export to your
@@ -677,7 +677,7 @@ export default function OneOnOneDetailModal({
       <div
         style={{
           padding: '16px 32px',
-          borderTop: '1px solid #e5e7eb',
+          borderTop: '1px solid var(--border-color)',
           display: 'flex',
           justifyContent: 'flex-end',
         }}

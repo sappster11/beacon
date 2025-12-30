@@ -198,7 +198,7 @@ export default function AdminUsersTab() {
   return (
     <div>
       {/* Tabs */}
-      <div style={{ display: 'flex', gap: '4px', marginBottom: '24px', borderBottom: '1px solid #e5e7eb', paddingBottom: '0' }}>
+      <div style={{ display: 'flex', gap: '4px', marginBottom: '24px', borderBottom: '1px solid var(--border-color)', paddingBottom: '0' }}>
         <button
           onClick={() => setActiveTab('users')}
           style={{
@@ -206,7 +206,7 @@ export default function AdminUsersTab() {
             background: 'transparent',
             border: 'none',
             borderBottom: activeTab === 'users' ? '2px solid #3b82f6' : '2px solid transparent',
-            color: activeTab === 'users' ? '#3b82f6' : '#6b7280',
+            color: activeTab === 'users' ? 'var(--color-primary)' : 'var(--text-muted)',
             fontSize: '14px',
             fontWeight: '500',
             cursor: 'pointer',
@@ -222,7 +222,7 @@ export default function AdminUsersTab() {
             background: 'transparent',
             border: 'none',
             borderBottom: activeTab === 'invitations' ? '2px solid #3b82f6' : '2px solid transparent',
-            color: activeTab === 'invitations' ? '#3b82f6' : '#6b7280',
+            color: activeTab === 'invitations' ? 'var(--color-primary)' : 'var(--text-muted)',
             fontSize: '14px',
             fontWeight: '500',
             cursor: 'pointer',
@@ -275,8 +275,8 @@ export default function AdminUsersTab() {
           style={{
             padding: '10px 16px',
             background: 'white',
-            color: '#374151',
-            border: '1px solid #e5e7eb',
+            color: 'var(--text-secondary)',
+            border: '1px solid var(--border-color)',
             borderRadius: '8px',
             fontSize: '14px',
             fontWeight: '500',
@@ -295,7 +295,7 @@ export default function AdminUsersTab() {
             <div style={{
               width: '1px',
               height: '32px',
-              background: '#e5e7eb',
+              background: 'var(--border-color)',
               margin: '0 4px'
             }} />
 
@@ -356,7 +356,7 @@ export default function AdminUsersTab() {
       {/* Filters */}
       <div className="admin-filters" style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
         <div style={{ flex: '1', minWidth: '200px', position: 'relative' }}>
-          <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
+          <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-faint)' }} />
           <input
             type="text"
             placeholder="Search users..."
@@ -365,7 +365,7 @@ export default function AdminUsersTab() {
             style={{
               width: '100%',
               padding: '10px 12px 10px 40px',
-              border: '1px solid #e5e7eb',
+              border: '1px solid var(--border-color)',
               borderRadius: '8px',
               fontSize: '14px'
             }}
@@ -377,7 +377,7 @@ export default function AdminUsersTab() {
           onChange={(e) => setFilterDepartment(e.target.value)}
           style={{
             padding: '10px 12px',
-            border: '1px solid #e5e7eb',
+            border: '1px solid var(--border-color)',
             borderRadius: '8px',
             fontSize: '14px',
             minWidth: '150px'
@@ -394,7 +394,7 @@ export default function AdminUsersTab() {
           onChange={(e) => setFilterRole(e.target.value)}
           style={{
             padding: '10px 12px',
-            border: '1px solid #e5e7eb',
+            border: '1px solid var(--border-color)',
             borderRadius: '8px',
             fontSize: '14px',
             minWidth: '150px'
@@ -412,7 +412,7 @@ export default function AdminUsersTab() {
           onChange={(e) => setFilterStatus(e.target.value)}
           style={{
             padding: '10px 12px',
-            border: '1px solid #e5e7eb',
+            border: '1px solid var(--border-color)',
             borderRadius: '8px',
             fontSize: '14px',
             minWidth: '120px'
@@ -425,10 +425,10 @@ export default function AdminUsersTab() {
       </div>
 
       {/* Users Table */}
-      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', overflow: 'hidden' }}>
+      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)', overflow: 'hidden' }}>
         <table className="responsive-table admin-users-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
-            <tr style={{ background: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
+            <tr style={{ background: 'var(--bg-tertiary)', borderBottom: '1px solid var(--border-color)' }}>
               <th style={{ padding: '12px 16px', width: '48px' }}>
                 <input
                   type="checkbox"
@@ -442,12 +442,12 @@ export default function AdminUsersTab() {
                   }}
                 />
               </th>
-              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>User</th>
-              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>Title</th>
-              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>Department</th>
-              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>Role</th>
-              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>Status</th>
-              <th style={{ padding: '12px 16px', textAlign: 'center', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', width: '80px' }}>Actions</th>
+              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>User</th>
+              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Title</th>
+              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Department</th>
+              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Role</th>
+              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Status</th>
+              <th style={{ padding: '12px 16px', textAlign: 'center', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', width: '80px' }}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -456,7 +456,7 @@ export default function AdminUsersTab() {
               const isActive = user.isActive !== false;
 
               return (
-                <tr key={user.id} style={{ borderBottom: '1px solid #e5e7eb' }}>
+                <tr key={user.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
                   <td className="checkbox-cell" style={{ padding: '12px 16px' }}>
                     <input
                       type="checkbox"
@@ -474,13 +474,13 @@ export default function AdminUsersTab() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                       <Avatar user={{ name: user.name, profilePicture: user.profilePicture }} size="sm" />
                       <div>
-                        <div style={{ fontWeight: '500', color: '#111827', fontSize: '14px' }}>{user.name}</div>
-                        <div style={{ fontSize: '12px', color: '#6b7280' }}>{user.email}</div>
+                        <div style={{ fontWeight: '500', color: 'var(--text-primary)', fontSize: '14px' }}>{user.name}</div>
+                        <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{user.email}</div>
                       </div>
                     </div>
                   </td>
-                  <td data-label="Title" style={{ padding: '12px 16px', fontSize: '14px', color: '#6b7280' }}>{user.title || '-'}</td>
-                  <td data-label="Department" style={{ padding: '12px 16px', fontSize: '14px', color: '#6b7280' }}>{department?.name || '-'}</td>
+                  <td data-label="Title" style={{ padding: '12px 16px', fontSize: '14px', color: 'var(--text-muted)' }}>{user.title || '-'}</td>
+                  <td data-label="Department" style={{ padding: '12px 16px', fontSize: '14px', color: 'var(--text-muted)' }}>{department?.name || '-'}</td>
                   <td data-label="Role" style={{ padding: '12px 16px', fontSize: '14px' }}>
                     <span style={{
                       padding: '4px 8px',
@@ -503,13 +503,13 @@ export default function AdminUsersTab() {
                         style={{
                           padding: '6px',
                           background: 'transparent',
-                          border: '1px solid #e5e7eb',
+                          border: '1px solid var(--border-color)',
                           borderRadius: '6px',
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          color: '#6b7280'
+                          color: 'var(--text-muted)'
                         }}
                       >
                         <MoreVertical size={16} />
@@ -522,7 +522,7 @@ export default function AdminUsersTab() {
                           top: '100%',
                           marginTop: '4px',
                           background: 'white',
-                          border: '1px solid #e5e7eb',
+                          border: '1px solid var(--border-color)',
                           borderRadius: '8px',
                           boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
                           minWidth: '160px',
@@ -542,12 +542,12 @@ export default function AdminUsersTab() {
                               textAlign: 'left',
                               cursor: 'pointer',
                               fontSize: '14px',
-                              color: '#374151',
+                              color: 'var(--text-secondary)',
                               display: 'flex',
                               alignItems: 'center',
                               gap: '8px'
                             }}
-                            onMouseEnter={(e) => e.currentTarget.style.background = '#f3f4f6'}
+                            onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
                             onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                           >
                             <Edit2 size={14} />
@@ -615,7 +615,7 @@ export default function AdminUsersTab() {
         </table>
 
         {filteredUsers.length === 0 && (
-          <div style={{ padding: '40px', textAlign: 'center', color: '#6b7280' }}>
+          <div style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)' }}>
             No users found
           </div>
         )}
@@ -624,14 +624,14 @@ export default function AdminUsersTab() {
       )}
 
       {activeTab === 'invitations' && (
-        <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', overflow: 'visible' }}>
+        <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)', overflow: 'visible' }}>
           {pendingInvitations.length === 0 ? (
             <div style={{ padding: '60px 40px', textAlign: 'center' }}>
-              <Mail size={48} color="#d1d5db" style={{ marginBottom: '16px' }} />
-              <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#374151', marginBottom: '8px' }}>
+              <Mail size={48} style={{ marginBottom: '16px', color: 'var(--border-color)' }} />
+              <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text-secondary)', marginBottom: '8px' }}>
                 No pending invitations
               </h3>
-              <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '24px' }}>
+              <p style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '24px' }}>
                 When you invite users, they'll appear here until they accept.
               </p>
               <button
@@ -657,12 +657,12 @@ export default function AdminUsersTab() {
           ) : (
             <table className="responsive-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ background: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
-                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>Invitee</th>
-                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>Role</th>
-                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>Invited By</th>
-                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>Expires</th>
-                  <th style={{ padding: '12px 16px', textAlign: 'center', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', width: '120px' }}>Actions</th>
+                <tr style={{ background: 'var(--bg-tertiary)', borderBottom: '1px solid var(--border-color)' }}>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Invitee</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Role</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Invited By</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Expires</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'center', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', width: '120px' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -672,11 +672,11 @@ export default function AdminUsersTab() {
                   const daysLeft = Math.ceil((expiresDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
 
                   return (
-                    <tr key={invite.id} style={{ borderBottom: '1px solid #e5e7eb' }}>
+                    <tr key={invite.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
                       <td data-label="Invitee" style={{ padding: '12px 16px' }}>
                         <div>
-                          <div style={{ fontWeight: '500', color: '#111827', fontSize: '14px' }}>{invite.name}</div>
-                          <div style={{ fontSize: '12px', color: '#6b7280' }}>{invite.email}</div>
+                          <div style={{ fontWeight: '500', color: 'var(--text-primary)', fontSize: '14px' }}>{invite.name}</div>
+                          <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{invite.email}</div>
                         </div>
                       </td>
                       <td data-label="Role" style={{ padding: '12px 16px', fontSize: '14px' }}>
@@ -691,7 +691,7 @@ export default function AdminUsersTab() {
                           {invite.role.replace('_', ' ')}
                         </span>
                       </td>
-                      <td data-label="Invited By" style={{ padding: '12px 16px', fontSize: '14px', color: '#6b7280' }}>
+                      <td data-label="Invited By" style={{ padding: '12px 16px', fontSize: '14px', color: 'var(--text-muted)' }}>
                         {invite.invitedBy.name}
                       </td>
                       <td data-label="Expires" style={{ padding: '12px 16px' }}>
@@ -714,13 +714,13 @@ export default function AdminUsersTab() {
                             style={{
                               padding: '6px',
                               background: 'transparent',
-                              border: '1px solid #e5e7eb',
+                              border: '1px solid var(--border-color)',
                               borderRadius: '6px',
                               cursor: 'pointer',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
-                              color: '#6b7280'
+                              color: 'var(--text-muted)'
                             }}
                           >
                             <MoreVertical size={16} />
@@ -733,7 +733,7 @@ export default function AdminUsersTab() {
                               bottom: '100%',
                               marginBottom: '4px',
                               background: 'white',
-                              border: '1px solid #e5e7eb',
+                              border: '1px solid var(--border-color)',
                               borderRadius: '8px',
                               boxShadow: '0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06)',
                               minWidth: '160px',
@@ -753,12 +753,12 @@ export default function AdminUsersTab() {
                                   textAlign: 'left',
                                   cursor: 'pointer',
                                   fontSize: '14px',
-                                  color: '#374151',
+                                  color: 'var(--text-secondary)',
                                   display: 'flex',
                                   alignItems: 'center',
                                   gap: '8px'
                                 }}
-                                onMouseEnter={(e) => e.currentTarget.style.background = '#f3f4f6'}
+                                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
                                 onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                               >
                                 <RefreshCw size={14} />
@@ -927,16 +927,16 @@ function BulkEditModal({
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: '600', color: '#111827' }}>
+        <h2 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: '600', color: 'var(--text-primary)' }}>
           Bulk Edit Users
         </h2>
-        <p style={{ margin: '0 0 24px 0', fontSize: '14px', color: '#6b7280' }}>
+        <p style={{ margin: '0 0 24px 0', fontSize: '14px', color: 'var(--text-muted)' }}>
           Update {userIds.length} selected user{userIds.length > 1 ? 's' : ''}
         </p>
 
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: '#374151' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)' }}>
               Field to Edit
             </label>
             <select
@@ -949,7 +949,7 @@ function BulkEditModal({
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px',
               }}
@@ -963,7 +963,7 @@ function BulkEditModal({
 
           {editField === 'role' && (
             <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: '#374151' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)' }}>
                 New Role
               </label>
               <select
@@ -973,7 +973,7 @@ function BulkEditModal({
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px',
                 }}
@@ -989,7 +989,7 @@ function BulkEditModal({
 
           {editField === 'department' && (
             <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: '#374151' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)' }}>
                 New Department
               </label>
               <select
@@ -999,7 +999,7 @@ function BulkEditModal({
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px',
                 }}
@@ -1014,7 +1014,7 @@ function BulkEditModal({
 
           {editField === 'manager' && (
             <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: '#374151' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)' }}>
                 New Manager
               </label>
               <select
@@ -1024,7 +1024,7 @@ function BulkEditModal({
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px',
                 }}
@@ -1047,12 +1047,12 @@ function BulkEditModal({
               style={{
                 padding: '10px 20px',
                 background: 'white',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 fontWeight: '500',
                 cursor: 'pointer',
-                color: '#374151',
+                color: 'var(--text-secondary)',
               }}
             >
               Cancel

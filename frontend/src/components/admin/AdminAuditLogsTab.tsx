@@ -131,8 +131,8 @@ export default function AdminAuditLogsTab() {
       {/* Action Bar */}
       <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap', alignItems: 'center' }}>
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Filter size={18} style={{ color: '#6b7280' }} />
-          <span style={{ fontSize: '14px', fontWeight: '500', color: '#374151' }}>
+          <Filter size={18} style={{ color: 'var(--text-muted)' }} />
+          <span style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)' }}>
             {total} log{total !== 1 ? 's' : ''} found
           </span>
         </div>
@@ -142,13 +142,13 @@ export default function AdminAuditLogsTab() {
             onClick={clearFilters}
             style={{
               padding: '8px 16px',
-              background: '#f3f4f6',
-              border: '1px solid #e5e7eb',
+              background: 'var(--bg-hover)',
+              border: '1px solid var(--border-color)',
               borderRadius: '8px',
               fontSize: '14px',
               fontWeight: '500',
               cursor: 'pointer',
-              color: '#374151'
+              color: 'var(--text-secondary)'
             }}
           >
             Clear Filters
@@ -179,11 +179,11 @@ export default function AdminAuditLogsTab() {
       </div>
 
       {/* Filters */}
-      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', padding: '20px', marginBottom: '20px' }}>
+      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '20px', marginBottom: '20px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
           {/* User Filter */}
           <div>
-            <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
               User
             </label>
             <select
@@ -195,7 +195,7 @@ export default function AdminAuditLogsTab() {
               style={{
                 width: '100%',
                 padding: '8px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px'
               }}
@@ -209,7 +209,7 @@ export default function AdminAuditLogsTab() {
 
           {/* Action Filter */}
           <div>
-            <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
               Action
             </label>
             <select
@@ -221,7 +221,7 @@ export default function AdminAuditLogsTab() {
               style={{
                 width: '100%',
                 padding: '8px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px'
               }}
@@ -235,7 +235,7 @@ export default function AdminAuditLogsTab() {
 
           {/* Resource Type Filter */}
           <div>
-            <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
               Resource Type
             </label>
             <select
@@ -247,7 +247,7 @@ export default function AdminAuditLogsTab() {
               style={{
                 width: '100%',
                 padding: '8px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px'
               }}
@@ -263,7 +263,7 @@ export default function AdminAuditLogsTab() {
 
           {/* Status Filter */}
           <div>
-            <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
               Status
             </label>
             <select
@@ -275,7 +275,7 @@ export default function AdminAuditLogsTab() {
               style={{
                 width: '100%',
                 padding: '8px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px'
               }}
@@ -288,7 +288,7 @@ export default function AdminAuditLogsTab() {
 
           {/* Resource ID Search */}
           <div>
-            <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
               Resource ID
             </label>
             <input
@@ -302,7 +302,7 @@ export default function AdminAuditLogsTab() {
               style={{
                 width: '100%',
                 padding: '8px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px'
               }}
@@ -311,7 +311,7 @@ export default function AdminAuditLogsTab() {
 
           {/* IP Address Search */}
           <div>
-            <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
               IP Address
             </label>
             <input
@@ -325,7 +325,7 @@ export default function AdminAuditLogsTab() {
               style={{
                 width: '100%',
                 padding: '8px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px'
               }}
@@ -334,7 +334,7 @@ export default function AdminAuditLogsTab() {
 
           {/* Free-text Search */}
           <div style={{ gridColumn: '1 / -1' }}>
-            <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
               Search
             </label>
             <input
@@ -348,7 +348,7 @@ export default function AdminAuditLogsTab() {
               style={{
                 width: '100%',
                 padding: '8px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px'
               }}
@@ -360,13 +360,13 @@ export default function AdminAuditLogsTab() {
         <div
           style={{
             background: 'white',
-            border: '1px solid #e5e7eb',
+            border: '1px solid var(--border-color)',
             borderRadius: '8px',
             padding: '12px',
             marginTop: '16px'
           }}
         >
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: '#374151' }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: 'var(--text-secondary)' }}>
             Date Range
           </label>
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
@@ -380,12 +380,12 @@ export default function AdminAuditLogsTab() {
               style={{
                 flex: 1,
                 padding: '8px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '6px',
                 fontSize: '14px'
               }}
             />
-            <span style={{ color: '#6b7280', fontSize: '14px' }}>to</span>
+            <span style={{ color: 'var(--text-muted)', fontSize: '14px' }}>to</span>
             <input
               type="date"
               value={filterEndDate}
@@ -396,7 +396,7 @@ export default function AdminAuditLogsTab() {
               style={{
                 flex: 1,
                 padding: '8px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '6px',
                 fontSize: '14px'
               }}
@@ -410,15 +410,15 @@ export default function AdminAuditLogsTab() {
               style={{
                 padding: '6px 12px',
                 fontSize: '12px',
-                background: '#f3f4f6',
-                border: '1px solid #e5e7eb',
+                background: 'var(--bg-hover)',
+                border: '1px solid var(--border-color)',
                 borderRadius: '6px',
                 cursor: 'pointer',
-                color: '#374151',
+                color: 'var(--text-secondary)',
                 fontWeight: '500'
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = '#e5e7eb')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = '#f3f4f6')}
+              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--border-color)')}
+              onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--bg-hover)')}
             >
               Last 7 days
             </button>
@@ -427,15 +427,15 @@ export default function AdminAuditLogsTab() {
               style={{
                 padding: '6px 12px',
                 fontSize: '12px',
-                background: '#f3f4f6',
-                border: '1px solid #e5e7eb',
+                background: 'var(--bg-hover)',
+                border: '1px solid var(--border-color)',
                 borderRadius: '6px',
                 cursor: 'pointer',
-                color: '#374151',
+                color: 'var(--text-secondary)',
                 fontWeight: '500'
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = '#e5e7eb')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = '#f3f4f6')}
+              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--border-color)')}
+              onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--bg-hover)')}
             >
               Last 30 days
             </button>
@@ -444,15 +444,15 @@ export default function AdminAuditLogsTab() {
               style={{
                 padding: '6px 12px',
                 fontSize: '12px',
-                background: '#f3f4f6',
-                border: '1px solid #e5e7eb',
+                background: 'var(--bg-hover)',
+                border: '1px solid var(--border-color)',
                 borderRadius: '6px',
                 cursor: 'pointer',
-                color: '#374151',
+                color: 'var(--text-secondary)',
                 fontWeight: '500'
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = '#e5e7eb')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = '#f3f4f6')}
+              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--border-color)')}
+              onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--bg-hover)')}
             >
               Last 90 days
             </button>
@@ -461,16 +461,16 @@ export default function AdminAuditLogsTab() {
       </div>
 
       {/* Logs Table */}
-      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', overflow: 'hidden' }}>
+      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)', overflow: 'hidden' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
-            <tr style={{ background: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
-              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>Date</th>
-              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>User</th>
-              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>Action</th>
-              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>Resource</th>
-              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>Description</th>
-              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase' }}>Status</th>
+            <tr style={{ background: 'var(--bg-tertiary)', borderBottom: '1px solid var(--border-color)' }}>
+              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Date</th>
+              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>User</th>
+              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Action</th>
+              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Resource</th>
+              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Description</th>
+              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -479,17 +479,17 @@ export default function AdminAuditLogsTab() {
                 key={log.id}
                 onClick={() => setSelectedLog(log)}
                 style={{
-                  borderBottom: '1px solid #e5e7eb',
+                  borderBottom: '1px solid var(--border-color)',
                   cursor: 'pointer',
                   transition: 'background 0.15s'
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = '#f9fafb')}
+                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-tertiary)')}
                 onMouseLeave={(e) => (e.currentTarget.style.background = 'white')}
               >
-                <td style={{ padding: '12px 16px', fontSize: '14px', color: '#6b7280', whiteSpace: 'nowrap' }}>
+                <td style={{ padding: '12px 16px', fontSize: '14px', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
                   {new Date(log.createdAt).toLocaleString()}
                 </td>
-                <td style={{ padding: '12px 16px', fontSize: '14px', color: '#374151' }}>
+                <td style={{ padding: '12px 16px', fontSize: '14px', color: 'var(--text-secondary)' }}>
                   {log.user?.name || 'System'}
                 </td>
                 <td style={{ padding: '12px 16px' }}>
@@ -508,14 +508,14 @@ export default function AdminAuditLogsTab() {
                     {log.action}
                   </span>
                 </td>
-                <td style={{ padding: '12px 16px', fontSize: '14px', color: '#374151' }}>
+                <td style={{ padding: '12px 16px', fontSize: '14px', color: 'var(--text-secondary)' }}>
                   {log.resourceType}
                 </td>
                 <td
                   style={{
                     padding: '12px 16px',
                     fontSize: '14px',
-                    color: '#374151',
+                    color: 'var(--text-secondary)',
                     maxWidth: '300px',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
@@ -543,7 +543,7 @@ export default function AdminAuditLogsTab() {
         </table>
 
         {logs.length === 0 && (
-          <div style={{ padding: '40px', textAlign: 'center', color: '#6b7280' }}>
+          <div style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)' }}>
             No audit logs found
           </div>
         )}
@@ -557,18 +557,18 @@ export default function AdminAuditLogsTab() {
             disabled={offset === 0}
             style={{
               padding: '8px 16px',
-              background: offset === 0 ? '#f3f4f6' : 'white',
-              border: '1px solid #e5e7eb',
+              background: offset === 0 ? 'var(--bg-hover)' : 'var(--bg-primary)',
+              border: '1px solid var(--border-color)',
               borderRadius: '8px',
               fontSize: '14px',
               fontWeight: '500',
               cursor: offset === 0 ? 'not-allowed' : 'pointer',
-              color: offset === 0 ? '#9ca3af' : '#374151'
+              color: offset === 0 ? 'var(--text-faint)' : 'var(--text-secondary)'
             }}
           >
             Previous
           </button>
-          <span style={{ fontSize: '14px', color: '#6b7280' }}>
+          <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}>
             Showing {offset + 1} - {Math.min(offset + limit, total)} of {total}
           </span>
           <button
@@ -576,13 +576,13 @@ export default function AdminAuditLogsTab() {
             disabled={offset + limit >= total}
             style={{
               padding: '8px 16px',
-              background: offset + limit >= total ? '#f3f4f6' : 'white',
-              border: '1px solid #e5e7eb',
+              background: offset + limit >= total ? 'var(--bg-hover)' : 'var(--bg-primary)',
+              border: '1px solid var(--border-color)',
               borderRadius: '8px',
               fontSize: '14px',
               fontWeight: '500',
               cursor: offset + limit >= total ? 'not-allowed' : 'pointer',
-              color: offset + limit >= total ? '#9ca3af' : '#374151'
+              color: offset + limit >= total ? 'var(--text-faint)' : 'var(--text-secondary)'
             }}
           >
             Next

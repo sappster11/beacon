@@ -631,17 +631,17 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
 
   const contentStyle = isPage
     ? {
-        background: '#ffffff',
+        background: 'var(--bg-primary)',
         borderRadius: '12px',
         padding: '0',
         maxWidth: '1000px',
         width: '100%',
         display: 'flex',
         flexDirection: 'column' as 'column',
-        border: '1px solid #e5e7eb',
+        border: '1px solid var(--border-color)',
       }
     : {
-        background: '#ffffff',
+        background: 'var(--bg-primary)',
         borderRadius: '12px',
         padding: '0',
         maxWidth: '1000px',
@@ -664,15 +664,15 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
         className="review-detail-header"
         style={{
           padding: '24px 32px',
-          borderBottom: '1px solid #e5e7eb',
+          borderBottom: '1px solid var(--border-color)',
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '20px' }}>
           <div>
-            <h2 style={{ margin: '0 0 4px 0', fontSize: '24px', fontWeight: '600', color: '#111827' }}>
+            <h2 style={{ margin: '0 0 4px 0', fontSize: '24px', fontWeight: '600', color: 'var(--text-primary)' }}>
               {currentReview.cycle?.name || 'Performance Review'}
             </h2>
-            <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
+            <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-muted)' }}>
               {currentReview.reviewee?.name} • {currentReview.reviewee?.title}
             </p>
           </div>
@@ -692,7 +692,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
               <span
                 style={{
                   fontSize: '13px',
-                  color: '#6b7280',
+                  color: 'var(--text-muted)',
                   fontWeight: '500',
                 }}
               >
@@ -921,13 +921,13 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <TrendingUp size={20} color="#10b981" />
-                  <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: '#111827' }}>
+                  <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)' }}>
                     Competencies
                   </h3>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   {competencies.length > 0 && (
-                    <span style={{ fontSize: '14px', color: '#6b7280' }}>
+                    <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}>
                       Each competency weighted at {competencyWeight.toFixed(1)}%
                     </span>
                   )}
@@ -982,7 +982,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       }}
                       style={{
                         padding: '6px 12px',
-                        background: '#ffffff',
+                        background: 'var(--bg-primary)',
                         color: '#166534',
                         border: '1px solid #86efac',
                         borderRadius: '6px',
@@ -998,7 +998,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                         e.currentTarget.style.background = '#f0fdf4';
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.background = '#ffffff';
+                        e.currentTarget.style.background = 'var(--bg-primary)';
                       }}
                     >
                       <BookOpen size={14} />
@@ -1006,7 +1006,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                     </button>
                   </div>
                   <div style={{ marginBottom: '12px' }}>
-                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
                       Competency Name *
                     </label>
                     <input
@@ -1017,7 +1017,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       style={{
                         width: '100%',
                         padding: '10px 12px',
-                        border: '1px solid #d1d5db',
+                        border: '1px solid var(--border-color)',
                         borderRadius: '6px',
                         fontSize: '14px',
                         outline: 'none',
@@ -1027,12 +1027,12 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                         e.currentTarget.style.borderColor = '#3b82f6';
                       }}
                       onBlur={(e) => {
-                        e.currentTarget.style.borderColor = '#d1d5db';
+                        e.currentTarget.style.borderColor = 'var(--border-color)';
                       }}
                     />
                   </div>
                   <div style={{ marginBottom: '16px' }}>
-                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
                       Description
                     </label>
                     <textarea
@@ -1043,7 +1043,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       style={{
                         width: '100%',
                         padding: '10px 12px',
-                        border: '1px solid #d1d5db',
+                        border: '1px solid var(--border-color)',
                         borderRadius: '6px',
                         fontSize: '14px',
                         outline: 'none',
@@ -1054,7 +1054,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                         e.currentTarget.style.borderColor = '#3b82f6';
                       }}
                       onBlur={(e) => {
-                        e.currentTarget.style.borderColor = '#d1d5db';
+                        e.currentTarget.style.borderColor = 'var(--border-color)';
                       }}
                     />
                   </div>
@@ -1078,9 +1078,9 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       }}
                       style={{
                         padding: '8px 16px',
-                        background: '#ffffff',
-                        color: '#374151',
-                        border: '1px solid #d1d5db',
+                        background: 'var(--bg-primary)',
+                        color: 'var(--text-secondary)',
+                        border: '1px solid var(--border-color)',
                         borderRadius: '6px',
                         cursor: 'pointer',
                         fontSize: '13px',
@@ -1088,10 +1088,10 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                         transition: 'all 0.15s',
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = '#f3f4f6';
+                        e.currentTarget.style.background = 'var(--bg-hover)';
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.background = '#ffffff';
+                        e.currentTarget.style.background = 'var(--bg-primary)';
                       }}
                     >
                       Cancel
@@ -1147,12 +1147,12 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
               ) : (
                 <div style={{
                   padding: '32px',
-                  background: '#f9fafb',
+                  background: 'var(--bg-tertiary)',
                   borderRadius: '8px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   textAlign: 'center',
                 }}>
-                  <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
+                  <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-muted)' }}>
                     No competencies have been added yet. Click "Add Competency" to get started.
                   </p>
                 </div>
@@ -1164,11 +1164,11 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <Target size={20} color="#f59e0b" />
-                <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: '#111827' }}>Goals for Next Period</h3>
+                <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)' }}>Goals for Next Period</h3>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 {assignedGoals.length > 0 && (
-                  <span style={{ fontSize: '14px', color: '#6b7280' }}>
+                  <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}>
                     Each goal weighted at {goalWeight.toFixed(1)}%
                   </span>
                 )}
@@ -1223,7 +1223,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                     }}
                     style={{
                       padding: '6px 12px',
-                      background: '#ffffff',
+                      background: 'var(--bg-primary)',
                       color: '#92400e',
                       border: '1px solid #fbbf24',
                       borderRadius: '6px',
@@ -1239,7 +1239,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       e.currentTarget.style.background = '#fffbeb';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = '#ffffff';
+                      e.currentTarget.style.background = 'var(--bg-primary)';
                     }}
                   >
                     <BookOpen size={14} />
@@ -1247,7 +1247,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                   </button>
                 </div>
                 <div style={{ marginBottom: '12px' }}>
-                  <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
                     Goal Title *
                   </label>
                   <input
@@ -1258,7 +1258,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                     style={{
                       width: '100%',
                       padding: '10px 12px',
-                      border: '1px solid #d1d5db',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '6px',
                       fontSize: '14px',
                       outline: 'none',
@@ -1268,12 +1268,12 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       e.currentTarget.style.borderColor = '#3b82f6';
                     }}
                     onBlur={(e) => {
-                      e.currentTarget.style.borderColor = '#d1d5db';
+                      e.currentTarget.style.borderColor = 'var(--border-color)';
                     }}
                   />
                 </div>
                 <div style={{ marginBottom: '16px' }}>
-                  <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
                     Description
                   </label>
                   <textarea
@@ -1284,7 +1284,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                     style={{
                       width: '100%',
                       padding: '10px 12px',
-                      border: '1px solid #d1d5db',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '6px',
                       fontSize: '14px',
                       outline: 'none',
@@ -1295,7 +1295,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       e.currentTarget.style.borderColor = '#3b82f6';
                     }}
                     onBlur={(e) => {
-                      e.currentTarget.style.borderColor = '#d1d5db';
+                      e.currentTarget.style.borderColor = 'var(--border-color)';
                     }}
                   />
                 </div>
@@ -1319,9 +1319,9 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                     }}
                     style={{
                       padding: '8px 16px',
-                      background: '#ffffff',
-                      color: '#374151',
-                      border: '1px solid #d1d5db',
+                      background: 'var(--bg-primary)',
+                      color: 'var(--text-secondary)',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '6px',
                       cursor: 'pointer',
                       fontSize: '13px',
@@ -1329,10 +1329,10 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       transition: 'all 0.15s',
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = '#f3f4f6';
+                      e.currentTarget.style.background = 'var(--bg-hover)';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = '#ffffff';
+                      e.currentTarget.style.background = 'var(--bg-primary)';
                     }}
                   >
                     Cancel
@@ -1388,13 +1388,13 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
               <div
                 style={{
                   padding: '32px',
-                  background: '#f9fafb',
+                  background: 'var(--bg-tertiary)',
                   borderRadius: '8px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   textAlign: 'center',
                 }}
               >
-                <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
+                <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-muted)' }}>
                   No goals have been assigned for this review yet. Click "Add Goal" to get started.
                 </p>
               </div>
@@ -1406,7 +1406,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <MessageSquare size={20} color="#8b5cf6" />
-                  <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: '#111827' }}>
+                  <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)' }}>
                     Self-Reflection Questions
                   </h3>
                 </div>
@@ -1453,7 +1453,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                     Add New Self-Reflection Question
                   </h4>
                   <div style={{ marginBottom: '16px' }}>
-                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
                       Question *
                     </label>
                     <textarea
@@ -1464,7 +1464,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       style={{
                         width: '100%',
                         padding: '10px 12px',
-                        border: '1px solid #d1d5db',
+                        border: '1px solid var(--border-color)',
                         borderRadius: '6px',
                         fontSize: '14px',
                         outline: 'none',
@@ -1475,7 +1475,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                         e.currentTarget.style.borderColor = '#3b82f6';
                       }}
                       onBlur={(e) => {
-                        e.currentTarget.style.borderColor = '#d1d5db';
+                        e.currentTarget.style.borderColor = 'var(--border-color)';
                       }}
                     />
                   </div>
@@ -1487,9 +1487,9 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       }}
                       style={{
                         padding: '8px 16px',
-                        background: '#ffffff',
-                        color: '#374151',
-                        border: '1px solid #d1d5db',
+                        background: 'var(--bg-primary)',
+                        color: 'var(--text-secondary)',
+                        border: '1px solid var(--border-color)',
                         borderRadius: '6px',
                         cursor: 'pointer',
                         fontSize: '13px',
@@ -1497,10 +1497,10 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                         transition: 'all 0.15s',
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = '#f3f4f6';
+                        e.currentTarget.style.background = 'var(--bg-hover)';
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.background = '#ffffff';
+                        e.currentTarget.style.background = 'var(--bg-primary)';
                       }}
                     >
                       Cancel
@@ -1544,9 +1544,9 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       key={`reflection-${index}-${reflection.question.substring(0, 20)}`}
                       style={{
                         padding: '16px',
-                        background: '#ffffff',
+                        background: 'var(--bg-primary)',
                         borderRadius: '8px',
-                        border: '1px solid #e5e7eb',
+                        border: '1px solid var(--border-color)',
                       }}
                     >
                       {editingReflectionIndex === index ? (
@@ -1574,9 +1574,9 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                               onClick={handleCancelEditReflection}
                               style={{
                                 padding: '6px 12px',
-                                background: '#ffffff',
-                                color: '#374151',
-                                border: '1px solid #d1d5db',
+                                background: 'var(--bg-primary)',
+                                color: 'var(--text-secondary)',
+                                border: '1px solid var(--border-color)',
                                 borderRadius: '6px',
                                 cursor: 'pointer',
                                 fontSize: '13px',
@@ -1584,10 +1584,10 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                                 transition: 'all 0.15s',
                               }}
                               onMouseEnter={(e) => {
-                                e.currentTarget.style.background = '#f3f4f6';
+                                e.currentTarget.style.background = 'var(--bg-hover)';
                               }}
                               onMouseLeave={(e) => {
-                                e.currentTarget.style.background = '#ffffff';
+                                e.currentTarget.style.background = 'var(--bg-primary)';
                               }}
                             >
                               Cancel
@@ -1623,7 +1623,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                         </div>
                       ) : (
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
-                          <h4 style={{ margin: '0', fontSize: '14px', fontWeight: '600', color: '#111827', flex: 1 }}>
+                          <h4 style={{ margin: '0', fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', flex: 1 }}>
                             {reflection.question}
                           </h4>
                           {isReviewer && (
@@ -1642,14 +1642,14 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                                   transition: 'all 0.15s',
                                 }}
                                 onMouseEnter={(e) => {
-                                  e.currentTarget.style.background = '#f3f4f6';
+                                  e.currentTarget.style.background = 'var(--bg-hover)';
                                 }}
                                 onMouseLeave={(e) => {
                                   e.currentTarget.style.background = 'transparent';
                                 }}
                                 title="Options"
                               >
-                                <MoreVertical size={16} color="#6b7280" />
+                                <MoreVertical size={16} style={{ color: 'var(--text-muted)' }} />
                               </button>
 
                               {/* Dropdown Menu */}
@@ -1659,8 +1659,8 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                                   top: '100%',
                                   right: '0',
                                   marginTop: '4px',
-                                  background: '#ffffff',
-                                  border: '1px solid #e5e7eb',
+                                  background: 'var(--bg-primary)',
+                                  border: '1px solid var(--border-color)',
                                   borderRadius: '6px',
                                   boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
                                   zIndex: 10,
@@ -1679,11 +1679,11 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                                       display: 'flex',
                                       alignItems: 'center',
                                       gap: '8px',
-                                      color: '#374151',
+                                      color: 'var(--text-secondary)',
                                       transition: 'background 0.15s',
                                     }}
                                     onMouseEnter={(e) => {
-                                      e.currentTarget.style.background = '#f9fafb';
+                                      e.currentTarget.style.background = 'var(--bg-tertiary)';
                                     }}
                                     onMouseLeave={(e) => {
                                       e.currentTarget.style.background = 'transparent';
@@ -1699,7 +1699,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                                       padding: '8px 12px',
                                       background: 'transparent',
                                       border: 'none',
-                                      borderTop: '1px solid #f3f4f6',
+                                      borderTop: '1px solid var(--border-color-light)',
                                       cursor: 'pointer',
                                       fontSize: '14px',
                                       textAlign: 'left',
@@ -1738,7 +1738,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                           style={{
                             width: '100%',
                             padding: '10px 12px',
-                            border: '1px solid #e5e7eb',
+                            border: '1px solid var(--border-color)',
                             borderRadius: '6px',
                             fontSize: '14px',
                             outline: 'none',
@@ -1750,11 +1750,11 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                             e.currentTarget.style.borderColor = '#3b82f6';
                           }}
                           onBlur={(e) => {
-                            e.currentTarget.style.borderColor = '#e5e7eb';
+                            e.currentTarget.style.borderColor = 'var(--border-color)';
                           }}
                         />
                       ) : (
-                        <p style={{ margin: 0, fontSize: '14px', color: '#374151', lineHeight: '1.6' }}>
+                        <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                           {reflection.answer || <em style={{ color: '#9ca3af' }}>No response provided</em>}
                         </p>
                       )}
@@ -1764,12 +1764,12 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
               ) : (
                 <div style={{
                   padding: '32px',
-                  background: '#f9fafb',
+                  background: 'var(--bg-tertiary)',
                   borderRadius: '8px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   textAlign: 'center',
                 }}>
-                  <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
+                  <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-muted)' }}>
                     No self-reflection questions have been added yet. Click "Add Question" to get started.
                   </p>
                 </div>
@@ -1781,7 +1781,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
               <div style={{ marginBottom: '32px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
                   <Award size={20} color="#3b82f6" />
-                  <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: '#111827' }}>
+                  <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)' }}>
                     Performance Summary
                   </h3>
                 </div>
@@ -1790,17 +1790,17 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                   {/* Self Assessment Summary */}
                   <div style={{
                     padding: '20px',
-                    background: '#f9fafb',
+                    background: 'var(--bg-tertiary)',
                     borderRadius: '8px',
-                    border: '1px solid #e5e7eb',
+                    border: '1px solid var(--border-color)',
                   }}>
-                    <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '12px', fontWeight: '500', textTransform: 'uppercase' }}>
+                    <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '12px', fontWeight: '500', textTransform: 'uppercase' }}>
                       Individual Assessment
                     </div>
 
                     {/* Competencies Average */}
                     <div style={{ marginBottom: '12px' }}>
-                      <div style={{ fontSize: '13px', color: '#6b7280', marginBottom: '6px' }}>
+                      <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>
                         Competencies Average
                       </div>
                       {calculateCompetencyAverage(competencies, 'self') !== null ? (
@@ -1818,8 +1818,8 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       ) : (
                         <div style={{
                           padding: '10px 12px',
-                          background: '#ffffff',
-                          border: '1px solid #e5e7eb',
+                          background: 'var(--bg-primary)',
+                          border: '1px solid var(--border-color)',
                           borderRadius: '6px',
                           fontSize: '14px',
                           color: '#9ca3af',
@@ -1833,7 +1833,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
 
                     {/* Goals Average */}
                     <div style={{ marginBottom: '12px' }}>
-                      <div style={{ fontSize: '13px', color: '#6b7280', marginBottom: '6px' }}>
+                      <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>
                         Goals Average
                       </div>
                       {calculateGoalAverage(assignedGoals, 'self') !== null ? (
@@ -1851,8 +1851,8 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       ) : (
                         <div style={{
                           padding: '10px 12px',
-                          background: '#ffffff',
-                          border: '1px solid #e5e7eb',
+                          background: 'var(--bg-primary)',
+                          border: '1px solid var(--border-color)',
                           borderRadius: '6px',
                           fontSize: '14px',
                           color: '#9ca3af',
@@ -1868,9 +1868,9 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                     <div style={{
                       marginTop: '16px',
                       paddingTop: '16px',
-                      borderTop: '2px solid #e5e7eb',
+                      borderTop: '2px solid var(--border-color)',
                     }}>
-                      <div style={{ fontSize: '13px', color: '#6b7280', marginBottom: '8px', fontWeight: '500' }}>
+                      <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '8px', fontWeight: '500' }}>
                         Overall Rating
                       </div>
                       {calculateCombinedAverage(competencies, assignedGoals, 'self') !== null ? (
@@ -1893,7 +1893,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                             <div style={{ fontSize: '14px', fontWeight: '600', color: '#374151' }}>
                               {RATING_LABELS[Math.round(calculateCombinedAverage(competencies, assignedGoals, 'self')!) as keyof typeof RATING_LABELS]}
                             </div>
-                            <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                            <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
                               50% Competencies + 50% Goals
                             </div>
                           </div>
@@ -1901,8 +1901,8 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       ) : (
                         <div style={{
                           padding: '12px',
-                          background: '#ffffff',
-                          border: '1px solid #e5e7eb',
+                          background: 'var(--bg-primary)',
+                          border: '1px solid var(--border-color)',
                           borderRadius: '6px',
                           fontSize: '18px',
                           color: '#9ca3af',
@@ -1918,17 +1918,17 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                   {/* Manager Assessment Summary */}
                   <div style={{
                     padding: '20px',
-                    background: '#f9fafb',
+                    background: 'var(--bg-tertiary)',
                     borderRadius: '8px',
-                    border: '1px solid #e5e7eb',
+                    border: '1px solid var(--border-color)',
                   }}>
-                    <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '12px', fontWeight: '500', textTransform: 'uppercase' }}>
+                    <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '12px', fontWeight: '500', textTransform: 'uppercase' }}>
                       Manager Assessment
                     </div>
 
                     {/* Competencies Average */}
                     <div style={{ marginBottom: '12px' }}>
-                      <div style={{ fontSize: '13px', color: '#6b7280', marginBottom: '6px' }}>
+                      <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>
                         Competencies Average
                       </div>
                       {calculateCompetencyAverage(competencies, 'manager') !== null ? (
@@ -1946,8 +1946,8 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       ) : (
                         <div style={{
                           padding: '10px 12px',
-                          background: '#ffffff',
-                          border: '1px solid #e5e7eb',
+                          background: 'var(--bg-primary)',
+                          border: '1px solid var(--border-color)',
                           borderRadius: '6px',
                           fontSize: '14px',
                           color: '#9ca3af',
@@ -1961,7 +1961,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
 
                     {/* Goals Average */}
                     <div style={{ marginBottom: '12px' }}>
-                      <div style={{ fontSize: '13px', color: '#6b7280', marginBottom: '6px' }}>
+                      <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>
                         Goals Average
                       </div>
                       {calculateGoalAverage(assignedGoals, 'manager') !== null ? (
@@ -1979,8 +1979,8 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       ) : (
                         <div style={{
                           padding: '10px 12px',
-                          background: '#ffffff',
-                          border: '1px solid #e5e7eb',
+                          background: 'var(--bg-primary)',
+                          border: '1px solid var(--border-color)',
                           borderRadius: '6px',
                           fontSize: '14px',
                           color: '#9ca3af',
@@ -1996,9 +1996,9 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                     <div style={{
                       marginTop: '16px',
                       paddingTop: '16px',
-                      borderTop: '2px solid #e5e7eb',
+                      borderTop: '2px solid var(--border-color)',
                     }}>
-                      <div style={{ fontSize: '13px', color: '#6b7280', marginBottom: '8px', fontWeight: '500' }}>
+                      <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '8px', fontWeight: '500' }}>
                         Overall Rating
                       </div>
                       {calculateCombinedAverage(competencies, assignedGoals, 'manager') !== null ? (
@@ -2021,7 +2021,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                             <div style={{ fontSize: '14px', fontWeight: '600', color: '#374151' }}>
                               {RATING_LABELS[Math.round(calculateCombinedAverage(competencies, assignedGoals, 'manager')!) as keyof typeof RATING_LABELS]}
                             </div>
-                            <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                            <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
                               50% Competencies + 50% Goals
                             </div>
                           </div>
@@ -2029,8 +2029,8 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       ) : (
                         <div style={{
                           padding: '12px',
-                          background: '#ffffff',
-                          border: '1px solid #e5e7eb',
+                          background: 'var(--bg-primary)',
+                          border: '1px solid var(--border-color)',
                           borderRadius: '6px',
                           fontSize: '18px',
                           color: '#9ca3af',
@@ -2074,7 +2074,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
     >
       <div
         style={{
-          background: '#ffffff',
+          background: 'var(--bg-primary)',
           borderRadius: '12px',
           maxWidth: '600px',
           width: '100%',
@@ -2087,12 +2087,12 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
       >
         <div style={{
           padding: '20px 24px',
-          borderBottom: '1px solid #e5e7eb',
+          borderBottom: '1px solid var(--border-color)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
         }}>
-          <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: '#111827' }}>
+          <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)' }}>
             Competency Library
           </h3>
           <button
@@ -2108,7 +2108,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
               borderRadius: '6px',
             }}
           >
-            <X size={20} color="#6b7280" />
+            <X size={20} style={{ color: 'var(--text-muted)' }} />
           </button>
         </div>
         <div style={{ padding: '16px 24px', borderBottom: '1px solid #e5e7eb' }}>
@@ -2120,7 +2120,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
             style={{
               width: '100%',
               padding: '10px 12px',
-              border: '1px solid #e5e7eb',
+              border: '1px solid var(--border-color)',
               borderRadius: '8px',
               fontSize: '14px',
               outline: 'none',
@@ -2129,12 +2129,12 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
         </div>
         <div style={{ flex: 1, overflow: 'auto', padding: '16px 24px' }}>
           {libraryLoading ? (
-            <p style={{ textAlign: 'center', color: '#6b7280' }}>Loading...</p>
+            <p style={{ textAlign: 'center', color: 'var(--text-muted)' }}>Loading...</p>
           ) : libraryCompetencies.filter(c =>
             c.name.toLowerCase().includes(librarySearch.toLowerCase()) ||
             (c.description?.toLowerCase().includes(librarySearch.toLowerCase()))
           ).length === 0 ? (
-            <p style={{ textAlign: 'center', color: '#6b7280' }}>No competencies found in library</p>
+            <p style={{ textAlign: 'center', color: 'var(--text-muted)' }}>No competencies found in library</p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {libraryCompetencies
@@ -2148,24 +2148,24 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                     onClick={() => handleSelectCompetencyFromLibrary(item)}
                     style={{
                       padding: '12px 16px',
-                      background: '#ffffff',
-                      border: '1px solid #e5e7eb',
+                      background: 'var(--bg-primary)',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       cursor: 'pointer',
                       textAlign: 'left',
                       transition: 'all 0.15s',
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = '#f9fafb';
+                      e.currentTarget.style.background = 'var(--bg-tertiary)';
                       e.currentTarget.style.borderColor = '#10b981';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = '#ffffff';
-                      e.currentTarget.style.borderColor = '#e5e7eb';
+                      e.currentTarget.style.background = 'var(--bg-primary)';
+                      e.currentTarget.style.borderColor = 'var(--border-color)';
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                      <span style={{ fontSize: '14px', fontWeight: '600', color: '#111827' }}>
+                      <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)' }}>
                         {item.name}
                       </span>
                       {item.isPlatformDefault && (
@@ -2183,8 +2183,8 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       {item.category && (
                         <span style={{
                           padding: '2px 6px',
-                          background: '#f3f4f6',
-                          color: '#6b7280',
+                          background: 'var(--bg-hover)',
+                          color: 'var(--text-muted)',
                           fontSize: '10px',
                           fontWeight: '500',
                           borderRadius: '4px',
@@ -2194,7 +2194,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       )}
                     </div>
                     {item.description && (
-                      <p style={{ margin: 0, fontSize: '13px', color: '#6b7280' }}>
+                      <p style={{ margin: 0, fontSize: '13px', color: 'var(--text-muted)' }}>
                         {item.description}
                       </p>
                     )}
@@ -2230,7 +2230,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
     >
       <div
         style={{
-          background: '#ffffff',
+          background: 'var(--bg-primary)',
           borderRadius: '12px',
           maxWidth: '600px',
           width: '100%',
@@ -2243,12 +2243,12 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
       >
         <div style={{
           padding: '20px 24px',
-          borderBottom: '1px solid #e5e7eb',
+          borderBottom: '1px solid var(--border-color)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
         }}>
-          <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: '#111827' }}>
+          <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)' }}>
             Goal Library
           </h3>
           <button
@@ -2264,7 +2264,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
               borderRadius: '6px',
             }}
           >
-            <X size={20} color="#6b7280" />
+            <X size={20} style={{ color: 'var(--text-muted)' }} />
           </button>
         </div>
         <div style={{ padding: '16px 24px', borderBottom: '1px solid #e5e7eb' }}>
@@ -2276,7 +2276,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
             style={{
               width: '100%',
               padding: '10px 12px',
-              border: '1px solid #e5e7eb',
+              border: '1px solid var(--border-color)',
               borderRadius: '8px',
               fontSize: '14px',
               outline: 'none',
@@ -2285,12 +2285,12 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
         </div>
         <div style={{ flex: 1, overflow: 'auto', padding: '16px 24px' }}>
           {libraryLoading ? (
-            <p style={{ textAlign: 'center', color: '#6b7280' }}>Loading...</p>
+            <p style={{ textAlign: 'center', color: 'var(--text-muted)' }}>Loading...</p>
           ) : libraryGoals.filter(g =>
             g.title.toLowerCase().includes(librarySearch.toLowerCase()) ||
             (g.description?.toLowerCase().includes(librarySearch.toLowerCase()))
           ).length === 0 ? (
-            <p style={{ textAlign: 'center', color: '#6b7280' }}>No goals found in library</p>
+            <p style={{ textAlign: 'center', color: 'var(--text-muted)' }}>No goals found in library</p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {libraryGoals
@@ -2304,24 +2304,24 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                     onClick={() => handleSelectGoalFromLibrary(item)}
                     style={{
                       padding: '12px 16px',
-                      background: '#ffffff',
-                      border: '1px solid #e5e7eb',
+                      background: 'var(--bg-primary)',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       cursor: 'pointer',
                       textAlign: 'left',
                       transition: 'all 0.15s',
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = '#f9fafb';
+                      e.currentTarget.style.background = 'var(--bg-tertiary)';
                       e.currentTarget.style.borderColor = '#f59e0b';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = '#ffffff';
-                      e.currentTarget.style.borderColor = '#e5e7eb';
+                      e.currentTarget.style.background = 'var(--bg-primary)';
+                      e.currentTarget.style.borderColor = 'var(--border-color)';
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                      <span style={{ fontSize: '14px', fontWeight: '600', color: '#111827' }}>
+                      <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)' }}>
                         {item.title}
                       </span>
                       {item.isPlatformDefault && (
@@ -2339,8 +2339,8 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       {item.category && (
                         <span style={{
                           padding: '2px 6px',
-                          background: '#f3f4f6',
-                          color: '#6b7280',
+                          background: 'var(--bg-hover)',
+                          color: 'var(--text-muted)',
                           fontSize: '10px',
                           fontWeight: '500',
                           borderRadius: '4px',
@@ -2350,7 +2350,7 @@ export default function ReviewDetailModal({ review, isOpen, onClose, isReviewer,
                       )}
                     </div>
                     {item.description && (
-                      <p style={{ margin: 0, fontSize: '13px', color: '#6b7280' }}>
+                      <p style={{ margin: 0, fontSize: '13px', color: 'var(--text-muted)' }}>
                         {item.description}
                       </p>
                     )}

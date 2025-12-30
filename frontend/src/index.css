@@ -176,8 +176,8 @@ html.dark .admin-users-table td::before {
   .responsive-table tr {
     display: flex;
     flex-direction: column;
-    background: #fff;
-    border: 1px solid #e5e7eb !important;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color) !important;
     border-radius: 12px;
     padding: 16px;
     gap: 12px;
@@ -196,13 +196,13 @@ html.dark .admin-users-table td::before {
     content: attr(data-label);
     font-weight: 500;
     font-size: 13px;
-    color: #6b7280;
+    color: var(--text-muted);
     min-width: 90px;
   }
 
   /* Name cell - make it prominent as card header */
   .responsive-table td[data-label="Name"] {
-    border-bottom: 1px solid #f3f4f6 !important;
+    border-bottom: 1px solid var(--border-color-light) !important;
     padding-bottom: 12px !important;
     margin-bottom: 4px;
   }
@@ -217,7 +217,7 @@ html.dark .admin-users-table td::before {
 
   /* Role badge - make it stand out */
   .responsive-table td[data-label="Role"] {
-    border-top: 1px solid #f3f4f6 !important;
+    border-top: 1px solid var(--border-color-light) !important;
     padding-top: 12px !important;
     margin-top: 4px;
   }
@@ -369,8 +369,8 @@ html.dark .admin-users-table td::before {
   .admin-users-table tr {
     display: flex;
     flex-direction: column;
-    background: #fff;
-    border: 1px solid #e5e7eb !important;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color) !important;
     border-radius: 12px;
     padding: 16px;
     gap: 12px;
@@ -389,13 +389,13 @@ html.dark .admin-users-table td::before {
     content: attr(data-label);
     font-weight: 500;
     font-size: 13px;
-    color: #6b7280;
+    color: var(--text-muted);
     min-width: 80px;
   }
 
   /* User cell - make it the card header */
   .admin-users-table td[data-label="User"] {
-    border-bottom: 1px solid #f3f4f6 !important;
+    border-bottom: 1px solid var(--border-color-light) !important;
     padding-bottom: 12px !important;
   }
 
@@ -421,7 +421,7 @@ html.dark .admin-users-table td::before {
 
   /* Actions cell */
   .admin-users-table .actions-cell {
-    border-top: 1px solid #f3f4f6 !important;
+    border-top: 1px solid var(--border-color-light) !important;
     padding-top: 12px !important;
     justify-content: flex-end !important;
   }

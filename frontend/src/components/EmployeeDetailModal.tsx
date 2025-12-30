@@ -24,7 +24,7 @@ export default function EmployeeDetailModal({ employee, onClose }: EmployeeDetai
     >
       <div
         style={{
-          background: '#ffffff',
+          background: 'var(--bg-primary)',
           borderRadius: '16px',
           maxWidth: '600px',
           width: '100%',
@@ -38,13 +38,13 @@ export default function EmployeeDetailModal({ employee, onClose }: EmployeeDetai
         <div
           style={{
             padding: '24px',
-            borderBottom: '1px solid #e5e7eb',
+            borderBottom: '1px solid var(--border-color)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
         >
-          <h2 style={{ fontSize: '24px', fontWeight: '600', color: '#111827', margin: 0 }}>
+          <h2 style={{ fontSize: '24px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>
             Employee Details
           </h2>
           <button
@@ -61,13 +61,13 @@ export default function EmployeeDetailModal({ employee, onClose }: EmployeeDetai
               transition: 'all 0.15s',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#f3f4f6';
+              e.currentTarget.style.background = 'var(--bg-hover)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = 'transparent';
             }}
           >
-            <X size={20} color="#6b7280" />
+            <X size={20} style={{ color: 'var(--text-muted)' }} />
           </button>
         </div>
 
@@ -77,10 +77,10 @@ export default function EmployeeDetailModal({ employee, onClose }: EmployeeDetai
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '32px' }}>
             <Avatar user={employee} size="xl" />
             <div>
-              <h3 style={{ fontSize: '20px', fontWeight: '600', color: '#111827', margin: '0 0 4px 0' }}>
+              <h3 style={{ fontSize: '20px', fontWeight: '600', color: 'var(--text-primary)', margin: '0 0 4px 0' }}>
                 {employee.name}
               </h3>
-              <p style={{ fontSize: '16px', color: '#6b7280', margin: 0 }}>
+              <p style={{ fontSize: '16px', color: 'var(--text-muted)', margin: 0 }}>
                 {employee.title || 'No title'}
               </p>
             </div>
@@ -91,12 +91,12 @@ export default function EmployeeDetailModal({ employee, onClose }: EmployeeDetai
             {/* Email */}
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                <Mail size={18} color="#6b7280" />
-                <span style={{ fontSize: '14px', fontWeight: '500', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <Mail size={18} style={{ color: 'var(--text-muted)' }} />
+                <span style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Email
                 </span>
               </div>
-              <p style={{ fontSize: '15px', color: '#111827', margin: 0, marginLeft: '26px' }}>
+              <p style={{ fontSize: '15px', color: 'var(--text-primary)', margin: 0, marginLeft: '26px' }}>
                 {employee.email}
               </p>
             </div>
@@ -105,12 +105,12 @@ export default function EmployeeDetailModal({ employee, onClose }: EmployeeDetai
             {employee.department && (
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                  <Building size={18} color="#6b7280" />
-                  <span style={{ fontSize: '14px', fontWeight: '500', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  <Building size={18} style={{ color: 'var(--text-muted)' }} />
+                  <span style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                     Department
                   </span>
                 </div>
-                <p style={{ fontSize: '15px', color: '#111827', margin: 0, marginLeft: '26px' }}>
+                <p style={{ fontSize: '15px', color: 'var(--text-primary)', margin: 0, marginLeft: '26px' }}>
                   {employee.department.name}
                 </p>
               </div>
@@ -119,8 +119,8 @@ export default function EmployeeDetailModal({ employee, onClose }: EmployeeDetai
             {/* Role */}
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                <Briefcase size={18} color="#6b7280" />
-                <span style={{ fontSize: '14px', fontWeight: '500', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <Briefcase size={18} style={{ color: 'var(--text-muted)' }} />
+                <span style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Role
                 </span>
               </div>
@@ -144,12 +144,12 @@ export default function EmployeeDetailModal({ employee, onClose }: EmployeeDetai
             {employee.manager && (
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                  <UserIcon size={18} color="#6b7280" />
-                  <span style={{ fontSize: '14px', fontWeight: '500', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  <UserIcon size={18} style={{ color: 'var(--text-muted)' }} />
+                  <span style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                     Manager
                   </span>
                 </div>
-                <p style={{ fontSize: '15px', color: '#111827', margin: 0, marginLeft: '26px' }}>
+                <p style={{ fontSize: '15px', color: 'var(--text-primary)', margin: 0, marginLeft: '26px' }}>
                   {employee.manager.name}
                 </p>
               </div>
@@ -159,12 +159,12 @@ export default function EmployeeDetailModal({ employee, onClose }: EmployeeDetai
             {employee.hireDate && (
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                  <Calendar size={18} color="#6b7280" />
-                  <span style={{ fontSize: '14px', fontWeight: '500', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  <Calendar size={18} style={{ color: 'var(--text-muted)' }} />
+                  <span style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                     Hire Date
                   </span>
                 </div>
-                <p style={{ fontSize: '15px', color: '#111827', margin: 0, marginLeft: '26px' }}>
+                <p style={{ fontSize: '15px', color: 'var(--text-primary)', margin: 0, marginLeft: '26px' }}>
                   {new Date(employee.hireDate).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
@@ -180,15 +180,15 @@ export default function EmployeeDetailModal({ employee, onClose }: EmployeeDetai
             style={{
               marginTop: '32px',
               padding: '20px',
-              background: '#f9fafb',
+              background: 'var(--bg-tertiary)',
               borderRadius: '12px',
-              border: '1px solid #e5e7eb',
+              border: '1px solid var(--border-color)',
             }}
           >
-            <h4 style={{ fontSize: '16px', fontWeight: '600', color: '#111827', margin: '0 0 12px 0' }}>
+            <h4 style={{ fontSize: '16px', fontWeight: '600', color: 'var(--text-primary)', margin: '0 0 12px 0' }}>
               Gusto Data
             </h4>
-            <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>
+            <p style={{ fontSize: '14px', color: 'var(--text-muted)', margin: 0 }}>
               Gusto integration will populate additional employee information here (compensation, benefits, time off, etc.)
             </p>
           </div>
@@ -198,7 +198,7 @@ export default function EmployeeDetailModal({ employee, onClose }: EmployeeDetai
         <div
           style={{
             padding: '16px 24px',
-            borderTop: '1px solid #e5e7eb',
+            borderTop: '1px solid var(--border-color)',
             display: 'flex',
             justifyContent: 'flex-end',
           }}

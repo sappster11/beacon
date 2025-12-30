@@ -100,17 +100,17 @@ export default function AdminSettingsTab() {
   return (
     <div style={{ maxWidth: '800px' }}>
       {/* Review Settings */}
-      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', padding: '24px', marginBottom: '20px' }}>
+      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '24px', marginBottom: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
           <SettingsIcon size={20} style={{ color: '#3b82f6' }} />
-          <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', margin: 0 }}>
+          <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>
             Review Settings
           </h3>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
               Rating Scale
             </label>
             <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
@@ -121,13 +121,13 @@ export default function AdminSettingsTab() {
                 style={{
                   width: '80px',
                   padding: '8px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px'
                 }}
                 min="1"
               />
-              <span style={{ color: '#6b7280' }}>to</span>
+              <span style={{ color: 'var(--text-muted)' }}>to</span>
               <input
                 type="number"
                 value={reviewSettings.scaleMax}
@@ -135,7 +135,7 @@ export default function AdminSettingsTab() {
                 style={{
                   width: '80px',
                   padding: '8px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px'
                 }}
@@ -145,13 +145,13 @@ export default function AdminSettingsTab() {
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
               Scale Labels
             </label>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {Object.entries(reviewSettings.scaleLabels || {}).map(([key, value]) => (
                 <div key={key} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <span style={{ fontSize: '14px', color: '#6b7280', width: '20px' }}>{key}:</span>
+                  <span style={{ fontSize: '14px', color: 'var(--text-muted)', width: '20px' }}>{key}:</span>
                   <input
                     type="text"
                     value={value}
@@ -162,7 +162,7 @@ export default function AdminSettingsTab() {
                     style={{
                       flex: 1,
                       padding: '8px 12px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       fontSize: '14px'
                     }}
@@ -197,17 +197,17 @@ export default function AdminSettingsTab() {
       </div>
 
       {/* Notification Settings */}
-      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', padding: '24px', marginBottom: '20px' }}>
+      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '24px', marginBottom: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
           <SettingsIcon size={20} style={{ color: '#3b82f6' }} />
-          <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', margin: 0 }}>
+          <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>
             Notification Settings
           </h3>
         </div>
 
         {/* Review Notifications */}
         <div style={{ marginBottom: '24px' }}>
-          <h4 style={{ fontSize: '15px', fontWeight: '600', color: '#111827', marginBottom: '12px' }}>
+          <h4 style={{ fontSize: '15px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '12px' }}>
             Review Notifications
           </h4>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingLeft: '8px' }}>
@@ -219,13 +219,13 @@ export default function AdminSettingsTab() {
                   onChange={(e) => setNotificationSettings({ ...notificationSettings, reviewDeadlineReminder: e.target.checked })}
                   style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
                 />
-                <span style={{ fontSize: '14px', color: '#374151' }}>
+                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
                   Review deadline reminders
                 </span>
               </label>
               {notificationSettings.reviewDeadlineReminder && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '28px' }}>
-                  <span style={{ fontSize: '13px', color: '#6b7280' }}>Send reminder</span>
+                  <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Send reminder</span>
                   <input
                     type="number"
                     value={notificationSettings.reviewDeadlineReminderDays}
@@ -235,12 +235,12 @@ export default function AdminSettingsTab() {
                     style={{
                       width: '60px',
                       padding: '6px 8px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '6px',
                       fontSize: '13px'
                     }}
                   />
-                  <span style={{ fontSize: '13px', color: '#6b7280' }}>days before deadline</span>
+                  <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>days before deadline</span>
                 </div>
               )}
             </div>
@@ -253,13 +253,13 @@ export default function AdminSettingsTab() {
                   onChange={(e) => setNotificationSettings({ ...notificationSettings, selfReviewSubmissionReminder: e.target.checked })}
                   style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
                 />
-                <span style={{ fontSize: '14px', color: '#374151' }}>
+                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
                   Self-review submission reminders
                 </span>
               </label>
               {notificationSettings.selfReviewSubmissionReminder && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '28px' }}>
-                  <span style={{ fontSize: '13px', color: '#6b7280' }}>Send reminder</span>
+                  <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Send reminder</span>
                   <input
                     type="number"
                     value={notificationSettings.selfReviewSubmissionReminderDays}
@@ -269,12 +269,12 @@ export default function AdminSettingsTab() {
                     style={{
                       width: '60px',
                       padding: '6px 8px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '6px',
                       fontSize: '13px'
                     }}
                   />
-                  <span style={{ fontSize: '13px', color: '#6b7280' }}>days before deadline</span>
+                  <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>days before deadline</span>
                 </div>
               )}
             </div>
@@ -287,19 +287,19 @@ export default function AdminSettingsTab() {
                   onChange={(e) => setNotificationSettings({ ...notificationSettings, managerPendingReviewReminder: e.target.checked })}
                   style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
                 />
-                <span style={{ fontSize: '14px', color: '#374151' }}>
+                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
                   Manager pending review reminders
                 </span>
               </label>
               {notificationSettings.managerPendingReviewReminder && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '28px' }}>
-                  <span style={{ fontSize: '13px', color: '#6b7280' }}>Send reminder</span>
+                  <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Send reminder</span>
                   <select
                     value={notificationSettings.managerPendingReviewReminderFrequency}
                     onChange={(e) => setNotificationSettings({ ...notificationSettings, managerPendingReviewReminderFrequency: e.target.value })}
                     style={{
                       padding: '6px 8px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '6px',
                       fontSize: '13px'
                     }}
@@ -319,7 +319,7 @@ export default function AdminSettingsTab() {
                 onChange={(e) => setNotificationSettings({ ...notificationSettings, overdueReviewReminder: e.target.checked })}
                 style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
               />
-              <span style={{ fontSize: '14px', color: '#374151' }}>
+              <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
                 Overdue review notifications
               </span>
             </label>
@@ -328,7 +328,7 @@ export default function AdminSettingsTab() {
 
         {/* One-on-One Notifications */}
         <div style={{ marginBottom: '24px' }}>
-          <h4 style={{ fontSize: '15px', fontWeight: '600', color: '#111827', marginBottom: '12px' }}>
+          <h4 style={{ fontSize: '15px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '12px' }}>
             One-on-One Notifications
           </h4>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingLeft: '8px' }}>
@@ -340,13 +340,13 @@ export default function AdminSettingsTab() {
                   onChange={(e) => setNotificationSettings({ ...notificationSettings, oneOnOneReminder: e.target.checked })}
                   style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
                 />
-                <span style={{ fontSize: '14px', color: '#374151' }}>
+                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
                   Upcoming meeting reminders
                 </span>
               </label>
               {notificationSettings.oneOnOneReminder && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '28px' }}>
-                  <span style={{ fontSize: '13px', color: '#6b7280' }}>Send reminder</span>
+                  <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Send reminder</span>
                   <input
                     type="number"
                     value={notificationSettings.oneOnOneReminderHours}
@@ -356,12 +356,12 @@ export default function AdminSettingsTab() {
                     style={{
                       width: '60px',
                       padding: '6px 8px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '6px',
                       fontSize: '13px'
                     }}
                   />
-                  <span style={{ fontSize: '13px', color: '#6b7280' }}>hours before meeting</span>
+                  <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>hours before meeting</span>
                 </div>
               )}
             </div>
@@ -373,7 +373,7 @@ export default function AdminSettingsTab() {
                 onChange={(e) => setNotificationSettings({ ...notificationSettings, oneOnOneSummaryReminder: e.target.checked })}
                 style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
               />
-              <span style={{ fontSize: '14px', color: '#374151' }}>
+              <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
                 Meeting summary reminders (for incomplete summaries)
               </span>
             </label>
@@ -382,7 +382,7 @@ export default function AdminSettingsTab() {
 
         {/* Goal Notifications */}
         <div style={{ marginBottom: '24px' }}>
-          <h4 style={{ fontSize: '15px', fontWeight: '600', color: '#111827', marginBottom: '12px' }}>
+          <h4 style={{ fontSize: '15px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '12px' }}>
             Goal Notifications
           </h4>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingLeft: '8px' }}>
@@ -394,19 +394,19 @@ export default function AdminSettingsTab() {
                   onChange={(e) => setNotificationSettings({ ...notificationSettings, goalReminder: e.target.checked })}
                   style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
                 />
-                <span style={{ fontSize: '14px', color: '#374151' }}>
+                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
                   Goal progress reminders
                 </span>
               </label>
               {notificationSettings.goalReminder && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '28px' }}>
-                  <span style={{ fontSize: '13px', color: '#6b7280' }}>Send reminder</span>
+                  <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Send reminder</span>
                   <select
                     value={notificationSettings.goalReminderFrequency}
                     onChange={(e) => setNotificationSettings({ ...notificationSettings, goalReminderFrequency: e.target.value })}
                     style={{
                       padding: '6px 8px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '6px',
                       fontSize: '13px'
                     }}
@@ -427,13 +427,13 @@ export default function AdminSettingsTab() {
                   onChange={(e) => setNotificationSettings({ ...notificationSettings, goalDeadlineReminder: e.target.checked })}
                   style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
                 />
-                <span style={{ fontSize: '14px', color: '#374151' }}>
+                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
                   Goal deadline reminders
                 </span>
               </label>
               {notificationSettings.goalDeadlineReminder && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '28px' }}>
-                  <span style={{ fontSize: '13px', color: '#6b7280' }}>Send reminder</span>
+                  <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Send reminder</span>
                   <input
                     type="number"
                     value={notificationSettings.goalDeadlineReminderDays}
@@ -443,12 +443,12 @@ export default function AdminSettingsTab() {
                     style={{
                       width: '60px',
                       padding: '6px 8px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '6px',
                       fontSize: '13px'
                     }}
                   />
-                  <span style={{ fontSize: '13px', color: '#6b7280' }}>days before deadline</span>
+                  <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>days before deadline</span>
                 </div>
               )}
             </div>
@@ -457,7 +457,7 @@ export default function AdminSettingsTab() {
 
         {/* Feedback Notifications */}
         <div>
-          <h4 style={{ fontSize: '15px', fontWeight: '600', color: '#111827', marginBottom: '12px' }}>
+          <h4 style={{ fontSize: '15px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '12px' }}>
             Feedback Notifications
           </h4>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingLeft: '8px' }}>
@@ -468,7 +468,7 @@ export default function AdminSettingsTab() {
                 onChange={(e) => setNotificationSettings({ ...notificationSettings, feedbackRequestNotification: e.target.checked })}
                 style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
               />
-              <span style={{ fontSize: '14px', color: '#374151' }}>
+              <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
                 Feedback request notifications
               </span>
             </label>
@@ -480,7 +480,7 @@ export default function AdminSettingsTab() {
                 onChange={(e) => setNotificationSettings({ ...notificationSettings, newFeedbackNotification: e.target.checked })}
                 style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
               />
-              <span style={{ fontSize: '14px', color: '#374151' }}>
+              <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
                 New feedback received notifications
               </span>
             </label>
@@ -512,10 +512,10 @@ export default function AdminSettingsTab() {
 
       {/* Feature Flags (SUPER_ADMIN only) */}
       {isSuperAdmin && (
-        <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', padding: '24px' }}>
+        <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
             <SettingsIcon size={20} style={{ color: '#3b82f6' }} />
-            <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', margin: 0 }}>
+            <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>
               Feature Flags
             </h3>
             <span style={{
@@ -539,7 +539,7 @@ export default function AdminSettingsTab() {
                   onChange={(e) => setFeatureFlags({ ...featureFlags, [key]: e.target.checked })}
                   style={{ width: '18px', height: '18px', cursor: 'pointer' }}
                 />
-                <span style={{ fontSize: '14px', color: '#374151' }}>
+                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
                   {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
                 </span>
               </label>

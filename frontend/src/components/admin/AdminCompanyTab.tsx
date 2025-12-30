@@ -131,17 +131,17 @@ export default function AdminCompanyTab() {
   return (
     <div style={{ maxWidth: '800px' }}>
       {/* Company Information */}
-      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', padding: '24px', marginBottom: '20px' }}>
+      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '24px', marginBottom: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
           <Building2 size={20} style={{ color: '#3b82f6' }} />
-          <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', margin: 0 }}>
+          <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>
             Company Information
           </h3>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
               Company Name
             </label>
             <input
@@ -151,7 +151,7 @@ export default function AdminCompanyTab() {
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px'
               }}
@@ -159,7 +159,7 @@ export default function AdminCompanyTab() {
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
               Timezone
             </label>
             <select
@@ -168,7 +168,7 @@ export default function AdminCompanyTab() {
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px'
               }}
@@ -232,7 +232,7 @@ export default function AdminCompanyTab() {
           </div>
 
           <div style={{ marginTop: '8px' }}>
-            <h4 style={{ fontSize: '14px', fontWeight: '600', color: '#111827', marginBottom: '12px' }}>
+            <h4 style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '12px' }}>
               Company Address
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -247,7 +247,7 @@ export default function AdminCompanyTab() {
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px'
                 }}
@@ -263,7 +263,7 @@ export default function AdminCompanyTab() {
                   })}
                   style={{
                     padding: '10px 12px',
-                    border: '1px solid #e5e7eb',
+                    border: '1px solid var(--border-color)',
                     borderRadius: '8px',
                     fontSize: '14px'
                   }}
@@ -276,7 +276,7 @@ export default function AdminCompanyTab() {
                   })}
                   style={{
                     padding: '10px 12px',
-                    border: '1px solid #e5e7eb',
+                    border: '1px solid var(--border-color)',
                     borderRadius: '8px',
                     fontSize: '14px',
                     background: 'white'
@@ -297,7 +297,7 @@ export default function AdminCompanyTab() {
                   })}
                   style={{
                     padding: '10px 12px',
-                    border: '1px solid #e5e7eb',
+                    border: '1px solid var(--border-color)',
                     borderRadius: '8px',
                     fontSize: '14px'
                   }}
@@ -312,7 +312,7 @@ export default function AdminCompanyTab() {
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px',
                   background: 'white'
@@ -352,10 +352,10 @@ export default function AdminCompanyTab() {
       </div>
 
       {/* Brand Customization */}
-      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', padding: '24px', marginBottom: '20px' }}>
+      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '24px', marginBottom: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
           <Palette size={20} style={{ color: '#3b82f6' }} />
-          <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', margin: 0 }}>
+          <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>
             Brand Customization
           </h3>
         </div>
@@ -363,7 +363,7 @@ export default function AdminCompanyTab() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {/* Logo Upload */}
           <div>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
               Company Logo
             </label>
             <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
@@ -372,7 +372,7 @@ export default function AdminCompanyTab() {
                   width: '120px',
                   height: '120px',
                   borderRadius: '8px',
-                  border: '2px solid #e5e7eb',
+                  border: '2px solid var(--border-color)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -401,8 +401,8 @@ export default function AdminCompanyTab() {
                     alignItems: 'center',
                     gap: '8px',
                     padding: '10px 20px',
-                    background: '#f3f4f6',
-                    border: '1px solid #e5e7eb',
+                    background: 'var(--bg-hover)',
+                    border: '1px solid var(--border-color)',
                     borderRadius: '8px',
                     fontSize: '14px',
                     fontWeight: '500',
@@ -413,7 +413,7 @@ export default function AdminCompanyTab() {
                   <Upload size={16} />
                   Upload Logo
                 </label>
-                <p style={{ fontSize: '13px', color: '#6b7280', marginTop: '8px' }}>
+                <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '8px' }}>
                   Recommended: Square image, at least 200x200px, PNG or JPG
                 </p>
               </div>
@@ -422,13 +422,13 @@ export default function AdminCompanyTab() {
 
           {/* Color Pickers */}
           <div>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '12px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '12px' }}>
               Brand Colors
             </label>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               {/* Primary Color */}
               <div>
-                <label style={{ display: 'block', fontSize: '13px', color: '#6b7280', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>
                   Primary Color
                 </label>
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
@@ -439,7 +439,7 @@ export default function AdminCompanyTab() {
                     style={{
                       width: '50px',
                       height: '40px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       cursor: 'pointer'
                     }}
@@ -451,7 +451,7 @@ export default function AdminCompanyTab() {
                     style={{
                       flex: 1,
                       padding: '10px 12px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       fontSize: '13px',
                       fontFamily: 'monospace'
@@ -462,7 +462,7 @@ export default function AdminCompanyTab() {
 
               {/* Secondary Color */}
               <div>
-                <label style={{ display: 'block', fontSize: '13px', color: '#6b7280', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>
                   Secondary Color
                 </label>
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
@@ -473,7 +473,7 @@ export default function AdminCompanyTab() {
                     style={{
                       width: '50px',
                       height: '40px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       cursor: 'pointer'
                     }}
@@ -485,7 +485,7 @@ export default function AdminCompanyTab() {
                     style={{
                       flex: 1,
                       padding: '10px 12px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       fontSize: '13px',
                       fontFamily: 'monospace'
@@ -496,7 +496,7 @@ export default function AdminCompanyTab() {
 
               {/* Accent Color */}
               <div>
-                <label style={{ display: 'block', fontSize: '13px', color: '#6b7280', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>
                   Accent Color
                 </label>
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
@@ -507,7 +507,7 @@ export default function AdminCompanyTab() {
                     style={{
                       width: '50px',
                       height: '40px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       cursor: 'pointer'
                     }}
@@ -519,7 +519,7 @@ export default function AdminCompanyTab() {
                     style={{
                       flex: 1,
                       padding: '10px 12px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       fontSize: '13px',
                       fontFamily: 'monospace'
@@ -530,7 +530,7 @@ export default function AdminCompanyTab() {
 
               {/* Success Color */}
               <div>
-                <label style={{ display: 'block', fontSize: '13px', color: '#6b7280', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>
                   Success Color
                 </label>
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
@@ -541,7 +541,7 @@ export default function AdminCompanyTab() {
                     style={{
                       width: '50px',
                       height: '40px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       cursor: 'pointer'
                     }}
@@ -553,7 +553,7 @@ export default function AdminCompanyTab() {
                     style={{
                       flex: 1,
                       padding: '10px 12px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       fontSize: '13px',
                       fontFamily: 'monospace'
@@ -564,7 +564,7 @@ export default function AdminCompanyTab() {
 
               {/* Danger Color */}
               <div>
-                <label style={{ display: 'block', fontSize: '13px', color: '#6b7280', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>
                   Danger Color
                 </label>
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
@@ -575,7 +575,7 @@ export default function AdminCompanyTab() {
                     style={{
                       width: '50px',
                       height: '40px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       cursor: 'pointer'
                     }}
@@ -587,7 +587,7 @@ export default function AdminCompanyTab() {
                     style={{
                       flex: 1,
                       padding: '10px 12px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       fontSize: '13px',
                       fontFamily: 'monospace'
@@ -598,7 +598,7 @@ export default function AdminCompanyTab() {
 
               {/* Warning Color */}
               <div>
-                <label style={{ display: 'block', fontSize: '13px', color: '#6b7280', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>
                   Warning Color
                 </label>
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
@@ -609,7 +609,7 @@ export default function AdminCompanyTab() {
                     style={{
                       width: '50px',
                       height: '40px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       cursor: 'pointer'
                     }}
@@ -621,7 +621,7 @@ export default function AdminCompanyTab() {
                     style={{
                       flex: 1,
                       padding: '10px 12px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       fontSize: '13px',
                       fontFamily: 'monospace'

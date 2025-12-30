@@ -163,7 +163,7 @@ export default function AdminBillingTab() {
       trialing: { bg: '#dbeafe', color: '#1e40af', text: 'Trial' },
       past_due: { bg: '#fef3c7', color: '#92400e', text: 'Past Due' },
       canceled: { bg: '#fee2e2', color: '#991b1b', text: 'Canceled' },
-      inactive: { bg: '#f3f4f6', color: '#6b7280', text: 'Free' },
+      inactive: { bg: '#f3f4f6', color: 'var(--text-muted)', text: 'Free' },
     };
 
     const style = styles[subscriptionStatus] || styles.inactive;
@@ -191,14 +191,14 @@ export default function AdminBillingTab() {
         style={{
           background: 'white',
           borderRadius: '12px',
-          border: '1px solid #e5e7eb',
+          border: '1px solid var(--border-color)',
           padding: '24px',
           marginBottom: '24px',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
           <CreditCard size={20} style={{ color: '#3b82f6' }} />
-          <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', margin: 0 }}>
+          <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>
             Current Plan
           </h3>
         </div>
@@ -206,12 +206,12 @@ export default function AdminBillingTab() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-              <span style={{ fontSize: '24px', fontWeight: '700', color: '#111827' }}>
+              <span style={{ fontSize: '24px', fontWeight: '700', color: 'var(--text-primary)' }}>
                 {currentTier.charAt(0).toUpperCase() + currentTier.slice(1)}
               </span>
               {getStatusBadge()}
             </div>
-            <p style={{ color: '#6b7280', fontSize: '14px', margin: 0 }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: 0 }}>
               {currentTier === 'free'
                 ? `You have ${userCount} user${userCount !== 1 ? 's' : ''} in your organization`
                 : subscriptionStatus === 'active'
@@ -229,8 +229,8 @@ export default function AdminBillingTab() {
               style={{
                 padding: '10px 20px',
                 background: 'white',
-                color: '#374151',
-                border: '1px solid #e5e7eb',
+                color: 'var(--text-secondary)',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 fontWeight: '500',
@@ -273,20 +273,20 @@ export default function AdminBillingTab() {
         style={{
           background: 'white',
           borderRadius: '12px',
-          border: '1px solid #e5e7eb',
+          border: '1px solid var(--border-color)',
           padding: '24px',
           marginBottom: '24px',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
           <Mail size={20} style={{ color: '#3b82f6' }} />
-          <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', margin: 0 }}>
+          <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>
             Billing Contact
           </h3>
         </div>
 
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
             Billing Email
           </label>
           <input
@@ -297,12 +297,12 @@ export default function AdminBillingTab() {
             style={{
               width: '100%',
               padding: '10px 12px',
-              border: '1px solid #e5e7eb',
+              border: '1px solid var(--border-color)',
               borderRadius: '8px',
               fontSize: '14px'
             }}
           />
-          <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '6px', marginBottom: 0 }}>
+          <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '6px', marginBottom: 0 }}>
             Invoices and billing notifications will be sent to this email
           </p>
         </div>
@@ -350,7 +350,7 @@ export default function AdminBillingTab() {
           style={{
             background: 'white',
             borderRadius: '12px',
-            border: '1px solid #e5e7eb',
+            border: '1px solid var(--border-color)',
             padding: '24px',
           }}
         >
@@ -362,7 +362,7 @@ export default function AdminBillingTab() {
                 alignItems: 'center',
                 gap: '12px',
                 padding: '4px',
-                background: '#f3f4f6',
+                background: 'var(--bg-hover)',
                 borderRadius: '8px',
               }}
             >
@@ -376,7 +376,7 @@ export default function AdminBillingTab() {
                   fontWeight: '500',
                   cursor: 'pointer',
                   background: !isYearly ? 'white' : 'transparent',
-                  color: !isYearly ? '#111827' : '#6b7280',
+                  color: !isYearly ? 'var(--text-primary)' : 'var(--text-muted)',
                   boxShadow: !isYearly ? '0 1px 2px rgba(0,0,0,0.05)' : 'none',
                 }}
               >
@@ -392,7 +392,7 @@ export default function AdminBillingTab() {
                   fontWeight: '500',
                   cursor: 'pointer',
                   background: isYearly ? 'white' : 'transparent',
-                  color: isYearly ? '#111827' : '#6b7280',
+                  color: isYearly ? 'var(--text-primary)' : 'var(--text-muted)',
                   boxShadow: isYearly ? '0 1px 2px rgba(0,0,0,0.05)' : 'none',
                   display: 'flex',
                   alignItems: 'center',
@@ -419,13 +419,13 @@ export default function AdminBillingTab() {
           {/* Price Display */}
           <div style={{ textAlign: 'center', marginBottom: '24px' }}>
             <div style={{ marginBottom: '8px' }}>
-              <span style={{ fontSize: '48px', fontWeight: '700', color: '#111827' }}>
+              <span style={{ fontSize: '48px', fontWeight: '700', color: 'var(--text-primary)' }}>
                 ${monthlyEquivalent.toFixed(0)}
               </span>
-              <span style={{ fontSize: '18px', color: '#6b7280' }}>/seat/month</span>
+              <span style={{ fontSize: '18px', color: 'var(--text-muted)' }}>/seat/month</span>
             </div>
             {isYearly && (
-              <p style={{ color: '#6b7280', fontSize: '14px', margin: 0 }}>
+              <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: 0 }}>
                 Billed annually at ${PRICE_PER_SEAT_YEARLY}/seat/year
               </p>
             )}
@@ -444,7 +444,7 @@ export default function AdminBillingTab() {
               <span style={{ fontSize: '14px', color: '#374151' }}>
                 {userCount} user{userCount !== 1 ? 's' : ''} × ${pricePerSeat}/{isYearly ? 'year' : 'month'}
               </span>
-              <span style={{ fontSize: '20px', fontWeight: '700', color: '#111827' }}>
+              <span style={{ fontSize: '20px', fontWeight: '700', color: 'var(--text-primary)' }}>
                 ${totalPrice}/{isYearly ? 'year' : 'month'}
               </span>
             </div>
@@ -465,7 +465,7 @@ export default function AdminBillingTab() {
                   alignItems: 'center',
                   gap: '10px',
                   padding: '8px 0',
-                  color: '#374151',
+                  color: 'var(--text-secondary)',
                   fontSize: '14px',
                 }}
               >
@@ -499,7 +499,7 @@ export default function AdminBillingTab() {
             style={{
               marginTop: '16px',
               textAlign: 'center',
-              color: '#6b7280',
+              color: 'var(--text-muted)',
               fontSize: '13px',
             }}
           >
