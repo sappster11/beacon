@@ -511,56 +511,18 @@ export const invitations = {
   },
 
   accept: async (token: string, password: string): Promise<void> => {
-    // Get the invitation
-    const { data: invitation, error: inviteError } = await supabase
-      .from('invitations')
-      .select('*, organization:organizations(id, name)')
-      .eq('token', token)
-      .eq('status', 'PENDING')
-      .single();
-
-    if (inviteError || !invitation) {
-      throw new Error('Invalid or expired invitation');
-    }
-
-    // Check if expired
-    if (new Date(invitation.expires_at) < new Date()) {
-      throw new Error('This invitation has expired');
-    }
-
-    // Create the user account via Supabase Auth
-    const { data: authData, error: authError } = await supabase.auth.signUp({
-      email: invitation.email,
-      password,
-      options: {
-        data: {
-          name: invitation.name,
-          organization_id: invitation.organization_id,
-        },
-      },
+    // Call edge function to create user with auto-confirm
+    const { data, error } = await supabase.functions.invoke('accept-invitation', {
+      body: { token, password },
     });
 
-    if (authError) throw authError;
+    if (error) {
+      throw new Error(error.message || 'Failed to accept invitation');
+    }
 
-    // Create the user record in our users table
-    const { error: userError } = await supabase.from('users').insert({
-      id: authData.user?.id,
-      email: invitation.email,
-      name: invitation.name,
-      title: invitation.title,
-      role: invitation.role,
-      organization_id: invitation.organization_id,
-      department_id: invitation.department_id,
-      is_active: true,
-    });
-
-    if (userError) throw userError;
-
-    // Mark invitation as accepted
-    await supabase
-      .from('invitations')
-      .update({ status: 'accepted' })
-      .eq('id', invitation.id);
+    if (!data?.success) {
+      throw new Error(data?.error || 'Failed to accept invitation');
+    }
   },
 };
 
