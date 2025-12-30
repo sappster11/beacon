@@ -249,12 +249,20 @@ export const users = {
       .eq('id', userId)
       .single();
 
+    if (!currentUser?.organization_id) {
+      console.warn('users.getAll: No organization_id found for current user');
+      return [];
+    }
+
     const { data, error } = await supabase
       .from('users')
-      .select('*, department:departments(id, name)')
-      .eq('organization_id', currentUser?.organization_id)
+      .select('*, department:departments(id, name), manager:users!users_manager_id_fkey(id, name)')
+      .eq('organization_id', currentUser.organization_id)
       .order('name');
-    if (error) throw error;
+    if (error) {
+      console.error('users.getAll error:', error);
+      throw error;
+    }
     return data.map(transformUser);
   },
 
@@ -276,13 +284,21 @@ export const users = {
       .eq('id', userId)
       .single();
 
+    if (!currentUser?.organization_id) {
+      console.warn('users.getOrgChart: No organization_id found for current user');
+      return [];
+    }
+
     const { data, error } = await supabase
       .from('users')
-      .select('*, department:departments(id, name)')
-      .eq('organization_id', currentUser?.organization_id)
+      .select('*, department:departments(id, name), manager:users!users_manager_id_fkey(id, name)')
+      .eq('organization_id', currentUser.organization_id)
       .eq('is_active', true)
       .order('name');
-    if (error) throw error;
+    if (error) {
+      console.error('users.getOrgChart error:', error);
+      throw error;
+    }
     return data.map(transformUser);
   },
 
