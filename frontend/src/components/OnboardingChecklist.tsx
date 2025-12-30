@@ -28,7 +28,7 @@ export default function OnboardingChecklist({ userRole }: OnboardingChecklistPro
   });
   const [loading, setLoading] = useState(true);
 
-  const isAdmin = userRole === 'HR_ADMIN' || userRole === 'SUPER_ADMIN';
+  const isAdmin = userRole === 'ADMIN';
 
   useEffect(() => {
     // Check if user has dismissed the checklist

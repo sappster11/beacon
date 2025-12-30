@@ -1162,7 +1162,7 @@ export default function OneOnOneDetail() {
             <p style={{ margin: '0 0 12px 0', fontSize: '14px', color: '#92400e' }}>
               No review assigned for the current cycle. Create a review to set competencies and goals.
             </p>
-            {(user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN') && (
+            {user?.role === 'ADMIN' && (
               <button
                 onClick={() => navigate('/review-management')}
                 style={{

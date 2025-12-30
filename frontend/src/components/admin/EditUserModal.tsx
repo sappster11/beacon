@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { User, Department, UserRole } from '../../types/index';
+import type { User, Department, UserRole, OrgRole } from '../../types/index';
 import { X } from 'lucide-react';
 import { users as usersApi } from '../../lib/api';
 
@@ -16,6 +16,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
     name: user.name,
     email: user.email,
     title: user.title || '',
+    orgRole: user.orgRole || 'EMPLOYEE',
     role: user.role,
     departmentId: user.departmentId || '',
     managerId: user.managerId || '',
@@ -38,6 +39,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
       await usersApi.update(user.id, {
         name: formData.name,
         title: formData.title || undefined,
+        orgRole: formData.orgRole,
         role: formData.role,
         departmentId: formData.departmentId || undefined,
         managerId: formData.managerId || undefined,
@@ -163,6 +165,27 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
                 Role
               </label>
               <select
+                value={formData.orgRole}
+                onChange={(e) => setFormData({ ...formData, orgRole: e.target.value as OrgRole })}
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '8px',
+                  fontSize: '14px'
+                }}
+              >
+                <option value="EMPLOYEE">Employee</option>
+                <option value="MANAGER">Manager</option>
+                <option value="LEADERSHIP">Leadership</option>
+              </select>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
+                Access Level
+              </label>
+              <select
                 value={formData.role}
                 onChange={(e) => setFormData({ ...formData, role: e.target.value as UserRole })}
                 style={{
@@ -175,8 +198,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
               >
                 <option value="EMPLOYEE">Employee</option>
                 <option value="MANAGER">Manager</option>
-                <option value="HR_ADMIN">HR Admin</option>
-                <option value="SUPER_ADMIN">Super Admin</option>
+                <option value="ADMIN">Admin</option>
               </select>
             </div>
 
@@ -218,7 +240,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
                 }}
               >
                 <option value="">None</option>
-                {users.filter(u => ['MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'].includes(u.role) && u.id !== user.id).map(u => (
+                {users.filter(u => ['MANAGER', 'ADMIN'].includes(u.role) && u.id !== user.id).map(u => (
                   <option key={u.id} value={u.id}>{u.name}</option>
                 ))}
               </select>

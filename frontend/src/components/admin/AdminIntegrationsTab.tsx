@@ -6,7 +6,7 @@ import api from '../../lib/api';
 
 export default function AdminIntegrationsTab() {
   const { user } = useAuth();
-  const isSuperAdmin = user?.role === 'SUPER_ADMIN';
+  const isSuperAdmin = user?.role === 'ADMIN';
 
   const [integrations, setIntegrations] = useState<Integration[]>([]);
   const [loading, setLoading] = useState(true);
@@ -60,7 +60,7 @@ export default function AdminIntegrationsTab() {
       {!isSuperAdmin && (
         <div style={{ padding: '16px', background: '#fef3c7', border: '1px solid #fde68a', borderRadius: '8px', marginBottom: '24px' }}>
           <div style={{ fontSize: '14px', fontWeight: '500', color: '#92400e' }}>
-            Integration configuration requires SUPER_ADMIN privileges
+            Integration configuration requires Admin privileges
           </div>
         </div>
       )}

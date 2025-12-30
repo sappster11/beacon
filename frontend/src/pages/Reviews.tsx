@@ -18,7 +18,7 @@ export default function Reviews() {
   const [roleFilter, setRoleFilter] = useState<'all' | 'reviewee' | 'reviewer'>('all');
   const [cycleFilter, setCycleFilter] = useState<string>('active');
 
-  const isManager = user?.role === 'MANAGER' || user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
+  const isManager = user?.role === 'MANAGER' || user?.role === 'ADMIN';
 
   useEffect(() => {
     loadData();
@@ -29,7 +29,7 @@ export default function Reviews() {
       setIsLoading(true);
 
       // HR Admins can see all reviews in the system
-      const isHRAdmin = user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
+      const isHRAdmin = user?.role === 'ADMIN';
 
       // Get all subordinates (direct + indirect reports) for managers
       const subordinatesData = isManager ? await manager.getFullOrgTree() : [];
@@ -244,7 +244,7 @@ export default function Reviews() {
         <h1 style={{ fontSize: '32px', marginBottom: '8px' }}>Performance Reviews</h1>
         <p style={{ fontSize: '16px', color: 'var(--text-muted)', margin: 0 }}>
           View and complete your performance assessments
-          {(user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN') && (
+          {user?.role === 'ADMIN' && (
             <span style={{ marginLeft: '8px' }}>
               ·
               <a

@@ -400,11 +400,10 @@ export default function AdminUsersTab() {
             minWidth: '150px'
           }}
         >
-          <option value="">All Roles</option>
+          <option value="">All Access Levels</option>
           <option value="EMPLOYEE">Employee</option>
           <option value="MANAGER">Manager</option>
-          <option value="HR_ADMIN">HR Admin</option>
-          <option value="SUPER_ADMIN">Super Admin</option>
+          <option value="ADMIN">Admin</option>
         </select>
 
         <select
@@ -446,6 +445,7 @@ export default function AdminUsersTab() {
               <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Title</th>
               <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Department</th>
               <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Role</th>
+              <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Access</th>
               <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Status</th>
               <th style={{ padding: '12px 16px', textAlign: 'center', fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', width: '80px' }}>Actions</th>
             </tr>
@@ -487,10 +487,22 @@ export default function AdminUsersTab() {
                       borderRadius: '6px',
                       fontSize: '12px',
                       fontWeight: '500',
-                      background: user.role === 'SUPER_ADMIN' ? '#fef3c7' : user.role === 'HR_ADMIN' ? '#dbeafe' : 'var(--bg-tertiary)',
-                      color: user.role === 'SUPER_ADMIN' ? '#92400e' : user.role === 'HR_ADMIN' ? '#1e40af' : 'var(--text-secondary)'
+                      background: user.orgRole === 'LEADERSHIP' ? '#fef3c7' : user.orgRole === 'MANAGER' ? '#dbeafe' : 'var(--bg-tertiary)',
+                      color: user.orgRole === 'LEADERSHIP' ? '#92400e' : user.orgRole === 'MANAGER' ? '#1e40af' : 'var(--text-secondary)'
                     }}>
-                      {user.role.replace('_', ' ')}
+                      {user.orgRole || 'Employee'}
+                    </span>
+                  </td>
+                  <td data-label="Access" style={{ padding: '12px 16px', fontSize: '14px' }}>
+                    <span style={{
+                      padding: '4px 8px',
+                      borderRadius: '6px',
+                      fontSize: '12px',
+                      fontWeight: '500',
+                      background: user.role === 'ADMIN' ? '#fce7f3' : user.role === 'MANAGER' ? '#d1fae5' : 'var(--bg-tertiary)',
+                      color: user.role === 'ADMIN' ? '#9d174d' : user.role === 'MANAGER' ? '#065f46' : 'var(--text-secondary)'
+                    }}>
+                      {user.role}
                     </span>
                   </td>
                   <td data-label="Status" style={{ padding: '12px 16px' }}>
@@ -685,8 +697,8 @@ export default function AdminUsersTab() {
                           borderRadius: '6px',
                           fontSize: '12px',
                           fontWeight: '500',
-                          background: invite.role === 'SUPER_ADMIN' ? '#fef3c7' : invite.role === 'HR_ADMIN' ? '#dbeafe' : 'var(--bg-tertiary)',
-                          color: invite.role === 'SUPER_ADMIN' ? '#92400e' : invite.role === 'HR_ADMIN' ? '#1e40af' : 'var(--text-secondary)'
+                          background: invite.role === 'ADMIN' ? '#fef3c7' : invite.role === 'MANAGER' ? '#dbeafe' : 'var(--bg-tertiary)',
+                          color: invite.role === 'ADMIN' ? '#92400e' : invite.role === 'MANAGER' ? '#1e40af' : 'var(--text-secondary)'
                         }}>
                           {invite.role.replace('_', ' ')}
                         </span>
@@ -872,7 +884,7 @@ function BulkEditModal({
   departments: Department[];
   users: User[];
 }) {
-  const [editField, setEditField] = useState<'role' | 'department' | 'manager' | ''>('');
+  const [editField, setEditField] = useState<'role' | 'orgRole' | 'department' | 'manager' | ''>('');
   const [newValue, setNewValue] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -884,6 +896,7 @@ function BulkEditModal({
     try {
       const updateData: any = {};
       if (editField === 'role') updateData.role = newValue;
+      if (editField === 'orgRole') updateData.orgRole = newValue;
       if (editField === 'department') updateData.departmentId = newValue;
       if (editField === 'manager') updateData.managerId = newValue === 'null' ? null : newValue;
 
@@ -955,13 +968,14 @@ function BulkEditModal({
               }}
             >
               <option value="">Select field...</option>
-              <option value="role">Role</option>
+              <option value="orgRole">Role (Org Position)</option>
+              <option value="role">Access Level</option>
               <option value="department">Department</option>
               <option value="manager">Manager</option>
             </select>
           </div>
 
-          {editField === 'role' && (
+          {editField === 'orgRole' && (
             <div style={{ marginBottom: '20px' }}>
               <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)' }}>
                 New Role
@@ -981,8 +995,32 @@ function BulkEditModal({
                 <option value="">Select role...</option>
                 <option value="EMPLOYEE">Employee</option>
                 <option value="MANAGER">Manager</option>
-                <option value="HR_ADMIN">HR Admin</option>
-                <option value="SUPER_ADMIN">Super Admin</option>
+                <option value="LEADERSHIP">Leadership</option>
+              </select>
+            </div>
+          )}
+
+          {editField === 'role' && (
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)' }}>
+                New Access Level
+              </label>
+              <select
+                value={newValue}
+                onChange={(e) => setNewValue(e.target.value)}
+                required
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                }}
+              >
+                <option value="">Select access level...</option>
+                <option value="EMPLOYEE">Employee</option>
+                <option value="MANAGER">Manager</option>
+                <option value="ADMIN">Admin</option>
               </select>
             </div>
           )}
@@ -1032,7 +1070,7 @@ function BulkEditModal({
                 <option value="">Select manager...</option>
                 <option value="null">No Manager</option>
                 {users
-                  .filter(u => u.role === 'MANAGER' || u.role === 'HR_ADMIN' || u.role === 'SUPER_ADMIN')
+                  .filter(u => u.role === 'MANAGER' || u.role === 'ADMIN')
                   .map(user => (
                     <option key={user.id} value={user.id}>{user.name}</option>
                   ))}

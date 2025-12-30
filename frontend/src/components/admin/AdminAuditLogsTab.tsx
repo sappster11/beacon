@@ -7,7 +7,7 @@ import AuditLogDetailModal from './AuditLogDetailModal';
 
 export default function AdminAuditLogsTab() {
   const { user } = useAuth();
-  const isSuperAdmin = user?.role === 'SUPER_ADMIN';
+  const isSuperAdmin = user?.role === 'ADMIN';
 
   const [logs, setLogs] = useState<AuditLog[]>([]);
   const [users, setUsers] = useState<User[]>([]);
@@ -74,7 +74,7 @@ export default function AdminAuditLogsTab() {
 
   const handleExport = async () => {
     if (!isSuperAdmin) {
-      alert('Export functionality is only available to SUPER_ADMIN');
+      alert('Export functionality is only available to Admins');
       return;
     }
 

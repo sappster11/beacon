@@ -67,8 +67,8 @@ export default function Layout() {
     { path: '/help', label: 'Help', icon: HelpCircle },
   ];
 
-  const isManager = user?.role === 'MANAGER' || user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
-  const isAdmin = user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
+  const isManager = user?.role === 'MANAGER' || user?.role === 'ADMIN';
+  const isAdmin = user?.role === 'ADMIN';
 
   const managementItems = [];
   if (isManager) {

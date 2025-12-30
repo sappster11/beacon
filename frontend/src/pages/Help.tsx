@@ -23,111 +23,111 @@ const faqs: FAQ[] = [
     question: 'How do I complete my self-assessment?',
     answer: 'Navigate to the Reviews page and find any review with status "Self Review". Click on it to open the review form. Rate yourself on each competency using the 1-4 scale, add comments explaining your rating, and click "Submit Self Review" when complete.',
     category: 'Reviews',
-    roles: ['EMPLOYEE', 'MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['EMPLOYEE', 'MANAGER', 'ADMIN'],
   },
   {
     question: 'Where can I see my goals?',
     answer: 'Go to the Goals page from the sidebar. You\'ll see all your assigned goals organized by status. You can also view goals assigned during reviews by clicking on any completed review.',
     category: 'Goals',
-    roles: ['EMPLOYEE', 'MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['EMPLOYEE', 'MANAGER', 'ADMIN'],
   },
   {
     question: 'How do I view my performance review results?',
     answer: 'Navigate to the Reviews page and click on any review with status "Shared" or "Acknowledged". You\'ll see your self-assessment alongside your manager\'s review. Click "Acknowledge" after reviewing to confirm you\'ve seen the feedback.',
     category: 'Reviews',
-    roles: ['EMPLOYEE', 'MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['EMPLOYEE', 'MANAGER', 'ADMIN'],
   },
   {
     question: 'How do I update my profile?',
     answer: 'Click on your name/avatar at the bottom of the sidebar to access Settings. Here you can update your profile picture, notification preferences, and account settings.',
     category: 'General',
-    roles: ['EMPLOYEE', 'MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['EMPLOYEE', 'MANAGER', 'ADMIN'],
   },
   {
     question: 'How do I schedule a 1:1 meeting?',
     answer: 'Go to the 1:1s page and click "Schedule 1:1". Select the person you want to meet with, choose a date and time, and optionally add an agenda. If you\'ve connected your Google Calendar, you can also sync meetings automatically.',
     category: '1:1s',
-    roles: ['EMPLOYEE', 'MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['EMPLOYEE', 'MANAGER', 'ADMIN'],
   },
   {
     question: 'How do I connect my Google Calendar?',
     answer: 'Navigate to the 1:1s page and look for the "Connect Google Calendar" banner at the top. Click the button and follow the Google authentication prompts. Once connected, your calendar events will sync automatically.',
     category: '1:1s',
-    roles: ['EMPLOYEE', 'MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['EMPLOYEE', 'MANAGER', 'ADMIN'],
   },
   {
     question: 'What do the review ratings mean?',
     answer: 'The rating scale is: 1 = Does Not Meet Expectations, 2 = Partially Meets Expectations, 3 = Meets Expectations, 4 = Exceeds Expectations. Focus on providing honest assessments with specific examples in your comments.',
     category: 'Reviews',
-    roles: ['EMPLOYEE', 'MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['EMPLOYEE', 'MANAGER', 'ADMIN'],
   },
   // Managers+
   {
     question: 'How do I complete reviews for my team?',
     answer: 'Go to the Reviews page and switch to the "Team Reviews" tab. You\'ll see all pending reviews for your direct reports. Click on any review with status "Manager Review" to provide your assessment and ratings.',
     category: 'Reviews',
-    roles: ['MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['MANAGER', 'ADMIN'],
   },
   {
     question: 'How do I assign goals to employees?',
     answer: 'During a performance review, you can add goals in the "Goals" section before sharing the review. Alternatively, go to the Team page, select an employee, and add goals directly from their profile.',
     category: 'Goals',
-    roles: ['MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['MANAGER', 'ADMIN'],
   },
   {
     question: 'How do I use the Library to create templates?',
     answer: 'Navigate to the Library page from the Management section in the sidebar. Here you can create and save goal templates, review templates, and 1:1 agenda templates that can be reused across your team.',
     category: 'Library',
-    roles: ['MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['MANAGER', 'ADMIN'],
   },
   {
     question: 'How do I view my team\'s progress?',
     answer: 'Go to the Team page to see an overview of your direct reports. You can view each person\'s goals, review status, and upcoming 1:1s. The Dashboard also shows team-level metrics and pending items.',
     category: 'Team',
-    roles: ['MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['MANAGER', 'ADMIN'],
   },
   {
     question: 'How do I schedule 1:1s with my direct reports?',
     answer: 'From the 1:1s page, click "Schedule 1:1" and select one of your direct reports. Set a recurring schedule if desired. You can also bulk-schedule 1:1s from the Team page.',
     category: '1:1s',
-    roles: ['MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['MANAGER', 'ADMIN'],
   },
   // HR Admins+
   {
     question: 'How do I create a review cycle?',
     answer: 'Go to Review Management and click "Create Review Cycle". Define the cycle name, date range, and which departments/employees to include. Once created, the cycle will appear on the management page where you can assign reviews.',
     category: 'Admin',
-    roles: ['HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['ADMIN'],
   },
   {
     question: 'How do I assign reviews to employees?',
     answer: 'From Review Management, click "Assign Reviews" on any active review cycle. Select the employees to include, and the system will automatically create reviews based on their reporting structure.',
     category: 'Admin',
-    roles: ['HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['ADMIN'],
   },
   {
     question: 'How do I add new users?',
     answer: 'Navigate to Admin > Users tab. Click "Add User" to create individual users, or use "Bulk Import" to upload a CSV file with multiple users. New users will receive an email invitation to set up their account.',
     category: 'Admin',
-    roles: ['HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['ADMIN'],
   },
   {
     question: 'How do I manage departments?',
     answer: 'Go to Admin > Departments tab. Here you can create, edit, and delete departments. Assign a department head and organize your organizational structure. Users can be assigned to departments from the Users tab.',
     category: 'Admin',
-    roles: ['HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['ADMIN'],
   },
   {
     question: 'How do I view audit logs?',
     answer: 'Navigate to Admin > Audit Logs tab. You can filter by date range, action type, and user. The logs show all significant actions taken in the system for compliance and troubleshooting purposes.',
     category: 'Admin',
-    roles: ['HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['ADMIN'],
   },
   {
     question: 'How do I customize company branding?',
     answer: 'Go to Admin > Company tab. Here you can upload your company logo and customize the primary, secondary, and accent colors used throughout the application.',
     category: 'Admin',
-    roles: ['HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['ADMIN'],
   },
 ];
 
@@ -137,7 +137,7 @@ const guides: Guide[] = [
     title: 'Completing Your Self-Assessment',
     description: 'Step-by-step guide to completing your performance self-review',
     category: 'Reviews',
-    roles: ['EMPLOYEE', 'MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['EMPLOYEE', 'MANAGER', 'ADMIN'],
     steps: [
       'Navigate to the Reviews page from the sidebar',
       'Find the review with status "Self Review" and click on it',
@@ -152,7 +152,7 @@ const guides: Guide[] = [
     title: 'Understanding Your Performance Review',
     description: 'How to interpret and acknowledge your review results',
     category: 'Reviews',
-    roles: ['EMPLOYEE', 'MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['EMPLOYEE', 'MANAGER', 'ADMIN'],
     steps: [
       'Wait for notification that your review has been shared',
       'Navigate to Reviews and find the review with status "Shared"',
@@ -168,7 +168,7 @@ const guides: Guide[] = [
     title: 'Setting Up Google Calendar Sync',
     description: 'Connect your calendar to automatically sync 1:1 meetings',
     category: '1:1s',
-    roles: ['EMPLOYEE', 'MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['EMPLOYEE', 'MANAGER', 'ADMIN'],
     steps: [
       'Go to the 1:1s page from the sidebar',
       'Look for the "Connect Google Calendar" banner at the top',
@@ -183,7 +183,7 @@ const guides: Guide[] = [
     title: 'Managing Your Goals',
     description: 'How to view, track, and update your goals',
     category: 'Goals',
-    roles: ['EMPLOYEE', 'MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['EMPLOYEE', 'MANAGER', 'ADMIN'],
     steps: [
       'Navigate to the Goals page from the sidebar',
       'View your goals organized by status (In Progress, Completed, etc.)',
@@ -198,7 +198,7 @@ const guides: Guide[] = [
     title: 'Completing Manager Reviews',
     description: 'How to evaluate your direct reports\' performance',
     category: 'Reviews',
-    roles: ['MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['MANAGER', 'ADMIN'],
     steps: [
       'Go to Reviews and click "Team Reviews" tab',
       'Find reviews with status "Manager Review"',
@@ -214,7 +214,7 @@ const guides: Guide[] = [
     title: 'Managing Your Team',
     description: 'Overview of team management features',
     category: 'Team',
-    roles: ['MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['MANAGER', 'ADMIN'],
     steps: [
       'Navigate to the Team page from the sidebar',
       'View all your direct reports and their current status',
@@ -228,7 +228,7 @@ const guides: Guide[] = [
     title: 'Using the Library',
     description: 'Create and manage reusable templates',
     category: 'Library',
-    roles: ['MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['MANAGER', 'ADMIN'],
     steps: [
       'Navigate to Library from the Management section',
       'Browse existing templates or click "Create Template"',
@@ -243,7 +243,7 @@ const guides: Guide[] = [
     title: 'Creating a Review Cycle',
     description: 'Set up a new performance review cycle',
     category: 'Admin',
-    roles: ['HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['ADMIN'],
     steps: [
       'Go to Review Management from the sidebar',
       'Click "Create Review Cycle" button',
@@ -259,7 +259,7 @@ const guides: Guide[] = [
     title: 'Adding and Managing Users',
     description: 'How to add users individually or in bulk',
     category: 'Admin',
-    roles: ['HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['ADMIN'],
     steps: [
       'Navigate to Admin > Users tab',
       'For individual users: Click "Add User" and fill in details',
@@ -275,7 +275,7 @@ const guides: Guide[] = [
     title: 'Managing Departments',
     description: 'Set up your organizational structure',
     category: 'Admin',
-    roles: ['HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['ADMIN'],
     steps: [
       'Navigate to Admin > Departments tab',
       'Click "Add Department" to create a new department',
@@ -290,7 +290,7 @@ const guides: Guide[] = [
     title: 'Customizing Company Settings',
     description: 'Configure branding and company-wide settings',
     category: 'Admin',
-    roles: ['HR_ADMIN', 'SUPER_ADMIN'],
+    roles: ['ADMIN'],
     steps: [
       'Navigate to Admin > Company tab',
       'Upload your company logo (recommended: PNG or SVG)',
@@ -338,10 +338,10 @@ export default function Help() {
   // Define which categories are role-restricted
   const getRoleBadgeText = (category: string): string | null => {
     if (category === 'Team' || category === 'Library') {
-      return userRole === 'MANAGER' ? 'Manager' : userRole === 'HR_ADMIN' ? 'HR Admin' : userRole === 'SUPER_ADMIN' ? 'Admin' : null;
+      return userRole === 'MANAGER' ? 'Manager' : userRole === 'ADMIN' ? 'Admin' : null;
     }
     if (category === 'Admin') {
-      return userRole === 'HR_ADMIN' ? 'HR Admin' : userRole === 'SUPER_ADMIN' ? 'Admin' : null;
+      return userRole === 'ADMIN' ? 'Admin' : null;
     }
     return null;
   };

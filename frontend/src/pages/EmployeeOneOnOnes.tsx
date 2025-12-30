@@ -22,7 +22,7 @@ export default function EmployeeOneOnOnes() {
   const [showAddDocModal, setShowAddDocModal] = useState(false);
   const [newDoc, setNewDoc] = useState({ title: '', url: '' });
 
-  const isManager = user?.role === 'MANAGER' || user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
+  const isManager = user?.role === 'MANAGER' || user?.role === 'ADMIN';
 
   useEffect(() => {
     if (employeeId) {

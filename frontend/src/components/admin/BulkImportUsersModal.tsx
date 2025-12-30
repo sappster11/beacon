@@ -89,7 +89,7 @@ export default function BulkImportUsersModal({ onClose, onSuccess }: BulkImportU
           continue;
         }
 
-        const validRoles = ['EMPLOYEE', 'MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'];
+        const validRoles = ['EMPLOYEE', 'MANAGER', 'ADMIN'];
         if (role && !validRoles.includes(role)) {
           errors.push({ row: i + 1, error: `Invalid role: ${role}` });
           continue;
@@ -196,7 +196,7 @@ Jane Smith,jane@example.com,Engineering Manager,Engineering,,MANAGER`;
               <div style={{ marginTop: '8px' }}>
                 - Each user will receive an invitation email<br />
                 - Manager should match an existing user's email<br />
-                - Role must be one of: EMPLOYEE, MANAGER, HR_ADMIN, SUPER_ADMIN<br />
+                - Role must be one of: EMPLOYEE, MANAGER, ADMIN<br />
                 - Maximum 1000 invitations per import
               </div>
             </div>

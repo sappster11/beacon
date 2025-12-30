@@ -1,5 +1,6 @@
 // User types
-export type UserRole = 'EMPLOYEE' | 'MANAGER' | 'HR_ADMIN' | 'SUPER_ADMIN';
+export type UserRole = 'EMPLOYEE' | 'MANAGER' | 'ADMIN'; // Platform access level
+export type OrgRole = 'EMPLOYEE' | 'MANAGER' | 'LEADERSHIP'; // Organizational hierarchy
 
 // Organization type for multi-tenancy
 export interface Organization {
@@ -19,6 +20,7 @@ export interface User {
   displayName?: string;
   title?: string;
   role: UserRole;
+  orgRole?: OrgRole;
   organizationId?: string;
   managerId?: string;
   departmentId?: string;

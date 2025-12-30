@@ -36,7 +36,7 @@ export default function Library() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const isManager = user?.role === 'MANAGER' || user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
+  const isManager = user?.role === 'MANAGER' || user?.role === 'ADMIN';
 
   useEffect(() => {
     loadData();

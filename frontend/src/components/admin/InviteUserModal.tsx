@@ -15,6 +15,7 @@ export default function InviteUserModal({ onClose, onSuccess, departments, users
     email: '',
     name: '',
     title: '',
+    orgRole: 'EMPLOYEE',
     role: 'EMPLOYEE',
     departmentId: '',
     managerId: '',
@@ -33,6 +34,7 @@ export default function InviteUserModal({ onClose, onSuccess, departments, users
           email: formData.email,
           name: formData.name,
           title: formData.title || undefined,
+          orgRole: formData.orgRole,
           role: formData.role,
           departmentId: formData.departmentId || undefined,
           managerId: formData.managerId || undefined,
@@ -51,7 +53,7 @@ export default function InviteUserModal({ onClose, onSuccess, departments, users
   };
 
   const managers = users.filter(u =>
-    u.role === 'MANAGER' || u.role === 'HR_ADMIN' || u.role === 'SUPER_ADMIN'
+    u.role === 'MANAGER' || u.role === 'ADMIN'
   );
 
   const inputStyle = {
@@ -169,19 +171,32 @@ export default function InviteUserModal({ onClose, onSuccess, departments, users
               </div>
             </div>
 
+            <div>
+              <label style={labelStyle}>Job Title</label>
+              <input
+                type="text"
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                placeholder="Software Engineer"
+                style={inputStyle}
+              />
+            </div>
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div>
-                <label style={labelStyle}>Job Title</label>
-                <input
-                  type="text"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="Software Engineer"
+                <label style={labelStyle}>Role</label>
+                <select
+                  value={formData.orgRole}
+                  onChange={(e) => setFormData({ ...formData, orgRole: e.target.value })}
                   style={inputStyle}
-                />
+                >
+                  <option value="EMPLOYEE">Employee</option>
+                  <option value="MANAGER">Manager</option>
+                  <option value="LEADERSHIP">Leadership</option>
+                </select>
               </div>
               <div>
-                <label style={labelStyle}>Role</label>
+                <label style={labelStyle}>Access Level</label>
                 <select
                   value={formData.role}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value })}
@@ -189,8 +204,7 @@ export default function InviteUserModal({ onClose, onSuccess, departments, users
                 >
                   <option value="EMPLOYEE">Employee</option>
                   <option value="MANAGER">Manager</option>
-                  <option value="HR_ADMIN">HR Admin</option>
-                  <option value="SUPER_ADMIN">Super Admin</option>
+                  <option value="ADMIN">Admin</option>
                 </select>
               </div>
             </div>

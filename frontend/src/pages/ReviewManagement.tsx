@@ -17,7 +17,7 @@ export default function ReviewManagement() {
   const [statusDropdownOpen, setStatusDropdownOpen] = useState<string | null>(null);
   const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
 
-  const isAdmin = user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
+  const isAdmin = user?.role === 'ADMIN';
 
   useEffect(() => {
     loadCycles();

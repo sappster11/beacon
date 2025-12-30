@@ -89,8 +89,8 @@ export default function ReviewDetail() {
     );
   }
 
-  // Allow reviewer, HR_ADMIN, or SUPER_ADMIN to edit
-  const isReviewer = review.reviewerId === user?.id || user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
+  // Allow reviewer or admin to edit
+  const isReviewer = review.reviewerId === user?.id || user?.role === 'ADMIN';
 
   return (
     <div style={{ padding: '48px' }}>

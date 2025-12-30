@@ -33,7 +33,7 @@ export default function Admin() {
   }, [tabParam]);
 
   // Check if user has admin access
-  const isAdmin = user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
+  const isAdmin = user?.role === 'ADMIN';
 
   if (!isAdmin) {
     return <Navigate to="/" replace />;

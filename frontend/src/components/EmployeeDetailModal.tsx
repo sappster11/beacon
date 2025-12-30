@@ -131,8 +131,8 @@ export default function EmployeeDetailModal({ employee, onClose }: EmployeeDetai
                     borderRadius: '6px',
                     fontSize: '13px',
                     fontWeight: '500',
-                    background: employee.role === 'SUPER_ADMIN' || employee.role === 'HR_ADMIN' ? '#fef3c7' : employee.role === 'MANAGER' ? '#dbeafe' : '#f3f4f6',
-                    color: employee.role === 'SUPER_ADMIN' || employee.role === 'HR_ADMIN' ? '#92400e' : employee.role === 'MANAGER' ? '#1e40af' : '#374151',
+                    background: employee.role === 'ADMIN' ? '#fef3c7' : employee.role === 'MANAGER' ? '#dbeafe' : '#f3f4f6',
+                    color: employee.role === 'ADMIN' ? '#92400e' : employee.role === 'MANAGER' ? '#1e40af' : '#374151',
                   }}
                 >
                   {employee.role.replace('_', ' ')}

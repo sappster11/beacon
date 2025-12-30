@@ -689,8 +689,8 @@ export default function PlatformAdmin() {
                                   borderRadius: '4px',
                                   fontSize: '11px',
                                   fontWeight: '500',
-                                  background: user.role === 'SUPER_ADMIN' || user.role === 'HR_ADMIN' ? '#fef3c7' : user.role === 'MANAGER' ? '#dbeafe' : 'var(--bg-tertiary)',
-                                  color: user.role === 'SUPER_ADMIN' || user.role === 'HR_ADMIN' ? '#92400e' : user.role === 'MANAGER' ? '#1e40af' : 'var(--text-secondary)',
+                                  background: user.role === 'ADMIN' ? '#fef3c7' : user.role === 'MANAGER' ? '#dbeafe' : 'var(--bg-tertiary)',
+                                  color: user.role === 'ADMIN' ? '#92400e' : user.role === 'MANAGER' ? '#1e40af' : 'var(--text-secondary)',
                                 }}
                               >
                                 {user.role.replace('_', ' ')}

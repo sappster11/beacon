@@ -5,7 +5,7 @@ import { settings as settingsApi } from '../../lib/api';
 
 export default function AdminSettingsTab() {
   const { user } = useAuth();
-  const isSuperAdmin = user?.role === 'SUPER_ADMIN';
+  const isSuperAdmin = user?.role === 'ADMIN';
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState<string | null>(null);
@@ -510,7 +510,7 @@ export default function AdminSettingsTab() {
         </button>
       </div>
 
-      {/* Feature Flags (SUPER_ADMIN only) */}
+      {/* Feature Flags (Admin only) */}
       {isSuperAdmin && (
         <div style={{ background: 'var(--bg-primary)', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>

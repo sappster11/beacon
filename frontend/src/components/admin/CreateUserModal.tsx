@@ -172,8 +172,7 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
               >
                 <option value="EMPLOYEE">Employee</option>
                 <option value="MANAGER">Manager</option>
-                <option value="HR_ADMIN">HR Admin</option>
-                <option value="SUPER_ADMIN">Super Admin</option>
+                <option value="ADMIN">Admin</option>
               </select>
             </div>
 
@@ -215,7 +214,7 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
                 }}
               >
                 <option value="">None</option>
-                {users.filter(u => ['MANAGER', 'HR_ADMIN', 'SUPER_ADMIN'].includes(u.role)).map(user => (
+                {users.filter(u => ['MANAGER', 'ADMIN'].includes(u.role)).map(user => (
                   <option key={user.id} value={user.id}>{user.name}</option>
                 ))}
               </select>

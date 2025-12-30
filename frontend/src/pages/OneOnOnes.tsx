@@ -52,7 +52,7 @@ export default function OneOnOnes() {
     time: '',
   });
 
-  const isManager = user?.role === 'MANAGER' || user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
+  const isManager = user?.role === 'MANAGER' || user?.role === 'ADMIN';
 
   useEffect(() => {
     loadMeetings();
@@ -104,7 +104,7 @@ export default function OneOnOnes() {
   const loadEmployees = async () => {
     if (!user?.id) return;
     try {
-      if (user.role === 'HR_ADMIN' || user.role === 'SUPER_ADMIN') {
+      if (user.role === 'ADMIN') {
         const allUsers = await users.getAll();
         setEmployees(allUsers.filter(u => u.id !== user.id));
       } else {

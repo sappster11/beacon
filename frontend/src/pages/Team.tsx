@@ -26,7 +26,7 @@ export default function Team() {
   const [teamStats, setTeamStats] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const isManager = currentUser?.role === 'MANAGER' || currentUser?.role === 'HR_ADMIN' || currentUser?.role === 'SUPER_ADMIN';
+  const isManager = currentUser?.role === 'MANAGER' || currentUser?.role === 'ADMIN';
 
   useEffect(() => {
     loadTeamData();
@@ -349,8 +349,8 @@ export default function Team() {
                         borderRadius: '6px',
                         fontSize: '12px',
                         fontWeight: '500',
-                        background: employee.role === 'SUPER_ADMIN' || employee.role === 'HR_ADMIN' ? '#fef3c7' : employee.role === 'MANAGER' ? '#dbeafe' : 'var(--bg-tertiary)',
-                        color: employee.role === 'SUPER_ADMIN' || employee.role === 'HR_ADMIN' ? '#92400e' : employee.role === 'MANAGER' ? '#1e40af' : 'var(--text-secondary)',
+                        background: employee.role === 'ADMIN' ? '#fef3c7' : employee.role === 'MANAGER' ? '#dbeafe' : 'var(--bg-tertiary)',
+                        color: employee.role === 'ADMIN' ? '#92400e' : employee.role === 'MANAGER' ? '#1e40af' : 'var(--text-secondary)',
                       }}
                     >
                       {employee.role.replace('_', ' ')}

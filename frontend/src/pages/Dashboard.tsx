@@ -13,7 +13,7 @@ export default function Dashboard() {
   const [teamSummary, setTeamSummary] = useState<any>(null);
   const [isLoadingManagerData, setIsLoadingManagerData] = useState(false);
 
-  const isManager = user?.role === 'MANAGER' || user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
+  const isManager = user?.role === 'MANAGER' || user?.role === 'ADMIN';
 
   useEffect(() => {
     if (isManager) {
@@ -87,7 +87,7 @@ export default function Dashboard() {
 
   const managementCards = [];
 
-  if (user?.role === 'MANAGER' || user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN') {
+  if (user?.role === 'MANAGER' || user?.role === 'ADMIN') {
     managementCards.push({
       title: 'Team',
       description: 'Manage your team',
@@ -104,7 +104,7 @@ export default function Dashboard() {
     });
   }
 
-  if (user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN') {
+  if (user?.role === 'ADMIN') {
     managementCards.push({
       title: 'Review Management',
       description: 'Create and manage review cycles',
