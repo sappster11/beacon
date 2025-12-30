@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { supabase } from '../../lib/supabase';
-import { CreditCard, Check, ExternalLink, AlertCircle } from 'lucide-react';
+import { settings as settingsApi } from '../../lib/api';
+import { CreditCard, Check, ExternalLink, AlertCircle, Mail, Save } from 'lucide-react';
 
 const MONTHLY_PRICE_ID = 'price_1SjRAACwCNHtAVIQ9mD1IPEC';
 const YEARLY_PRICE_ID = 'price_1SjRAACwCNHtAVIQVacO8Dbm';
@@ -20,16 +21,43 @@ export default function AdminBillingTab() {
   const { organization } = useAuth();
   const [isYearly, setIsYearly] = useState(false);
   const [userCount, setUserCount] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [subscribing, setSubscribing] = useState(false);
+  const [managingBilling, setManagingBilling] = useState(false);
+  const [savingEmail, setSavingEmail] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [subscriptionDetails, setSubscriptionDetails] = useState<any>(null);
+  const [billingEmail, setBillingEmail] = useState('');
 
   useEffect(() => {
     if (organization) {
       loadSubscriptionDetails();
       loadUserCount();
+      loadBillingEmail();
     }
   }, [organization]);
+
+  const loadBillingEmail = async () => {
+    try {
+      const allSettings = await settingsApi.getAll();
+      if ((allSettings as any).billing?.billingEmail) {
+        setBillingEmail((allSettings as any).billing.billingEmail);
+      }
+    } catch (err) {
+      console.error('Failed to load billing email:', err);
+    }
+  };
+
+  const saveBillingEmail = async () => {
+    try {
+      setSavingEmail(true);
+      await settingsApi.update('billing', { billingEmail });
+      alert('Billing email saved!');
+    } catch (err: any) {
+      setError(err.message || 'Failed to save billing email');
+    } finally {
+      setSavingEmail(false);
+    }
+  };
 
   const loadSubscriptionDetails = async () => {
     try {
@@ -61,15 +89,14 @@ export default function AdminBillingTab() {
   };
 
   const handleSubscribe = async () => {
-    if (loading) return;
+    if (subscribing) return;
 
-    setLoading(true);
+    setSubscribing(true);
     setError(null);
 
     const priceId = isYearly ? YEARLY_PRICE_ID : MONTHLY_PRICE_ID;
 
     try {
-      console.log('Calling create-checkout-session with:', { priceId, quantity: userCount });
       const { data, error } = await supabase.functions.invoke('create-checkout-session', {
         body: {
           priceId,
@@ -78,8 +105,6 @@ export default function AdminBillingTab() {
           cancelUrl: `${window.location.origin}/admin?billing=canceled`,
         },
       });
-
-      console.log('Response:', { data, error });
 
       if (error) throw error;
 
@@ -92,14 +117,14 @@ export default function AdminBillingTab() {
       console.error('Checkout error:', err);
       setError(err.message || 'Failed to start checkout');
     } finally {
-      setLoading(false);
+      setSubscribing(false);
     }
   };
 
   const handleManageBilling = async () => {
-    if (loading) return;
+    if (managingBilling) return;
 
-    setLoading(true);
+    setManagingBilling(true);
     setError(null);
 
     try {
@@ -119,7 +144,7 @@ export default function AdminBillingTab() {
     } catch (err: any) {
       setError(err.message || 'Failed to open billing portal');
     } finally {
-      setLoading(false);
+      setManagingBilling(false);
     }
   };
 
@@ -200,7 +225,7 @@ export default function AdminBillingTab() {
           {subscriptionDetails?.stripe_customer_id && (
             <button
               onClick={handleManageBilling}
-              disabled={loading}
+              disabled={managingBilling}
               style={{
                 padding: '10px 20px',
                 background: 'white',
@@ -209,14 +234,15 @@ export default function AdminBillingTab() {
                 borderRadius: '8px',
                 fontSize: '14px',
                 fontWeight: '500',
-                cursor: loading ? 'not-allowed' : 'pointer',
+                cursor: managingBilling ? 'not-allowed' : 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
+                opacity: managingBilling ? 0.7 : 1,
               }}
             >
               <ExternalLink size={16} />
-              {loading ? 'Loading...' : 'Manage Billing'}
+              {managingBilling ? 'Loading...' : 'Manage Billing'}
             </button>
           )}
         </div>
@@ -240,6 +266,67 @@ export default function AdminBillingTab() {
             </span>
           </div>
         )}
+      </div>
+
+      {/* Billing Email Section */}
+      <div
+        style={{
+          background: 'white',
+          borderRadius: '12px',
+          border: '1px solid #e5e7eb',
+          padding: '24px',
+          marginBottom: '24px',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+          <Mail size={20} style={{ color: '#3b82f6' }} />
+          <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', margin: 0 }}>
+            Billing Contact
+          </h3>
+        </div>
+
+        <div style={{ marginBottom: '16px' }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+            Billing Email
+          </label>
+          <input
+            type="email"
+            placeholder="billing@company.com"
+            value={billingEmail}
+            onChange={(e) => setBillingEmail(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '10px 12px',
+              border: '1px solid #e5e7eb',
+              borderRadius: '8px',
+              fontSize: '14px'
+            }}
+          />
+          <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '6px', marginBottom: 0 }}>
+            Invoices and billing notifications will be sent to this email
+          </p>
+        </div>
+
+        <button
+          onClick={saveBillingEmail}
+          disabled={savingEmail}
+          style={{
+            padding: '10px 20px',
+            background: savingEmail ? '#9ca3af' : '#3b82f6',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            fontSize: '14px',
+            fontWeight: '500',
+            cursor: savingEmail ? 'not-allowed' : 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}
+        >
+          <Save size={16} />
+          {savingEmail ? 'Saving...' : 'Save'}
+        </button>
       </div>
 
       {error && (
@@ -391,21 +478,21 @@ export default function AdminBillingTab() {
           {/* Subscribe Button */}
           <button
             onClick={handleSubscribe}
-            disabled={loading}
+            disabled={subscribing}
             style={{
               width: '100%',
               padding: '14px',
-              background: '#8b5cf6',
+              background: '#3b82f6',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
               fontSize: '16px',
               fontWeight: '600',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              opacity: loading ? 0.7 : 1,
+              cursor: subscribing ? 'not-allowed' : 'pointer',
+              opacity: subscribing ? 0.7 : 1,
             }}
           >
-            {loading ? 'Loading...' : `Subscribe for $${totalPrice}/${isYearly ? 'year' : 'month'}`}
+            {subscribing ? 'Loading...' : `Subscribe for $${totalPrice}/${isYearly ? 'year' : 'month'}`}
           </button>
 
           <p

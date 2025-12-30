@@ -210,9 +210,10 @@ serve(async (req) => {
       organization_id: inviter.organization_id,
       user_id: user.id,
       action: 'USER_INVITED',
-      entity_type: 'INVITATION',
-      entity_id: invitation.id,
-      details: {
+      resource_type: 'Invitation',
+      resource_id: invitation.id,
+      description: `${inviter.name || 'Admin'} invited ${name} (${email})`,
+      changes: {
         invited_email: email,
         invited_name: name,
         invited_role: role,

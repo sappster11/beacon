@@ -131,9 +131,10 @@ serve(async (req) => {
       organization_id: invitation.organization_id,
       user_id: authData.user.id,
       action: 'USER_JOINED',
-      entity_type: 'USER',
-      entity_id: authData.user.id,
-      details: {
+      resource_type: 'User',
+      resource_id: authData.user.id,
+      description: `${invitation.name} joined the organization`,
+      changes: {
         email: invitation.email,
         name: invitation.name,
         role: invitation.role,

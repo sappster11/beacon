@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Save, Building2, Upload, Palette, Mail } from 'lucide-react';
+import { Save, Building2, Upload, Palette } from 'lucide-react';
 import { settings as settingsApi } from '../../lib/api';
 import { useBranding } from '../../hooks/useBranding';
 
@@ -31,7 +31,6 @@ export default function AdminCompanyTab() {
     warningColor: '#f59e0b'
   });
 
-  const [billingEmail, setBillingEmail] = useState('');
 
   useEffect(() => {
     loadSettings();
@@ -44,7 +43,6 @@ export default function AdminCompanyTab() {
 
       if (allSettings.company) setCompanyInfo(allSettings.company as typeof companyInfo);
       if (allSettings.branding) setBrandSettings(allSettings.branding as typeof brandSettings);
-      if ((allSettings.billing as any)?.billingEmail) setBillingEmail((allSettings.billing as any).billingEmail);
       if ((allSettings.branding as any)?.logo) setLogoPreview((allSettings.branding as any).logo);
     } catch (error) {
       console.error('Failed to load company settings:', error);
@@ -276,37 +274,10 @@ export default function AdminCompanyTab() {
             </div>
           </div>
 
-          <div style={{ marginTop: '8px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-              <Mail size={16} style={{ color: '#6b7280' }} />
-              <label style={{ fontSize: '14px', fontWeight: '500', color: '#374151' }}>
-                Billing Email
-              </label>
-            </div>
-            <input
-              type="email"
-              placeholder="billing@company.com"
-              value={billingEmail}
-              onChange={(e) => setBillingEmail(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                border: '1px solid #e5e7eb',
-                borderRadius: '8px',
-                fontSize: '14px'
-              }}
-            />
-            <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '6px' }}>
-              Invoices and billing notifications will be sent to this email
-            </p>
-          </div>
         </div>
 
         <button
-          onClick={() => {
-            saveSettings('company', companyInfo);
-            saveSettings('billing', { billingEmail });
-          }}
+          onClick={() => saveSettings('company', companyInfo)}
           disabled={saving === 'company'}
           style={{
             marginTop: '20px',
@@ -331,7 +302,7 @@ export default function AdminCompanyTab() {
       {/* Brand Customization */}
       <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', padding: '24px', marginBottom: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
-          <Palette size={20} style={{ color: '#8b5cf6' }} />
+          <Palette size={20} style={{ color: '#3b82f6' }} />
           <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', margin: 0 }}>
             Brand Customization
           </h3>
@@ -616,7 +587,7 @@ export default function AdminCompanyTab() {
           style={{
             marginTop: '20px',
             padding: '10px 20px',
-            background: saving === 'branding' ? '#9ca3af' : '#8b5cf6',
+            background: saving === 'branding' ? '#9ca3af' : '#3b82f6',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
