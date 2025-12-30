@@ -69,7 +69,7 @@ export default function ReviewManagement() {
   const statusConfig: Record<string, { label: string; color: string }> = {
     active: { label: 'Active', color: '#10b981' },
     scheduled: { label: 'Scheduled', color: '#3b82f6' },
-    completed: { label: 'Completed', color: '#6b7280' },
+    completed: { label: 'Completed', color: 'var(--text-muted)' },
     cancelled: { label: 'Cancelled', color: '#ef4444' },
   };
 
@@ -149,7 +149,7 @@ export default function ReviewManagement() {
                 left: 0,
                 marginTop: '4px',
                 background: 'var(--bg-primary)',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
                 zIndex: 100,
@@ -171,22 +171,22 @@ export default function ReviewManagement() {
                   style={{
                     width: '100%',
                     padding: '10px 14px',
-                    background: key === status ? '#f3f4f6' : 'white',
+                    background: key === status ? 'var(--bg-tertiary)' : 'var(--bg-primary)',
                     border: 'none',
-                    borderBottom: '1px solid #f3f4f6',
+                    borderBottom: '1px solid var(--border-color)',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '8px',
                     fontSize: '13px',
-                    color: '#374151',
+                    color: 'var(--text-secondary)',
                     textAlign: 'left',
                   }}
                   onMouseEnter={(e) => {
-                    if (key !== status) e.currentTarget.style.background = '#f9fafb';
+                    if (key !== status) e.currentTarget.style.background = 'var(--bg-tertiary)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = key === status ? '#f3f4f6' : 'white';
+                    e.currentTarget.style.background = key === status ? 'var(--bg-tertiary)' : 'var(--bg-primary)';
                   }}
                 >
                   <span
@@ -216,7 +216,7 @@ export default function ReviewManagement() {
         key={cycle.id}
         className="review-cycle-card"
         style={{
-          border: '1px solid #e5e7eb',
+          border: '1px solid var(--border-color)',
           borderRadius: '12px',
           padding: '24px',
           marginBottom: '16px',
@@ -227,7 +227,7 @@ export default function ReviewManagement() {
         <div className="review-cycle-card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px', gap: '16px' }}>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div className="review-cycle-card-title" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px', flexWrap: 'wrap' }}>
-              <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: '#111827' }}>
+              <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)' }}>
                 {cycle.name}
               </h3>
               {getStatusBadge(cycle)}
@@ -237,14 +237,14 @@ export default function ReviewManagement() {
                   borderRadius: '6px',
                   fontSize: '12px',
                   fontWeight: '500',
-                  background: '#f3f4f6',
-                  color: '#374151',
+                  background: 'var(--bg-tertiary)',
+                  color: 'var(--text-secondary)',
                 }}
               >
                 {getTypeLabel(cycle.type)}
               </span>
             </div>
-            <div style={{ display: 'flex', gap: '24px', fontSize: '14px', color: '#6b7280' }}>
+            <div style={{ display: 'flex', gap: '24px', fontSize: '14px', color: 'var(--text-muted)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Calendar size={16} />
                 {new Date(cycle.startDate).toLocaleDateString()} - {new Date(cycle.endDate).toLocaleDateString()}
@@ -298,15 +298,15 @@ export default function ReviewManagement() {
           style={{
             textAlign: 'center',
             padding: '60px 20px',
-            background: '#f9fafb',
+            background: 'var(--bg-tertiary)',
             borderRadius: '12px',
-            border: '1px solid #e5e7eb',
+            border: '1px solid var(--border-color)',
           }}
         >
-          <h3 style={{ margin: '0 0 8px 0', color: '#111827', fontSize: '18px', fontWeight: '600' }}>
+          <h3 style={{ margin: '0 0 8px 0', color: 'var(--text-primary)', fontSize: '18px', fontWeight: '600' }}>
             Access Denied
           </h3>
-          <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>
+          <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '14px' }}>
             Only HR Admins can access review management.
           </p>
         </div>
@@ -327,10 +327,10 @@ export default function ReviewManagement() {
     <div style={{ padding: '48px' }}>
       <div className="page-header-with-action" style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: '16px', flexWrap: 'wrap' }}>
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: '600', color: '#111827', marginBottom: '8px', letterSpacing: '-0.5px' }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '8px', letterSpacing: '-0.5px' }}>
             Review Management
           </h1>
-          <p style={{ fontSize: '16px', color: '#6b7280', margin: 0 }}>
+          <p style={{ fontSize: '16px', color: 'var(--text-muted)', margin: 0 }}>
             Create and manage performance review cycles
           </p>
         </div>
@@ -376,15 +376,15 @@ export default function ReviewManagement() {
             style={{
               textAlign: 'center',
               padding: '60px 20px',
-              background: '#f9fafb',
+              background: 'var(--bg-tertiary)',
               borderRadius: '12px',
-              border: '1px solid #e5e7eb',
+              border: '1px solid var(--border-color)',
             }}
           >
-            <h3 style={{ margin: '0 0 8px 0', color: '#111827', fontSize: '18px', fontWeight: '600' }}>
+            <h3 style={{ margin: '0 0 8px 0', color: 'var(--text-primary)', fontSize: '18px', fontWeight: '600' }}>
               No review cycles found
             </h3>
-            <p style={{ margin: '0 0 16px 0', color: '#6b7280', fontSize: '14px' }}>
+            <p style={{ margin: '0 0 16px 0', color: 'var(--text-muted)', fontSize: '14px' }}>
               Get started by creating your first review cycle
             </p>
             <button

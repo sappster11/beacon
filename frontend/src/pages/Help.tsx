@@ -378,11 +378,11 @@ export default function Help() {
       <div style={{ marginBottom: '32px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
           <HelpCircle size={28} style={{ color: 'var(--color-primary)' }} />
-          <h1 style={{ fontSize: '28px', fontWeight: '600', color: '#111827', margin: 0 }}>
+          <h1 style={{ fontSize: '28px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>
             Help Center
           </h1>
         </div>
-        <p style={{ color: '#6b7280', fontSize: '15px', margin: 0 }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: '15px', margin: 0 }}>
           Find answers to common questions and step-by-step guides for using Beacon
         </p>
       </div>
@@ -450,7 +450,7 @@ export default function Help() {
                   style={{
                     fontSize: '16px',
                     fontWeight: '600',
-                    color: '#374151',
+                    color: 'var(--text-secondary)',
                     marginBottom: '12px',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px',
@@ -471,7 +471,7 @@ export default function Help() {
                         key={index}
                         style={{
                           background: 'var(--bg-primary)',
-                          border: '1px solid #e5e7eb',
+                          border: '1px solid var(--border-color)',
                           borderRadius: '8px',
                           overflow: 'hidden',
                         }}
@@ -499,7 +499,7 @@ export default function Help() {
                             style={{
                               fontSize: '14px',
                               fontWeight: '500',
-                              color: '#111827',
+                              color: 'var(--text-primary)',
                             }}
                           >
                             {faq.question}
@@ -537,7 +537,7 @@ export default function Help() {
                   style={{
                     fontSize: '16px',
                     fontWeight: '600',
-                    color: '#374151',
+                    color: 'var(--text-secondary)',
                     marginBottom: '12px',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px',
@@ -558,7 +558,7 @@ export default function Help() {
                         key={index}
                         style={{
                           background: 'var(--bg-primary)',
-                          border: '1px solid #e5e7eb',
+                          border: '1px solid var(--border-color)',
                           borderRadius: '8px',
                           overflow: 'hidden',
                         }}
@@ -587,7 +587,7 @@ export default function Help() {
                               style={{
                                 fontSize: '14px',
                                 fontWeight: '500',
-                                color: '#111827',
+                                color: 'var(--text-primary)',
                                 marginBottom: '4px',
                               }}
                             >
@@ -596,7 +596,7 @@ export default function Help() {
                             <div
                               style={{
                                 fontSize: '13px',
-                                color: '#6b7280',
+                                color: 'var(--text-muted)',
                               }}
                             >
                               {guide.description}

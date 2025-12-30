@@ -153,8 +153,8 @@ export default function Library() {
     return (
       <div style={{ padding: '48px' }}>
         <div style={{ textAlign: 'center', padding: '60px 20px', background: '#f9fafb', borderRadius: '12px', border: '1px solid #e5e7eb' }}>
-          <h3 style={{ margin: '0 0 8px 0', color: '#111827', fontSize: '18px', fontWeight: '600' }}>Access Denied</h3>
-          <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>Only managers and admins can access the library.</p>
+          <h3 style={{ margin: '0 0 8px 0', color: 'var(--text-primary)', fontSize: '18px', fontWeight: '600' }}>Access Denied</h3>
+          <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '14px' }}>Only managers and admins can access the library.</p>
         </div>
       </div>
     );
@@ -176,9 +176,9 @@ export default function Library() {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
             <BookOpen size={28} color="#3b82f6" />
-            <h1 style={{ fontSize: '32px', fontWeight: '600', color: '#111827', margin: 0 }}>Library</h1>
+            <h1 style={{ fontSize: '32px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>Library</h1>
           </div>
-          <p style={{ fontSize: '16px', color: '#6b7280', margin: 0 }}>
+          <p style={{ fontSize: '16px', color: 'var(--text-muted)', margin: 0 }}>
             Manage reusable goals and competencies for performance reviews
           </p>
         </div>
@@ -230,7 +230,7 @@ export default function Library() {
           onChange={(e) => setSelectedCategory(e.target.value)}
           style={{
             padding: '8px 12px',
-            border: '1px solid #e5e7eb',
+            border: '1px solid var(--border-color)',
             borderRadius: '6px',
             fontSize: '14px',
             outline: 'none',
@@ -254,7 +254,7 @@ export default function Library() {
           filteredGoals.length === 0 ? (
             <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '60px 20px', background: '#f9fafb', borderRadius: '12px', border: '1px solid #e5e7eb' }}>
               <Target size={32} color="#9ca3af" style={{ marginBottom: '12px' }} />
-              <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>No goals in library. Add your first goal template.</p>
+              <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '14px' }}>No goals in library. Add your first goal template.</p>
             </div>
           ) : (
             filteredGoals.map(goal => (
@@ -262,7 +262,7 @@ export default function Library() {
                 key={goal.id}
                 style={{
                   background: 'var(--bg-primary)',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '12px',
                   padding: '20px',
                   position: 'relative',
@@ -273,7 +273,7 @@ export default function Library() {
                     <span style={{
                       padding: '4px 10px',
                       background: '#f3f4f6',
-                      color: '#6b7280',
+                      color: 'var(--text-muted)',
                       borderRadius: '4px',
                       fontSize: '11px',
                       fontWeight: '500',
@@ -306,7 +306,7 @@ export default function Library() {
                         right: 0,
                         marginTop: '4px',
                         background: 'var(--bg-primary)',
-                        border: '1px solid #e5e7eb',
+                        border: '1px solid var(--border-color)',
                         borderRadius: '8px',
                         boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                         zIndex: 10,
@@ -322,7 +322,7 @@ export default function Library() {
                             border: 'none',
                             cursor: 'pointer',
                             fontSize: '14px',
-                            color: '#374151',
+                            color: 'var(--text-secondary)',
                             display: 'flex',
                             alignItems: 'center',
                             gap: '8px',
@@ -364,20 +364,20 @@ export default function Library() {
                       margin: '0 0 4px 0',
                       fontSize: '16px',
                       fontWeight: '600',
-                      color: '#111827',
+                      color: 'var(--text-primary)',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap',
                     }}>{goal.title}</h3>
                     {goal.category && (
-                      <span style={{ fontSize: '12px', color: '#6b7280', background: '#f3f4f6', padding: '2px 8px', borderRadius: '4px', display: 'inline-block' }}>
+                      <span style={{ fontSize: '12px', color: 'var(--text-muted)', background: '#f3f4f6', padding: '2px 8px', borderRadius: '4px', display: 'inline-block' }}>
                         {goal.category}
                       </span>
                     )}
                   </div>
                 </div>
                 {goal.description && (
-                  <p style={{ margin: 0, fontSize: '14px', color: '#6b7280', lineHeight: '1.5' }}>
+                  <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-muted)', lineHeight: '1.5' }}>
                     {goal.description}
                   </p>
                 )}
@@ -388,7 +388,7 @@ export default function Library() {
           filteredCompetencies.length === 0 ? (
             <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '60px 20px', background: '#f9fafb', borderRadius: '12px', border: '1px solid #e5e7eb' }}>
               <TrendingUp size={32} color="#9ca3af" style={{ marginBottom: '12px' }} />
-              <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>No competencies in library. Add your first competency template.</p>
+              <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '14px' }}>No competencies in library. Add your first competency template.</p>
             </div>
           ) : (
             filteredCompetencies.map(comp => (
@@ -396,7 +396,7 @@ export default function Library() {
                 key={comp.id}
                 style={{
                   background: 'var(--bg-primary)',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '12px',
                   padding: '20px',
                   position: 'relative',
@@ -407,7 +407,7 @@ export default function Library() {
                     <span style={{
                       padding: '4px 10px',
                       background: '#f3f4f6',
-                      color: '#6b7280',
+                      color: 'var(--text-muted)',
                       borderRadius: '4px',
                       fontSize: '11px',
                       fontWeight: '500',
@@ -440,7 +440,7 @@ export default function Library() {
                         right: 0,
                         marginTop: '4px',
                         background: 'var(--bg-primary)',
-                        border: '1px solid #e5e7eb',
+                        border: '1px solid var(--border-color)',
                         borderRadius: '8px',
                         boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                         zIndex: 10,
@@ -456,7 +456,7 @@ export default function Library() {
                             border: 'none',
                             cursor: 'pointer',
                             fontSize: '14px',
-                            color: '#374151',
+                            color: 'var(--text-secondary)',
                             display: 'flex',
                             alignItems: 'center',
                             gap: '8px',
@@ -498,20 +498,20 @@ export default function Library() {
                       margin: '0 0 4px 0',
                       fontSize: '16px',
                       fontWeight: '600',
-                      color: '#111827',
+                      color: 'var(--text-primary)',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap',
                     }}>{comp.name}</h3>
                     {comp.category && (
-                      <span style={{ fontSize: '12px', color: '#6b7280', background: '#f3f4f6', padding: '2px 8px', borderRadius: '4px', display: 'inline-block' }}>
+                      <span style={{ fontSize: '12px', color: 'var(--text-muted)', background: '#f3f4f6', padding: '2px 8px', borderRadius: '4px', display: 'inline-block' }}>
                         {comp.category}
                       </span>
                     )}
                   </div>
                 </div>
                 {comp.description && (
-                  <p style={{ margin: 0, fontSize: '14px', color: '#6b7280', lineHeight: '1.5' }}>
+                  <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-muted)', lineHeight: '1.5' }}>
                     {comp.description}
                   </p>
                 )}
@@ -554,7 +554,7 @@ export default function Library() {
             </h2>
 
             <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                 {activeTab === 'goals' ? 'Title' : 'Name'} *
               </label>
               <input
@@ -574,7 +574,7 @@ export default function Library() {
             </div>
 
             <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                 Category
               </label>
               {showNewCategoryInput ? (
@@ -617,7 +617,7 @@ export default function Library() {
                     style={{
                       padding: '10px 12px',
                       background: '#f3f4f6',
-                      color: '#374151',
+                      color: 'var(--text-secondary)',
                       border: 'none',
                       borderRadius: '6px',
                       cursor: 'pointer',
@@ -659,7 +659,7 @@ export default function Library() {
             </div>
 
             <div style={{ marginBottom: '24px' }}>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                 Description
               </label>
               <textarea
@@ -686,7 +686,7 @@ export default function Library() {
                 style={{
                   padding: '10px 20px',
                   background: 'var(--bg-primary)',
-                  color: '#374151',
+                  color: 'var(--text-secondary)',
                   border: '1px solid #d1d5db',
                   borderRadius: '8px',
                   cursor: 'pointer',

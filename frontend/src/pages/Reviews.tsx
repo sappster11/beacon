@@ -4,7 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { reviews, reviewCycles, manager } from '../lib/api';
 import type { Review, ReviewCycle, User } from '../types';
 import { ReviewsSkeleton } from '../components/Skeleton';
-import { ChevronDown, Info } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 export default function Reviews() {
   const { user } = useAuth();
@@ -242,7 +242,31 @@ export default function Reviews() {
     <div style={{ padding: '48px' }}>
       <div style={{ marginBottom: '30px' }}>
         <h1 style={{ fontSize: '32px', marginBottom: '8px' }}>Performance Reviews</h1>
-        <p style={{ fontSize: '16px', color: '#666', margin: 0 }}>View and complete your performance assessments</p>
+        <p style={{ fontSize: '16px', color: 'var(--text-muted)', margin: 0 }}>
+          View and complete your performance assessments
+          {(user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN') && (
+            <span style={{ marginLeft: '8px' }}>
+              ·
+              <a
+                onClick={() => navigate('/review-management')}
+                style={{
+                  marginLeft: '8px',
+                  color: 'var(--color-primary)',
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.textDecoration = 'underline';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.textDecoration = 'none';
+                }}
+              >
+                Manage Reviews
+              </a>
+            </span>
+          )}
+        </p>
       </div>
 
       {error && (
@@ -293,39 +317,6 @@ export default function Reviews() {
           />
         </div>
       </div>
-
-      {(user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN') && (
-        <div
-          className="hr-admin-banner"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            marginBottom: '16px',
-            fontSize: '13px',
-            color: 'var(--text-muted)',
-          }}
-        >
-          <Info size={14} />
-          <span>HR Admin View: Showing all reviews.</span>
-          <a
-            onClick={() => navigate('/review-management')}
-            style={{
-              color: 'var(--color-primary)',
-              cursor: 'pointer',
-              textDecoration: 'none',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.textDecoration = 'underline';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.textDecoration = 'none';
-            }}
-          >
-            Manage Reviews
-          </a>
-        </div>
-      )}
 
       {/* Filter Tabs */}
       <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>

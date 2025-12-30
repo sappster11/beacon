@@ -119,7 +119,7 @@ export default function OrgChart() {
             gap: '12px',
             padding: '12px 16px',
             background: 'var(--bg-primary)',
-            border: '1px solid #e5e7eb',
+            border: '1px solid var(--border-color)',
             borderRadius: '8px',
             marginBottom: '8px',
             transition: 'all 0.15s',
@@ -152,7 +152,7 @@ export default function OrgChart() {
             <div style={{
               fontSize: '15px',
               fontWeight: '600',
-              color: '#111827',
+              color: 'var(--text-primary)',
               marginBottom: '2px',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
@@ -162,7 +162,7 @@ export default function OrgChart() {
             </div>
             <div style={{
               fontSize: '13px',
-              color: '#6b7280',
+              color: 'var(--text-muted)',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -180,7 +180,7 @@ export default function OrgChart() {
                 fontSize: '12px',
                 fontWeight: '500',
                 background: '#f3f4f6',
-                color: '#374151',
+                color: 'var(--text-secondary)',
                 flexShrink: 0,
               }}
             >
@@ -264,7 +264,7 @@ export default function OrgChart() {
               <div style={{
                 fontSize: '16px',
                 fontWeight: '700',
-                color: '#111827',
+                color: 'var(--text-primary)',
                 marginBottom: '4px',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
@@ -274,7 +274,7 @@ export default function OrgChart() {
               </div>
               <div style={{
                 fontSize: '13px',
-                color: '#6b7280',
+                color: 'var(--text-muted)',
                 fontWeight: '500',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
@@ -386,10 +386,10 @@ export default function OrgChart() {
   return (
     <div style={{ padding: '48px', minWidth: '100%', width: 'fit-content' }}>
       <div style={{ marginBottom: '32px' }}>
-        <h1 style={{ fontSize: '32px', fontWeight: '600', color: '#111827', marginBottom: '8px', letterSpacing: '-0.5px' }}>
+        <h1 style={{ fontSize: '32px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '8px', letterSpacing: '-0.5px' }}>
           Organization Chart
         </h1>
-        <p style={{ fontSize: '16px', color: '#6b7280', margin: 0 }}>
+        <p style={{ fontSize: '16px', color: 'var(--text-muted)', margin: 0 }}>
           {employees.length} {employees.length === 1 ? 'employee' : 'employees'}
         </p>
       </div>
@@ -402,7 +402,7 @@ export default function OrgChart() {
 
       {/* View Toggle */}
       <div style={{ display: 'flex', gap: '16px', marginBottom: '24px', alignItems: 'center', flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', gap: '8px', background: 'var(--bg-primary)', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '4px' }}>
+        <div style={{ display: 'flex', gap: '8px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '4px' }}>
           <button
             onClick={() => {
               setViewMode('list');
@@ -449,7 +449,7 @@ export default function OrgChart() {
         </div>
 
         {/* Chart Style Toggle */}
-        <div style={{ display: 'flex', gap: '8px', background: 'var(--bg-primary)', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '4px' }}>
+        <div style={{ display: 'flex', gap: '8px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '4px' }}>
           <button
             onClick={() => setChartStyle('modern')}
             style={{
@@ -485,7 +485,7 @@ export default function OrgChart() {
         </div>
 
         {/* Zoom Controls */}
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', background: 'var(--bg-primary)', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '4px' }}>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '4px' }}>
           <button
             onClick={() => setZoom(Math.max(0.25, zoom - 0.1))}
             disabled={zoom <= 0.25}
@@ -513,7 +513,7 @@ export default function OrgChart() {
             <ZoomOut size={16} />
           </button>
 
-          <span style={{ fontSize: '13px', fontWeight: '500', color: '#374151', minWidth: '45px', textAlign: 'center' }}>
+          <span style={{ fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)', minWidth: '45px', textAlign: 'center' }}>
             {Math.round(zoom * 100)}%
           </span>
 
@@ -590,13 +590,13 @@ export default function OrgChart() {
               padding: '60px 20px',
               background: '#f9fafb',
               borderRadius: '12px',
-              border: '1px solid #e5e7eb',
+              border: '1px solid var(--border-color)',
             }}
           >
-            <h3 style={{ margin: '0 0 8px 0', color: '#111827', fontSize: '18px', fontWeight: '600' }}>
+            <h3 style={{ margin: '0 0 8px 0', color: 'var(--text-primary)', fontSize: '18px', fontWeight: '600' }}>
               No organization structure found
             </h3>
-            <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>
+            <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '14px' }}>
               There are no employees in the system yet.
             </p>
           </div>
