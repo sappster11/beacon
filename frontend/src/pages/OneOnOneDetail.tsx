@@ -52,7 +52,7 @@ function debounce<T extends (...args: any[]) => any>(func: T, wait: number): (..
 // Rating badge helper
 const renderRatingBadge = (rating: number | undefined) => {
   if (!rating) {
-    return <span style={{ color: '#9ca3af', fontSize: '13px' }}>—</span>;
+    return <span style={{ color: 'var(--text-faint)', fontSize: '13px' }}>—</span>;
   }
 
   const ratingColors: { [key: number]: string } = {
@@ -62,7 +62,7 @@ const renderRatingBadge = (rating: number | undefined) => {
     4: '#3b82f6', // Blue
   };
 
-  const color = ratingColors[rating] || '#6b7280';
+  const color = ratingColors[rating] || 'var(--text-muted)';
 
   return (
     <div style={{
@@ -88,7 +88,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
 
   const buttonStyle = (isActive: boolean) => ({
     padding: '6px 10px',
-    background: isActive ? '#e5e7eb' : 'transparent',
+    background: isActive ? 'var(--border-color)' : 'transparent',
     border: '1px solid #d1d5db',
     borderRadius: '4px',
     cursor: 'pointer',
@@ -105,7 +105,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
         gap: '4px',
         padding: '12px',
         borderBottom: '1px solid #d1d5db',
-        background: '#f3f4f6',
+        background: 'var(--bg-tertiary)',
       }}
     >
       <button
@@ -585,8 +585,8 @@ export default function OneOnOneDetail() {
             <p style={{ margin: 0, color: '#7f1d1d', fontFamily: 'monospace', fontSize: '14px' }}>{loadError}</p>
           </div>
         )}
-        <p style={{ color: '#6b7280', marginBottom: '16px' }}>
-          Meeting ID: <code style={{ background: '#f3f4f6', padding: '2px 6px', borderRadius: '4px' }}>{id}</code>
+        <p style={{ color: 'var(--text-muted)', marginBottom: '16px' }}>
+          Meeting ID: <code style={{ background: 'var(--bg-tertiary)', padding: '2px 6px', borderRadius: '4px' }}>{id}</code>
         </p>
         <button
           onClick={() => navigate('/one-on-ones')}
@@ -659,7 +659,7 @@ export default function OneOnOneDetail() {
             borderRadius: '6px',
             cursor: 'pointer',
             fontSize: '14px',
-            color: '#374151',
+            color: 'var(--text-secondary)',
             marginBottom: '16px',
           }}
         >
@@ -672,7 +672,7 @@ export default function OneOnOneDetail() {
             <h1 style={{ fontSize: '32px', marginBottom: '8px', margin: 0 }}>
               One-on-One with {otherPerson.name}
             </h1>
-            <p style={{ fontSize: '16px', color: '#6b7280', margin: '8px 0 0 0' }}>
+            <p style={{ fontSize: '16px', color: 'var(--text-muted)', margin: '8px 0 0 0' }}>
               {meetingDate}
             </p>
           </div>
@@ -702,7 +702,7 @@ export default function OneOnOneDetail() {
                   background: 'var(--bg-primary)',
                   border: '1px solid #d1d5db',
                   borderRadius: '6px',
-                  color: '#374151',
+                  color: 'var(--text-secondary)',
                   textDecoration: 'none',
                   fontSize: '14px',
                 }}
@@ -739,7 +739,7 @@ export default function OneOnOneDetail() {
                   marginBottom: '8px',
                   fontSize: '14px',
                   fontWeight: '600',
-                  color: '#374151',
+                  color: 'var(--text-secondary)',
                 }}
               >
                 Agenda
@@ -748,7 +748,7 @@ export default function OneOnOneDetail() {
                 border: '2px solid #d1d5db',
                 borderRadius: '8px',
                 overflow: 'hidden',
-                background: '#f9fafb',
+                background: 'var(--bg-tertiary)',
                 boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
                 transition: 'all 0.2s',
               }}>
@@ -772,7 +772,7 @@ export default function OneOnOneDetail() {
                   display: 'block',
                   fontSize: '14px',
                   fontWeight: '600',
-                  color: '#374151',
+                  color: 'var(--text-secondary)',
                   marginBottom: '12px',
                 }}
               >
@@ -807,9 +807,9 @@ export default function OneOnOneDetail() {
               </button>
 
               {loadingDocuments ? (
-                <p style={{ fontSize: '14px', color: '#6b7280' }}>Loading documents...</p>
+                <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>Loading documents...</p>
               ) : documents.length === 0 ? (
-                <p style={{ fontSize: '14px', color: '#6b7280', fontStyle: 'italic' }}>
+                <p style={{ fontSize: '14px', color: 'var(--text-muted)', fontStyle: 'italic' }}>
                   No documents added yet. Click "Add Document" to link a Google Doc or any URL.
                 </p>
               ) : (
@@ -828,7 +828,7 @@ export default function OneOnOneDetail() {
                       }}
                     >
                       <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <LinkIcon size={16} style={{ color: '#6b7280' }} />
+                        <LinkIcon size={16} style={{ color: 'var(--text-muted)' }} />
                         <div>
                           <div style={{ fontWeight: '500', fontSize: '14px' }}>{doc.title}</div>
                           {doc.isRecurring && (
@@ -856,10 +856,10 @@ export default function OneOnOneDetail() {
                           rel="noopener noreferrer"
                           style={{
                             padding: '8px 12px',
-                            background: '#f3f4f6',
+                            background: 'var(--bg-tertiary)',
                             border: '1px solid #d1d5db',
                             borderRadius: '6px',
-                            color: '#374151',
+                            color: 'var(--text-secondary)',
                             textDecoration: 'none',
                             fontSize: '13px',
                             display: 'flex',
@@ -899,7 +899,7 @@ export default function OneOnOneDetail() {
                   marginBottom: '8px',
                   fontSize: '14px',
                   fontWeight: '600',
-                  color: '#374151',
+                  color: 'var(--text-secondary)',
                 }}
               >
                 Shared Notes
@@ -908,7 +908,7 @@ export default function OneOnOneDetail() {
                 border: '2px solid #d1d5db',
                 borderRadius: '8px',
                 overflow: 'hidden',
-                background: '#f9fafb',
+                background: 'var(--bg-tertiary)',
                 boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
                 transition: 'all 0.2s',
               }}>
@@ -934,7 +934,7 @@ export default function OneOnOneDetail() {
                     marginBottom: '8px',
                     fontSize: '14px',
                     fontWeight: '600',
-                    color: '#374151',
+                    color: 'var(--text-secondary)',
                   }}
                 >
                   Manager Notes (Private)
@@ -980,7 +980,7 @@ export default function OneOnOneDetail() {
                   disabled={uploadProgress}
                   style={{
                     padding: '12px 24px',
-                    background: uploadProgress ? '#e5e7eb' : '#3b82f6',
+                    background: uploadProgress ? 'var(--border-color)' : '#3b82f6',
                     color: '#ffffff',
                     border: 'none',
                     borderRadius: '8px',
@@ -996,7 +996,7 @@ export default function OneOnOneDetail() {
                   {uploadProgress ? 'Uploading...' : 'Upload Transcript File'}
                 </button>
                 {meeting.transcriptFileUrl && (
-                  <p style={{ marginTop: '8px', fontSize: '14px', color: '#6b7280' }}>
+                  <p style={{ marginTop: '8px', fontSize: '14px', color: 'var(--text-muted)' }}>
                     <FileText size={16} style={{ display: 'inline', marginRight: '6px' }} />
                     File uploaded
                   </p>
@@ -1009,7 +1009,7 @@ export default function OneOnOneDetail() {
                   marginBottom: '8px',
                   fontSize: '14px',
                   fontWeight: '600',
-                  color: '#374151',
+                  color: 'var(--text-secondary)',
                 }}
               >
                 Or Paste Transcript
@@ -1060,7 +1060,7 @@ export default function OneOnOneDetail() {
                   style={{
                     fontSize: '14px',
                     fontWeight: '600',
-                    color: '#374151',
+                    color: 'var(--text-secondary)',
                   }}
                 >
                   Action Items
@@ -1070,8 +1070,8 @@ export default function OneOnOneDetail() {
                   disabled={!actionItems.trim()}
                   style={{
                     padding: '8px 16px',
-                    background: actionItems.trim() ? '#3b82f6' : '#e5e7eb',
-                    color: actionItems.trim() ? '#ffffff' : '#9ca3af',
+                    background: actionItems.trim() ? '#3b82f6' : 'var(--border-color)',
+                    color: actionItems.trim() ? '#ffffff' : 'var(--text-faint)',
                     border: 'none',
                     borderRadius: '6px',
                     cursor: actionItems.trim() ? 'pointer' : 'not-allowed',
@@ -1125,7 +1125,7 @@ export default function OneOnOneDetail() {
                 style={{
                   marginTop: '8px',
                   fontSize: '12px',
-                  color: '#6b7280',
+                  color: 'var(--text-muted)',
                 }}
               >
                 Type or paste action items, then use the "Copy to Clipboard" button to export to your
@@ -1139,13 +1139,13 @@ export default function OneOnOneDetail() {
       {/* Current Review Cycle Focus Areas - Bottom of Page */}
       <div style={{
         marginTop: '48px',
-        borderTop: '2px solid #e5e7eb',
+        borderTop: '2px solid var(--border-color)',
         paddingTop: '32px',
       }}>
         <h3 style={{
           fontSize: '18px',
           fontWeight: '700',
-          color: '#111827',
+          color: 'var(--text-primary)',
           marginBottom: '24px',
         }}>
           Current Review Cycle Focus Areas
@@ -1202,14 +1202,14 @@ export default function OneOnOneDetail() {
                 <h4 style={{
                   fontSize: '16px',
                   fontWeight: '600',
-                  color: '#374151',
+                  color: 'var(--text-secondary)',
                   marginBottom: '12px',
                 }}>
                   Competencies to Develop
                 </h4>
                 <div style={{
                   background: 'var(--bg-primary)',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   padding: '16px',
                 }}>
@@ -1223,12 +1223,12 @@ export default function OneOnOneDetail() {
                     {currentCycleCompetencies.map((comp, idx) => (
                       <li key={idx} style={{
                         fontSize: '14px',
-                        color: '#374151',
+                        color: 'var(--text-secondary)',
                         lineHeight: '1.5',
                       }}>
                         <strong>{comp.name}</strong>
                         {comp.description && (
-                          <span style={{ color: '#6b7280', marginLeft: '8px' }}>
+                          <span style={{ color: 'var(--text-muted)', marginLeft: '8px' }}>
                             — {comp.description}
                           </span>
                         )}
@@ -1275,14 +1275,14 @@ export default function OneOnOneDetail() {
               <h4 style={{
                 fontSize: '16px',
                 fontWeight: '600',
-                color: '#374151',
+                color: 'var(--text-secondary)',
                 marginBottom: '12px',
               }}>
                 Active Goals
               </h4>
               <div style={{
                 background: 'var(--bg-primary)',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 padding: '16px',
               }}>
@@ -1297,12 +1297,12 @@ export default function OneOnOneDetail() {
                     {employeeGoals.map((goal, idx) => (
                       <li key={goal.id || idx} style={{
                         fontSize: '14px',
-                        color: '#374151',
+                        color: 'var(--text-secondary)',
                         lineHeight: '1.5',
                       }}>
                         <strong>{goal.title}</strong>
                         {goal.description && (
-                          <span style={{ color: '#6b7280', marginLeft: '8px' }}>
+                          <span style={{ color: 'var(--text-muted)', marginLeft: '8px' }}>
                             — {goal.description}
                           </span>
                         )}
@@ -1310,7 +1310,7 @@ export default function OneOnOneDetail() {
                           <div style={{
                             marginTop: '4px',
                             fontSize: '13px',
-                            color: '#6b7280',
+                            color: 'var(--text-muted)',
                           }}>
                             Target: {goal.targetValue} {goal.unit || ''}
                             {goal.currentValue !== undefined && ` (Current: ${goal.currentValue})`}
@@ -1323,7 +1323,7 @@ export default function OneOnOneDetail() {
                   <p style={{
                     margin: 0,
                     fontSize: '14px',
-                    color: '#9ca3af',
+                    color: 'var(--text-faint)',
                     fontStyle: 'italic',
                   }}>
                     No active goals set. Create goals to track progress.
@@ -1367,7 +1367,7 @@ export default function OneOnOneDetail() {
               <h2 style={{ fontSize: '20px', fontWeight: '600', margin: '0 0 8px 0' }}>
                 Add Document
               </h2>
-              <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>
+              <p style={{ fontSize: '14px', color: 'var(--text-muted)', margin: 0 }}>
                 Link a Google Doc or any URL to this meeting
               </p>
             </div>
@@ -1380,7 +1380,7 @@ export default function OneOnOneDetail() {
                     marginBottom: '8px',
                     fontSize: '14px',
                     fontWeight: '500',
-                    color: '#374151',
+                    color: 'var(--text-secondary)',
                   }}
                 >
                   Document Title
@@ -1414,7 +1414,7 @@ export default function OneOnOneDetail() {
                     marginBottom: '8px',
                     fontSize: '14px',
                     fontWeight: '500',
-                    color: '#374151',
+                    color: 'var(--text-secondary)',
                   }}
                 >
                   Document URL
@@ -1459,11 +1459,11 @@ export default function OneOnOneDetail() {
                     }
                     style={{ cursor: 'pointer' }}
                   />
-                  <span style={{ color: '#374151' }}>
+                  <span style={{ color: 'var(--text-secondary)' }}>
                     Show in all future 1:1s with {otherPerson.name}
                   </span>
                 </label>
-                <p style={{ fontSize: '12px', color: '#6b7280', margin: '6px 0 0 24px' }}>
+                <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: '6px 0 0 24px' }}>
                   Recurring documents automatically appear in every future meeting with this person
                 </p>
               </div>
@@ -1483,7 +1483,7 @@ export default function OneOnOneDetail() {
                   cursor: 'pointer',
                   fontSize: '14px',
                   fontWeight: '500',
-                  color: '#374151',
+                  color: 'var(--text-secondary)',
                 }}
               >
                 Cancel

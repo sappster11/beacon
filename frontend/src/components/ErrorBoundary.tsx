@@ -49,7 +49,7 @@ class ErrorBoundary extends Component<Props, State> {
           justifyContent: 'center',
           padding: '20px',
           textAlign: 'center',
-          background: '#f9fafb',
+          background: 'var(--bg-tertiary)',
         }}>
           <div style={{
             width: '64px',
@@ -73,7 +73,7 @@ class ErrorBoundary extends Component<Props, State> {
           </h1>
           <p style={{
             fontSize: '16px',
-            color: '#6b7280',
+            color: 'var(--text-muted)',
             marginBottom: '24px',
             maxWidth: '400px',
           }}>

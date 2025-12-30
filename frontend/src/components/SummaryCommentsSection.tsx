@@ -26,7 +26,7 @@ export default function SummaryCommentsSection({
     <div style={{ marginBottom: '32px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
         <FileText size={20} color="#f59e0b" />
-        <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: '#111827' }}>
+        <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)' }}>
           Summary Comments
         </h3>
       </div>
@@ -38,10 +38,10 @@ export default function SummaryCommentsSection({
             padding: '16px',
             background: 'var(--bg-primary)',
             borderRadius: '8px',
-            border: '1px solid #e5e7eb',
+            border: '1px solid var(--border-color)',
           }}
         >
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: '#111827', marginBottom: '12px' }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '12px' }}>
             Employee Summary
           </label>
           {isEmployee ? (
@@ -53,7 +53,7 @@ export default function SummaryCommentsSection({
               style={{
                 width: '100%',
                 padding: '12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '6px',
                 fontSize: '14px',
                 outline: 'none',
@@ -65,12 +65,12 @@ export default function SummaryCommentsSection({
                 e.currentTarget.style.borderColor = '#3b82f6';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = '#e5e7eb';
+                e.currentTarget.style.borderColor = 'var(--border-color)';
               }}
             />
           ) : (
-            <p style={{ margin: 0, fontSize: '14px', color: '#374151', lineHeight: '1.6' }}>
-              {summaryComments.employeeComment || <em style={{ color: '#9ca3af' }}>No employee summary provided</em>}
+            <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+              {summaryComments.employeeComment || <em style={{ color: 'var(--text-faint)' }}>No employee summary provided</em>}
             </p>
           )}
         </div>
@@ -81,10 +81,10 @@ export default function SummaryCommentsSection({
             padding: '16px',
             background: 'var(--bg-primary)',
             borderRadius: '8px',
-            border: '1px solid #e5e7eb',
+            border: '1px solid var(--border-color)',
           }}
         >
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: '#111827', marginBottom: '12px' }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '12px' }}>
             Manager Summary
           </label>
           {isManager ? (
@@ -96,7 +96,7 @@ export default function SummaryCommentsSection({
               style={{
                 width: '100%',
                 padding: '12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '6px',
                 fontSize: '14px',
                 outline: 'none',
@@ -108,12 +108,12 @@ export default function SummaryCommentsSection({
                 e.currentTarget.style.borderColor = '#3b82f6';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = '#e5e7eb';
+                e.currentTarget.style.borderColor = 'var(--border-color)';
               }}
             />
           ) : (
-            <p style={{ margin: 0, fontSize: '14px', color: '#374151', lineHeight: '1.6' }}>
-              {summaryComments.managerComment || <em style={{ color: '#9ca3af' }}>No manager summary provided</em>}
+            <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+              {summaryComments.managerComment || <em style={{ color: 'var(--text-faint)' }}>No manager summary provided</em>}
             </p>
           )}
         </div>

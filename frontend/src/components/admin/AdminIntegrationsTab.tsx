@@ -79,31 +79,31 @@ export default function AdminIntegrationsTab() {
               style={{
                 padding: '24px',
                 background: 'var(--bg-primary)',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '12px'
               }}
             >
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', marginBottom: '16px' }}>
                 <div style={{
                   padding: '12px',
-                  background: isConnected ? '#d1fae5' : '#f3f4f6',
+                  background: isConnected ? '#d1fae5' : 'var(--bg-tertiary)',
                   borderRadius: '10px',
-                  color: isConnected ? '#10b981' : '#6b7280'
+                  color: isConnected ? '#10b981' : 'var(--text-muted)'
                 }}>
                   <Icon size={24} />
                 </div>
                 <div style={{ flex: 1 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                    <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#111827', margin: 0 }}>
+                    <h3 style={{ fontSize: '16px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>
                       {info.name}
                     </h3>
                     {isConnected ? (
                       <CheckCircle size={18} style={{ color: '#10b981' }} />
                     ) : (
-                      <XCircle size={18} style={{ color: '#9ca3af' }} />
+                      <XCircle size={18} style={{ color: 'var(--text-faint)' }} />
                     )}
                   </div>
-                  <p style={{ fontSize: '13px', color: '#6b7280', margin: 0 }}>
+                  <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>
                     {info.description}
                   </p>
                 </div>
@@ -111,22 +111,22 @@ export default function AdminIntegrationsTab() {
 
               <div style={{ marginBottom: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '8px' }}>
-                  <span style={{ color: '#6b7280' }}>Status:</span>
-                  <span style={{ fontWeight: '500', color: isConnected ? '#10b981' : '#6b7280' }}>
+                  <span style={{ color: 'var(--text-muted)' }}>Status:</span>
+                  <span style={{ fontWeight: '500', color: isConnected ? '#10b981' : 'var(--text-muted)' }}>
                     {isConnected ? 'Connected' : 'Not Connected'}
                   </span>
                 </div>
                 {integration?.lastSyncAt && (
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '8px' }}>
-                    <span style={{ color: '#6b7280' }}>Last Sync:</span>
-                    <span style={{ fontWeight: '500', color: '#374151' }}>
+                    <span style={{ color: 'var(--text-muted)' }}>Last Sync:</span>
+                    <span style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>
                       {new Date(integration.lastSyncAt).toLocaleString()}
                     </span>
                   </div>
                 )}
                 {integration?.syncStatus && (
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
-                    <span style={{ color: '#6b7280' }}>Sync Status:</span>
+                    <span style={{ color: 'var(--text-muted)' }}>Sync Status:</span>
                     <span style={{
                       fontWeight: '500',
                       color: integration.syncStatus === 'success' ? '#10b981' : '#dc2626'
@@ -144,8 +144,8 @@ export default function AdminIntegrationsTab() {
                     style={{
                       flex: 1,
                       padding: '10px 16px',
-                      background: isConnected ? '#f3f4f6' : '#3b82f6',
-                      color: isConnected ? '#374151' : 'white',
+                      background: isConnected ? 'var(--bg-tertiary)' : '#3b82f6',
+                      color: isConnected ? 'var(--text-secondary)' : 'white',
                       border: 'none',
                       borderRadius: '8px',
                       fontSize: '14px',
@@ -275,7 +275,7 @@ function IntegrationConfigModal({ type, onClose, onSuccess }: IntegrationConfigM
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#111827', marginBottom: '20px' }}>
+        <h2 style={{ fontSize: '20px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '20px' }}>
           Configure {type.replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase())}
         </h2>
 
@@ -289,7 +289,7 @@ function IntegrationConfigModal({ type, onClose, onSuccess }: IntegrationConfigM
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '20px' }}>
             {fields.map(field => (
               <div key={field.key}>
-                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                   {field.label}
                 </label>
                 <input
@@ -300,7 +300,7 @@ function IntegrationConfigModal({ type, onClose, onSuccess }: IntegrationConfigM
                   style={{
                     width: '100%',
                     padding: '10px 12px',
-                    border: '1px solid #e5e7eb',
+                    border: '1px solid var(--border-color)',
                     borderRadius: '8px',
                     fontSize: '14px'
                   }}
@@ -317,12 +317,12 @@ function IntegrationConfigModal({ type, onClose, onSuccess }: IntegrationConfigM
               style={{
                 padding: '10px 20px',
                 background: 'var(--bg-primary)',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 fontWeight: '500',
                 cursor: 'pointer',
-                color: '#374151'
+                color: 'var(--text-secondary)'
               }}
             >
               Cancel
@@ -332,7 +332,7 @@ function IntegrationConfigModal({ type, onClose, onSuccess }: IntegrationConfigM
               disabled={loading}
               style={{
                 padding: '10px 20px',
-                background: loading ? '#9ca3af' : '#3b82f6',
+                background: loading ? 'var(--text-faint)' : '#3b82f6',
                 color: 'white',
                 border: 'none',
                 borderRadius: '8px',

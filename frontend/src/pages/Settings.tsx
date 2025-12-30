@@ -557,7 +557,7 @@ export default function Settings() {
       {/* Read-only Account Info */}
       <div
         style={{
-          background: '#f9fafb',
+          background: 'var(--bg-tertiary)',
           borderRadius: '12px',
           border: '1px solid var(--border-color)',
           padding: '32px',
@@ -651,7 +651,7 @@ export default function Settings() {
 
               {dataSummary && (
                 <div style={{
-                  background: '#f9fafb',
+                  background: 'var(--bg-tertiary)',
                   borderRadius: '8px',
                   padding: '16px',
                   marginBottom: '16px',
@@ -732,7 +732,7 @@ export default function Settings() {
         </div>
 
         {/* Divider */}
-        <div style={{ borderTop: '1px solid #e5e7eb', margin: '0 0 32px 0' }} />
+        <div style={{ borderTop: '1px solid var(--border-color)', margin: '0 0 32px 0' }} />
 
         {/* Account Deletion */}
         <div>
@@ -846,7 +846,7 @@ export default function Settings() {
                       disabled={isDeleting || deleteConfirmEmail.toLowerCase() !== user.email.toLowerCase()}
                       style={{
                         padding: '10px 20px',
-                        background: deleteConfirmEmail.toLowerCase() === user.email.toLowerCase() ? '#dc2626' : '#9ca3af',
+                        background: deleteConfirmEmail.toLowerCase() === user.email.toLowerCase() ? '#dc2626' : 'var(--text-faint)',
                         color: '#ffffff',
                         border: 'none',
                         borderRadius: '8px',

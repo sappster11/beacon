@@ -101,7 +101,7 @@ export default function Reviews() {
       3: '#10b981',
       4: '#3b82f6',
     };
-    return colors[rating] || '#6b7280';
+    return colors[rating] || 'var(--text-muted)';
   };
 
   const getStatusColor = (status: string) => {
@@ -124,9 +124,9 @@ export default function Reviews() {
       case 'IN_PROGRESS':
         return '#f59e0b';
       case 'NOT_STARTED':
-        return '#6b7280';
+        return 'var(--text-muted)';
       default:
-        return '#6b7280';
+        return 'var(--text-muted)';
     }
   };
 
@@ -327,7 +327,7 @@ export default function Reviews() {
             style={{
               padding: '8px 20px',
               background: statusFilter === 'current' ? '#3b82f6' : '#ffffff',
-              color: statusFilter === 'current' ? '#ffffff' : '#374151',
+              color: statusFilter === 'current' ? '#ffffff' : 'var(--text-secondary)',
               border: '1px solid var(--border-color)',
               borderRadius: '8px',
               cursor: 'pointer',
@@ -343,7 +343,7 @@ export default function Reviews() {
             style={{
               padding: '8px 20px',
               background: statusFilter === 'completed' ? '#3b82f6' : '#ffffff',
-              color: statusFilter === 'completed' ? '#ffffff' : '#374151',
+              color: statusFilter === 'completed' ? '#ffffff' : 'var(--text-secondary)',
               border: '1px solid var(--border-color)',
               borderRadius: '8px',
               cursor: 'pointer',
@@ -364,7 +364,7 @@ export default function Reviews() {
               style={{
                 padding: '8px 16px',
                 background: roleFilter === 'reviewee' ? '#dbeafe' : '#ffffff',
-                color: roleFilter === 'reviewee' ? '#1e40af' : '#374151',
+                color: roleFilter === 'reviewee' ? '#1e40af' : 'var(--text-secondary)',
                 border: roleFilter === 'reviewee' ? '1px solid #93c5fd' : '1px solid #e5e7eb',
                 borderRadius: '8px',
                 cursor: 'pointer',
@@ -380,7 +380,7 @@ export default function Reviews() {
               style={{
                 padding: '8px 16px',
                 background: roleFilter === 'reviewer' ? '#fef3c7' : '#ffffff',
-                color: roleFilter === 'reviewer' ? '#92400e' : '#374151',
+                color: roleFilter === 'reviewer' ? '#92400e' : 'var(--text-secondary)',
                 border: roleFilter === 'reviewer' ? '1px solid #fcd34d' : '1px solid #e5e7eb',
                 borderRadius: '8px',
                 cursor: 'pointer',

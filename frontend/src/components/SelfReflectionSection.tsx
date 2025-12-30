@@ -26,7 +26,7 @@ export default function SelfReflectionSection({
     <div style={{ marginBottom: '32px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
         <MessageSquare size={20} color='#8b5cf6' />
-        <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: '#111827' }}>
+        <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)' }}>
           Self-Reflection Questions
         </h3>
       </div>
@@ -39,10 +39,10 @@ export default function SelfReflectionSection({
               padding: '16px',
               background: 'var(--bg-primary)',
               borderRadius: '8px',
-              border: '1px solid #e5e7eb',
+              border: '1px solid var(--border-color)',
             }}
           >
-            <h4 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: '600', color: '#111827' }}>
+            <h4 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)' }}>
               {reflection.question}
             </h4>
             {isEmployee ? (
@@ -54,7 +54,7 @@ export default function SelfReflectionSection({
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '6px',
                   fontSize: '14px',
                   outline: 'none',
@@ -66,12 +66,12 @@ export default function SelfReflectionSection({
                   e.currentTarget.style.borderColor = '#3b82f6';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = '#e5e7eb';
+                  e.currentTarget.style.borderColor = 'var(--border-color)';
                 }}
               />
             ) : (
-              <p style={{ margin: 0, fontSize: '14px', color: '#374151', lineHeight: '1.6' }}>
-                {reflection.answer || <em style={{ color: '#9ca3af' }}>No response provided</em>}
+              <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                {reflection.answer || <em style={{ color: 'var(--text-faint)' }}>No response provided</em>}
               </p>
             )}
           </div>

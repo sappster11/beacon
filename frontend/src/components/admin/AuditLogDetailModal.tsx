@@ -67,7 +67,7 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
         {/* Header */}
         <div
           style={{
-            borderBottom: '1px solid #e5e7eb',
+            borderBottom: '1px solid var(--border-color)',
             padding: '24px',
             display: 'flex',
             justifyContent: 'space-between',
@@ -75,10 +75,10 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
           }}
         >
           <div>
-            <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#111827', margin: '0 0 4px 0' }}>
+            <h2 style={{ fontSize: '20px', fontWeight: '600', color: 'var(--text-primary)', margin: '0 0 4px 0' }}>
               {log.resourceType} - {log.action}
             </h2>
-            <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>
+            <p style={{ fontSize: '14px', color: 'var(--text-muted)', margin: 0 }}>
               {new Date(log.createdAt).toLocaleString()}
             </p>
           </div>
@@ -88,11 +88,11 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
               background: 'transparent',
               border: 'none',
               cursor: 'pointer',
-              color: '#6b7280',
+              color: 'var(--text-muted)',
               padding: '4px'
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = '#111827')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = '#6b7280')}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
           >
             <X size={20} />
           </button>
@@ -104,13 +104,13 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
           {log.description && (
             <div
               style={{
-                background: '#f9fafb',
+                background: 'var(--bg-tertiary)',
                 padding: '16px',
                 borderRadius: '8px',
                 marginBottom: '24px'
               }}
             >
-              <p style={{ fontSize: '14px', color: '#374151', margin: 0 }}>
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
                 {log.description}
               </p>
             </div>
@@ -161,21 +161,21 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
           <div
             style={{
               background: 'var(--bg-primary)',
-              border: '1px solid #e5e7eb',
+              border: '1px solid var(--border-color)',
               borderRadius: '8px',
               padding: '16px',
               marginBottom: '24px'
             }}
           >
-            <div style={{ fontSize: '14px', fontWeight: '600', color: '#111827', marginBottom: '12px' }}>
+            <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '12px' }}>
               User Information
             </div>
-            <div style={{ fontSize: '14px', color: '#374151' }}>
+            <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
               <div style={{ marginBottom: '8px' }}>
                 <strong>Name:</strong> {log.user?.name || 'System'}
               </div>
               {log.user?.email && (
-                <div style={{ color: '#6b7280', fontSize: '13px' }}>
+                <div style={{ color: 'var(--text-muted)', fontSize: '13px' }}>
                   {log.user.email}
                 </div>
               )}
@@ -186,29 +186,29 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
           <div
             style={{
               background: 'var(--bg-primary)',
-              border: '1px solid #e5e7eb',
+              border: '1px solid var(--border-color)',
               borderRadius: '8px',
               padding: '16px',
               marginBottom: '24px'
             }}
           >
-            <div style={{ fontSize: '14px', fontWeight: '600', color: '#111827', marginBottom: '12px' }}>
+            <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '12px' }}>
               Resource Information
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: '13px', color: '#6b7280', marginBottom: '4px' }}>
+                <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px' }}>
                   Resource ID
                 </div>
-                <div style={{ fontSize: '14px', color: '#111827', fontFamily: 'monospace' }}>
+                <div style={{ fontSize: '14px', color: 'var(--text-primary)', fontFamily: 'monospace' }}>
                   {log.resourceId}
                 </div>
               </div>
               <button
                 onClick={handleCopyResourceId}
                 style={{
-                  background: copied ? '#d1fae5' : '#f3f4f6',
-                  border: '1px solid ' + (copied ? '#10b981' : '#e5e7eb'),
+                  background: copied ? '#d1fae5' : 'var(--bg-tertiary)',
+                  border: '1px solid ' + (copied ? '#10b981' : 'var(--border-color)'),
                   borderRadius: '6px',
                   padding: '8px 12px',
                   fontSize: '13px',
@@ -216,11 +216,11 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px',
-                  color: copied ? '#065f46' : '#374151',
+                  color: copied ? '#065f46' : 'var(--text-secondary)',
                   fontWeight: '500'
                 }}
-                onMouseEnter={(e) => !copied && (e.currentTarget.style.background = '#e5e7eb')}
-                onMouseLeave={(e) => !copied && (e.currentTarget.style.background = '#f3f4f6')}
+                onMouseEnter={(e) => !copied && (e.currentTarget.style.background = 'var(--border-color)')}
+                onMouseLeave={(e) => !copied && (e.currentTarget.style.background = 'var(--bg-tertiary)')}
               >
                 {copied ? <Check size={14} /> : <Copy size={14} />}
                 {copied ? 'Copied' : 'Copy'}
@@ -233,38 +233,38 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
             <div
               style={{
                 background: 'var(--bg-primary)',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 padding: '16px',
                 marginBottom: '24px'
               }}
             >
-              <div style={{ fontSize: '14px', fontWeight: '600', color: '#111827', marginBottom: '12px' }}>
+              <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '12px' }}>
                 Request Metadata
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '14px' }}>
                 {metadata.ip && (
                   <div>
-                    <div style={{ color: '#6b7280', fontSize: '13px', marginBottom: '4px' }}>IP Address</div>
-                    <div style={{ color: '#111827', fontFamily: 'monospace', fontSize: '13px' }}>{metadata.ip}</div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '13px', marginBottom: '4px' }}>IP Address</div>
+                    <div style={{ color: 'var(--text-primary)', fontFamily: 'monospace', fontSize: '13px' }}>{metadata.ip}</div>
                   </div>
                 )}
                 {metadata.method && (
                   <div>
-                    <div style={{ color: '#6b7280', fontSize: '13px', marginBottom: '4px' }}>HTTP Method</div>
-                    <div style={{ color: '#111827' }}>{metadata.method}</div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '13px', marginBottom: '4px' }}>HTTP Method</div>
+                    <div style={{ color: 'var(--text-primary)' }}>{metadata.method}</div>
                   </div>
                 )}
                 {metadata.path && (
                   <div style={{ gridColumn: '1 / -1' }}>
-                    <div style={{ color: '#6b7280', fontSize: '13px', marginBottom: '4px' }}>Request Path</div>
-                    <div style={{ color: '#111827', fontFamily: 'monospace', fontSize: '13px' }}>{metadata.path}</div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '13px', marginBottom: '4px' }}>Request Path</div>
+                    <div style={{ color: 'var(--text-primary)', fontFamily: 'monospace', fontSize: '13px' }}>{metadata.path}</div>
                   </div>
                 )}
                 {metadata.userAgent && (
                   <div style={{ gridColumn: '1 / -1' }}>
-                    <div style={{ color: '#6b7280', fontSize: '13px', marginBottom: '4px' }}>User Agent</div>
-                    <div style={{ color: '#111827', fontSize: '13px', wordBreak: 'break-all' }}>{metadata.userAgent}</div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '13px', marginBottom: '4px' }}>User Agent</div>
+                    <div style={{ color: 'var(--text-primary)', fontSize: '13px', wordBreak: 'break-all' }}>{metadata.userAgent}</div>
                   </div>
                 )}
               </div>
@@ -276,12 +276,12 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
             <div
               style={{
                 background: 'var(--bg-primary)',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 padding: '16px'
               }}
             >
-              <div style={{ fontSize: '14px', fontWeight: '600', color: '#111827', marginBottom: '12px' }}>
+              <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '12px' }}>
                 Changes
               </div>
               {/* Check if this is a before/after structure */}
@@ -293,7 +293,7 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
                       style={{
                         fontSize: '13px',
                         fontWeight: '600',
-                        color: '#6b7280',
+                        color: 'var(--text-muted)',
                         marginBottom: '8px',
                         textTransform: 'uppercase',
                         letterSpacing: '0.5px'
@@ -303,16 +303,16 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
                     </div>
                     <pre
                       style={{
-                        background: '#f9fafb',
+                        background: 'var(--bg-tertiary)',
                         padding: '12px',
                         borderRadius: '6px',
                         overflow: 'auto',
                         maxHeight: '400px',
                         fontSize: '12px',
                         lineHeight: '1.6',
-                        color: '#374151',
+                        color: 'var(--text-secondary)',
                         margin: 0,
-                        border: '1px solid #e5e7eb'
+                        border: '1px solid var(--border-color)'
                       }}
                     >
                       {changes.before ? JSON.stringify(changes.before, null, 2) : 'null'}
@@ -325,7 +325,7 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
                       style={{
                         fontSize: '13px',
                         fontWeight: '600',
-                        color: '#6b7280',
+                        color: 'var(--text-muted)',
                         marginBottom: '8px',
                         textTransform: 'uppercase',
                         letterSpacing: '0.5px'
@@ -335,16 +335,16 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
                     </div>
                     <pre
                       style={{
-                        background: '#f9fafb',
+                        background: 'var(--bg-tertiary)',
                         padding: '12px',
                         borderRadius: '6px',
                         overflow: 'auto',
                         maxHeight: '400px',
                         fontSize: '12px',
                         lineHeight: '1.6',
-                        color: '#374151',
+                        color: 'var(--text-secondary)',
                         margin: 0,
-                        border: '1px solid #e5e7eb'
+                        border: '1px solid var(--border-color)'
                       }}
                     >
                       {changes.after ? JSON.stringify(changes.after, null, 2) : 'null'}
@@ -355,16 +355,16 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
                 /* Raw JSON display for flat change objects */
                 <pre
                   style={{
-                    background: '#f9fafb',
+                    background: 'var(--bg-tertiary)',
                     padding: '12px',
                     borderRadius: '6px',
                     overflow: 'auto',
                     maxHeight: '400px',
                     fontSize: '12px',
                     lineHeight: '1.6',
-                    color: '#374151',
+                    color: 'var(--text-secondary)',
                     margin: 0,
-                    border: '1px solid #e5e7eb'
+                    border: '1px solid var(--border-color)'
                   }}
                 >
                   {JSON.stringify(changes, null, 2)}

@@ -26,7 +26,7 @@ export default function Spinner({
         style={{ animation: 'spin 1s linear infinite' }}
       />
       {text && (
-        <span style={{ color: '#6b7280', fontSize: '14px' }}>{text}</span>
+        <span style={{ color: 'var(--text-muted)', fontSize: '14px' }}>{text}</span>
       )}
       <style>{`
         @keyframes spin {

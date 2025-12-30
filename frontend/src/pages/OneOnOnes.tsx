@@ -266,8 +266,8 @@ export default function OneOnOnes() {
                   alignItems: 'center',
                   gap: '8px',
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.background = '#f9fafb'}
-                onMouseLeave={(e) => e.currentTarget.style.background = '#ffffff'}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-tertiary)'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'var(--bg-primary)'}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -293,8 +293,8 @@ export default function OneOnOnes() {
                   alignItems: 'center',
                   gap: '8px',
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.background = '#f9fafb'}
-                onMouseLeave={(e) => e.currentTarget.style.background = '#ffffff'}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-tertiary)'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'var(--bg-primary)'}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -348,7 +348,7 @@ export default function OneOnOnes() {
       {/* Simple Employee Cards */}
       {employeesWithMeetings.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '60px 20px', background: 'var(--bg-tertiary)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-          <Users size={32} color="#9ca3af" style={{ marginBottom: '12px' }} />
+          <Users size={32} color="var(--text-faint)" style={{ marginBottom: '12px' }} />
           <h3 style={{ margin: '0 0 8px 0', color: 'var(--text-primary)', fontSize: '18px', fontWeight: '600' }}>No 1:1s yet</h3>
           <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '14px' }}>
             {isManager ? 'Sync from Google Calendar or add a 1:1 manually to get started.' : 'Your manager hasn\'t scheduled any 1:1s yet.'}
@@ -381,7 +381,7 @@ export default function OneOnOnes() {
                   e.currentTarget.style.boxShadow = '0 2px 8px rgba(59, 130, 246, 0.1)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = '#e5e7eb';
+                  e.currentTarget.style.borderColor = 'var(--border-color)';
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               >
@@ -413,7 +413,7 @@ export default function OneOnOnes() {
                         rel="noopener noreferrer"
                         style={{
                           padding: '6px 10px',
-                          background: '#f3f4f6',
+                          background: 'var(--bg-tertiary)',
                           border: '1px solid var(--border-color)',
                           borderRadius: '6px',
                           color: 'var(--text-secondary)',
@@ -426,10 +426,10 @@ export default function OneOnOnes() {
                           whiteSpace: 'nowrap',
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.background = '#e5e7eb';
+                          e.currentTarget.style.background = 'var(--border-color)';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.background = '#f3f4f6';
+                          e.currentTarget.style.background = 'var(--bg-tertiary)';
                         }}
                         title={doc.title}
                       >
@@ -454,11 +454,11 @@ export default function OneOnOnes() {
                   </div>
                 ) : (
                   <div style={{ textAlign: 'right', marginRight: '8px' }}>
-                    <p style={{ margin: 0, fontSize: '13px', color: '#9ca3af' }}>No upcoming</p>
+                    <p style={{ margin: 0, fontSize: '13px', color: 'var(--text-faint)' }}>No upcoming</p>
                   </div>
                 )}
 
-                <ChevronRight size={20} color="#9ca3af" />
+                <ChevronRight size={20} color="var(--text-faint)" />
               </div>
             );
           })}
@@ -711,7 +711,7 @@ export default function OneOnOnes() {
                         disabled={!selectedEventEmployees[event.id]}
                         style={{
                           padding: '8px 16px',
-                          background: selectedEventEmployees[event.id] ? '#10b981' : '#9ca3af',
+                          background: selectedEventEmployees[event.id] ? '#10b981' : 'var(--text-faint)',
                           color: '#ffffff',
                           border: 'none',
                           borderRadius: '6px',

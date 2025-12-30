@@ -67,7 +67,7 @@ export default function Goals() {
       case 'not_achieved':
         return '#ef4444';
       default:
-        return '#6b7280';
+        return 'var(--text-muted)';
     }
   };
 
@@ -134,7 +134,7 @@ export default function Goals() {
             border: '1px solid var(--border-color)',
           }}
         >
-          <Target size={40} color="#9ca3af" style={{ marginBottom: '16px' }} />
+          <Target size={40} color="var(--text-faint)" style={{ marginBottom: '16px' }} />
           <h3 style={{ margin: '0 0 8px 0', color: 'var(--text-primary)', fontSize: '18px', fontWeight: '600' }}>
             No goals assigned yet
           </h3>
@@ -203,7 +203,7 @@ export default function Goals() {
                     key={goal.id || index}
                     style={{
                       padding: '16px 20px',
-                      borderBottom: index < goals.length - 1 ? '1px solid #f3f4f6' : 'none',
+                      borderBottom: index < goals.length - 1 ? '1px solid var(--bg-tertiary)' : 'none',
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'start',
@@ -223,7 +223,7 @@ export default function Goals() {
                         </p>
                       )}
                       {goal.dueDate && (
-                        <p style={{ margin: '8px 0 0 24px', fontSize: '13px', color: '#9ca3af' }}>
+                        <p style={{ margin: '8px 0 0 24px', fontSize: '13px', color: 'var(--text-faint)' }}>
                           Due: {new Date(goal.dueDate).toLocaleDateString()}
                         </p>
                       )}

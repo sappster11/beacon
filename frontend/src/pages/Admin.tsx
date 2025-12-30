@@ -61,7 +61,7 @@ export default function Admin() {
       </div>
 
       {/* Tab Navigation */}
-      <div className="admin-tabs-container" style={{ borderBottom: '1px solid #e5e7eb', marginBottom: '32px', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+      <div className="admin-tabs-container" style={{ borderBottom: '1px solid var(--border-color)', marginBottom: '32px', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
         <div className="admin-tabs" style={{ display: 'flex', gap: '8px', minWidth: 'max-content' }}>
           {tabs.map(tab => (
             <button
@@ -71,7 +71,7 @@ export default function Admin() {
                 padding: '12px 20px',
                 border: 'none',
                 background: 'transparent',
-                color: activeTab === tab.id ? '#3b82f6' : '#6b7280',
+                color: activeTab === tab.id ? '#3b82f6' : 'var(--text-muted)',
                 fontWeight: activeTab === tab.id ? '600' : '400',
                 fontSize: '14px',
                 cursor: 'pointer',
@@ -83,12 +83,12 @@ export default function Admin() {
               }}
               onMouseEnter={(e) => {
                 if (activeTab !== tab.id) {
-                  e.currentTarget.style.color = '#111827';
+                  e.currentTarget.style.color = 'var(--text-primary)';
                 }
               }}
               onMouseLeave={(e) => {
                 if (activeTab !== tab.id) {
-                  e.currentTarget.style.color = '#6b7280';
+                  e.currentTarget.style.color = 'var(--text-muted)';
                 }
               }}
             >

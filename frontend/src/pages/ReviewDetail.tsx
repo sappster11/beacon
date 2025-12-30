@@ -47,8 +47,8 @@ export default function ReviewDetail() {
           style={{
             padding: '8px 16px',
             background: 'var(--bg-primary)',
-            color: '#374151',
-            border: '1px solid #e5e7eb',
+            color: 'var(--text-secondary)',
+            border: '1px solid var(--border-color)',
             borderRadius: '8px',
             cursor: 'pointer',
             fontSize: '14px',
@@ -60,10 +60,10 @@ export default function ReviewDetail() {
             transition: 'all 0.15s',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = '#f9fafb';
+            e.currentTarget.style.background = 'var(--bg-tertiary)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = '#ffffff';
+            e.currentTarget.style.background = 'var(--bg-primary)';
           }}
         >
           <ArrowLeft size={16} />
@@ -72,16 +72,16 @@ export default function ReviewDetail() {
         <div
           style={{
             padding: '60px 20px',
-            background: '#f9fafb',
+            background: 'var(--bg-tertiary)',
             borderRadius: '12px',
-            border: '1px solid #e5e7eb',
+            border: '1px solid var(--border-color)',
             textAlign: 'center',
           }}
         >
-          <h3 style={{ margin: '0 0 8px 0', color: '#111827', fontSize: '18px', fontWeight: '600' }}>
+          <h3 style={{ margin: '0 0 8px 0', color: 'var(--text-primary)', fontSize: '18px', fontWeight: '600' }}>
             {error || 'Review not found'}
           </h3>
-          <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>
+          <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '14px' }}>
             This review may not exist or you may not have permission to view it.
           </p>
         </div>
@@ -99,8 +99,8 @@ export default function ReviewDetail() {
         style={{
           padding: '8px 16px',
           background: 'var(--bg-primary)',
-          color: '#374151',
-          border: '1px solid #e5e7eb',
+          color: 'var(--text-secondary)',
+          border: '1px solid var(--border-color)',
           borderRadius: '8px',
           cursor: 'pointer',
           fontSize: '14px',
@@ -112,10 +112,10 @@ export default function ReviewDetail() {
           transition: 'all 0.15s',
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.background = '#f9fafb';
+          e.currentTarget.style.background = 'var(--bg-tertiary)';
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.background = '#ffffff';
+          e.currentTarget.style.background = 'var(--bg-primary)';
         }}
       >
         <ArrowLeft size={16} />

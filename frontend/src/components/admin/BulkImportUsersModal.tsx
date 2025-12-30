@@ -166,8 +166,8 @@ Jane Smith,jane@example.com,Engineering Manager,Engineering,,MANAGER`;
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div style={{ padding: '24px', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#111827' }}>Bulk Invite Users</h2>
+        <div style={{ padding: '24px', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <h2 style={{ fontSize: '20px', fontWeight: '600', color: 'var(--text-primary)' }}>Bulk Invite Users</h2>
           <button
             onClick={onClose}
             style={{
@@ -175,7 +175,7 @@ Jane Smith,jane@example.com,Engineering Manager,Engineering,,MANAGER`;
               background: 'transparent',
               border: 'none',
               cursor: 'pointer',
-              color: '#6b7280',
+              color: 'var(--text-muted)',
               borderRadius: '6px'
             }}
           >
@@ -208,8 +208,8 @@ Jane Smith,jane@example.com,Engineering Manager,Engineering,,MANAGER`;
             style={{
               width: '100%',
               padding: '12px',
-              background: '#f3f4f6',
-              border: '1px solid #e5e7eb',
+              background: 'var(--bg-tertiary)',
+              border: '1px solid var(--border-color)',
               borderRadius: '8px',
               fontSize: '14px',
               fontWeight: '500',
@@ -218,7 +218,7 @@ Jane Smith,jane@example.com,Engineering Manager,Engineering,,MANAGER`;
               alignItems: 'center',
               justifyContent: 'center',
               gap: '8px',
-              color: '#374151',
+              color: 'var(--text-secondary)',
               marginBottom: '24px'
             }}
           >
@@ -233,12 +233,12 @@ Jane Smith,jane@example.com,Engineering Manager,Engineering,,MANAGER`;
                 display: 'block',
                 width: '100%',
                 padding: '32px',
-                border: '2px dashed #e5e7eb',
+                border: '2px dashed var(--border-color)',
                 borderRadius: '8px',
                 textAlign: 'center',
                 cursor: 'pointer',
-                background: file ? '#f0fdf4' : '#f9fafb',
-                borderColor: file ? '#10b981' : '#e5e7eb'
+                background: file ? '#f0fdf4' : 'var(--bg-tertiary)',
+                borderColor: file ? '#10b981' : 'var(--border-color)'
               }}
             >
               <input
@@ -247,11 +247,11 @@ Jane Smith,jane@example.com,Engineering Manager,Engineering,,MANAGER`;
                 onChange={handleFileChange}
                 style={{ display: 'none' }}
               />
-              <Upload size={32} style={{ margin: '0 auto 12px', color: '#9ca3af' }} />
-              <div style={{ fontSize: '14px', fontWeight: '500', color: '#111827', marginBottom: '4px' }}>
+              <Upload size={32} style={{ margin: '0 auto 12px', color: 'var(--text-faint)' }} />
+              <div style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-primary)', marginBottom: '4px' }}>
                 {file ? file.name : 'Click to upload CSV file'}
               </div>
-              <div style={{ fontSize: '12px', color: '#6b7280' }}>
+              <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
                 {file ? `${(file.size / 1024).toFixed(2)} KB` : 'Max file size: 10MB'}
               </div>
             </label>
@@ -298,12 +298,12 @@ Jane Smith,jane@example.com,Engineering Manager,Engineering,,MANAGER`;
               style={{
                 padding: '10px 20px',
                 background: 'var(--bg-primary)',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 fontWeight: '500',
                 cursor: 'pointer',
-                color: '#374151'
+                color: 'var(--text-secondary)'
               }}
             >
               {result ? 'Close' : 'Cancel'}
@@ -314,7 +314,7 @@ Jane Smith,jane@example.com,Engineering Manager,Engineering,,MANAGER`;
                 disabled={!file || loading}
                 style={{
                   padding: '10px 20px',
-                  background: !file || loading ? '#9ca3af' : '#10b981',
+                  background: !file || loading ? 'var(--text-faint)' : '#10b981',
                   color: 'white',
                   border: 'none',
                   borderRadius: '8px',

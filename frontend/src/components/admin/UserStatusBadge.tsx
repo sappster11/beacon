@@ -10,8 +10,8 @@ export default function UserStatusBadge({ isActive }: UserStatusBadgeProps) {
         borderRadius: '12px',
         fontSize: '12px',
         fontWeight: '500',
-        background: isActive ? '#d1fae5' : '#f3f4f6',
-        color: isActive ? '#065f46' : '#6b7280'
+        background: isActive ? '#d1fae5' : 'var(--bg-tertiary)',
+        color: isActive ? '#065f46' : 'var(--text-muted)'
       }}
     >
       {isActive ? 'Active' : 'Inactive'}

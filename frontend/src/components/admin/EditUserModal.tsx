@@ -76,8 +76,8 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div style={{ padding: '24px', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#111827' }}>Edit User</h2>
+        <div style={{ padding: '24px', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <h2 style={{ fontSize: '20px', fontWeight: '600', color: 'var(--text-primary)' }}>Edit User</h2>
           <button
             onClick={onClose}
             style={{
@@ -85,7 +85,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
               background: 'transparent',
               border: 'none',
               cursor: 'pointer',
-              color: '#6b7280',
+              color: 'var(--text-muted)',
               borderRadius: '6px'
             }}
           >
@@ -103,7 +103,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                 Name *
               </label>
               <input
@@ -113,7 +113,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px'
                 }}
@@ -122,7 +122,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                 Email *
               </label>
               <input
@@ -132,7 +132,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px'
                 }}
@@ -141,7 +141,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                 Title
               </label>
               <input
@@ -151,7 +151,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px'
                 }}
@@ -159,7 +159,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                 Role
               </label>
               <select
@@ -168,7 +168,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px'
                 }}
@@ -181,7 +181,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                 Department
               </label>
               <select
@@ -190,7 +190,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px'
                 }}
@@ -203,7 +203,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                 Manager
               </label>
               <select
@@ -212,7 +212,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px'
                 }}
@@ -225,7 +225,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                 Hire Date
               </label>
               <input
@@ -235,7 +235,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px'
                 }}
@@ -243,7 +243,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
             </div>
 
             {user.createdAt && (
-              <div style={{ padding: '12px', background: '#f9fafb', borderRadius: '8px', fontSize: '13px', color: '#6b7280' }}>
+              <div style={{ padding: '12px', background: 'var(--bg-tertiary)', borderRadius: '8px', fontSize: '13px', color: 'var(--text-muted)' }}>
                 <div><strong>Created:</strong> {new Date(user.createdAt).toLocaleDateString()}</div>
                 {user.lastLoginAt && <div><strong>Last Login:</strong> {new Date(user.lastLoginAt).toLocaleDateString()}</div>}
               </div>
@@ -258,12 +258,12 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
               style={{
                 padding: '10px 20px',
                 background: 'var(--bg-primary)',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 fontWeight: '500',
                 cursor: 'pointer',
-                color: '#374151'
+                color: 'var(--text-secondary)'
               }}
             >
               Cancel
@@ -273,7 +273,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
               disabled={loading}
               style={{
                 padding: '10px 20px',
-                background: loading ? '#9ca3af' : '#3b82f6',
+                background: loading ? 'var(--text-faint)' : '#3b82f6',
                 color: 'white',
                 border: 'none',
                 borderRadius: '8px',

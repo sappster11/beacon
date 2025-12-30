@@ -73,8 +73,8 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div style={{ padding: '24px', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#111827' }}>Create New User</h2>
+        <div style={{ padding: '24px', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <h2 style={{ fontSize: '20px', fontWeight: '600', color: 'var(--text-primary)' }}>Create New User</h2>
           <button
             onClick={onClose}
             style={{
@@ -82,7 +82,7 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
               background: 'transparent',
               border: 'none',
               cursor: 'pointer',
-              color: '#6b7280',
+              color: 'var(--text-muted)',
               borderRadius: '6px'
             }}
           >
@@ -100,7 +100,7 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                 Name *
               </label>
               <input
@@ -110,7 +110,7 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px'
                 }}
@@ -119,7 +119,7 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                 Email *
               </label>
               <input
@@ -129,7 +129,7 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px'
                 }}
@@ -138,7 +138,7 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                 Title
               </label>
               <input
@@ -148,7 +148,7 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px'
                 }}
@@ -156,7 +156,7 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                 Role
               </label>
               <select
@@ -165,7 +165,7 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px'
                 }}
@@ -178,7 +178,7 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                 Department
               </label>
               <select
@@ -187,7 +187,7 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px'
                 }}
@@ -200,7 +200,7 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                 Manager
               </label>
               <select
@@ -209,7 +209,7 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px'
                 }}
@@ -222,7 +222,7 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                 Hire Date
               </label>
               <input
@@ -232,7 +232,7 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px'
                 }}
@@ -248,12 +248,12 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
               style={{
                 padding: '10px 20px',
                 background: 'var(--bg-primary)',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 fontWeight: '500',
                 cursor: 'pointer',
-                color: '#374151'
+                color: 'var(--text-secondary)'
               }}
             >
               Cancel
@@ -263,7 +263,7 @@ export default function CreateUserModal({ onClose, onSuccess, departments, users
               disabled={loading}
               style={{
                 padding: '10px 20px',
-                background: loading ? '#9ca3af' : '#3b82f6',
+                background: loading ? 'var(--text-faint)' : '#3b82f6',
                 color: 'white',
                 border: 'none',
                 borderRadius: '8px',

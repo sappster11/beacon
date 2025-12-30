@@ -82,13 +82,13 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
         <div
           style={{
             padding: '24px',
-            borderBottom: '1px solid #e5e7eb',
+            borderBottom: '1px solid var(--border-color)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
         >
-          <h2 style={{ fontSize: '24px', fontWeight: '600', color: '#111827', margin: 0 }}>
+          <h2 style={{ fontSize: '24px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>
             Create Goal Template
           </h2>
           <button
@@ -105,13 +105,13 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
               transition: 'all 0.15s',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#f3f4f6';
+              e.currentTarget.style.background = 'var(--bg-tertiary)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = 'transparent';
             }}
           >
-            <X size={20} color="#6b7280" />
+            <X size={20} color="var(--text-muted)" />
           </button>
         </div>
 
@@ -125,7 +125,7 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
 
           {/* Title */}
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
               Title *
             </label>
             <input
@@ -137,7 +137,7 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 outline: 'none',
@@ -146,14 +146,14 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
                 e.currentTarget.style.borderColor = '#3b82f6';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = '#e5e7eb';
+                e.currentTarget.style.borderColor = 'var(--border-color)';
               }}
             />
           </div>
 
           {/* Description */}
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
               Description *
             </label>
             <textarea
@@ -165,7 +165,7 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 outline: 'none',
@@ -175,14 +175,14 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
                 e.currentTarget.style.borderColor = '#3b82f6';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = '#e5e7eb';
+                e.currentTarget.style.borderColor = 'var(--border-color)';
               }}
             />
           </div>
 
           {/* Category */}
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
               Category *
             </label>
             <select
@@ -192,7 +192,7 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 outline: 'none',
@@ -202,7 +202,7 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
                 e.currentTarget.style.borderColor = '#3b82f6';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = '#e5e7eb';
+                e.currentTarget.style.borderColor = 'var(--border-color)';
               }}
             >
               {categories.map((cat) => (
@@ -216,7 +216,7 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
           {/* Target Value & Unit */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
                 Target Value
               </label>
               <input
@@ -228,7 +228,7 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px',
                   outline: 'none',
@@ -237,12 +237,12 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
                   e.currentTarget.style.borderColor = '#3b82f6';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = '#e5e7eb';
+                  e.currentTarget.style.borderColor = 'var(--border-color)';
                 }}
               />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
                 Unit
               </label>
               <input
@@ -253,7 +253,7 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px',
                   outline: 'none',
@@ -262,7 +262,7 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
                   e.currentTarget.style.borderColor = '#3b82f6';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = '#e5e7eb';
+                  e.currentTarget.style.borderColor = 'var(--border-color)';
                 }}
               />
             </div>
@@ -270,7 +270,7 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
 
           {/* Suggested Duration */}
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
               Suggested Duration (days)
             </label>
             <input
@@ -281,7 +281,7 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 outline: 'none',
@@ -290,14 +290,14 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
                 e.currentTarget.style.borderColor = '#3b82f6';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = '#e5e7eb';
+                e.currentTarget.style.borderColor = 'var(--border-color)';
               }}
             />
           </div>
 
           {/* Visibility */}
           <div style={{ marginBottom: '24px' }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
               Visibility
             </label>
             <div style={{ display: 'flex', gap: '12px' }}>
@@ -309,7 +309,7 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
                   onChange={(e) => setVisibility(e.target.value as 'TEAM')}
                   style={{ marginRight: '8px' }}
                 />
-                <span style={{ fontSize: '14px', color: '#374151' }}>Team</span>
+                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>Team</span>
               </label>
               <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
                 <input
@@ -319,7 +319,7 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
                   onChange={(e) => setVisibility(e.target.value as 'COMPANY')}
                   style={{ marginRight: '8px' }}
                 />
-                <span style={{ fontSize: '14px', color: '#374151' }}>Company</span>
+                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>Company</span>
               </label>
             </div>
           </div>
@@ -332,8 +332,8 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
               style={{
                 padding: '10px 20px',
                 background: 'var(--bg-primary)',
-                color: '#374151',
-                border: '1px solid #e5e7eb',
+                color: 'var(--text-secondary)',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 cursor: 'pointer',
                 fontSize: '14px',
@@ -341,10 +341,10 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
                 transition: 'all 0.15s',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#f9fafb';
+                e.currentTarget.style.background = 'var(--bg-tertiary)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#ffffff';
+                e.currentTarget.style.background = 'var(--bg-primary)';
               }}
             >
               Cancel
@@ -354,7 +354,7 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
               disabled={isSubmitting}
               style={{
                 padding: '10px 20px',
-                background: isSubmitting ? '#9ca3af' : '#3b82f6',
+                background: isSubmitting ? 'var(--text-faint)' : '#3b82f6',
                 color: '#ffffff',
                 border: 'none',
                 borderRadius: '8px',

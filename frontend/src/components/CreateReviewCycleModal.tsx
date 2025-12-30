@@ -86,13 +86,13 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
         <div
           style={{
             padding: '24px',
-            borderBottom: '1px solid #e5e7eb',
+            borderBottom: '1px solid var(--border-color)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
         >
-          <h2 style={{ fontSize: '24px', fontWeight: '600', color: '#111827', margin: 0 }}>
+          <h2 style={{ fontSize: '24px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>
             Create Review Cycle
           </h2>
           <button
@@ -109,13 +109,13 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
               transition: 'all 0.15s',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#f3f4f6';
+              e.currentTarget.style.background = 'var(--bg-tertiary)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = 'transparent';
             }}
           >
-            <X size={20} color="#6b7280" />
+            <X size={20} color="var(--text-muted)" />
           </button>
         </div>
 
@@ -129,7 +129,7 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
 
           {/* Name */}
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
               Cycle Name *
             </label>
             <input
@@ -141,7 +141,7 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 outline: 'none',
@@ -150,14 +150,14 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
                 e.currentTarget.style.borderColor = '#3b82f6';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = '#e5e7eb';
+                e.currentTarget.style.borderColor = 'var(--border-color)';
               }}
             />
           </div>
 
           {/* Type */}
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
               Review Type *
             </label>
             <select
@@ -167,7 +167,7 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 outline: 'none',
@@ -177,7 +177,7 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
                 e.currentTarget.style.borderColor = '#3b82f6';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = '#e5e7eb';
+                e.currentTarget.style.borderColor = 'var(--border-color)';
               }}
             >
               <option value="QUARTERLY">Quarterly</option>
@@ -188,7 +188,7 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
 
           {/* Start Date */}
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
               Start Date *
             </label>
             <input
@@ -199,7 +199,7 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 outline: 'none',
@@ -208,14 +208,14 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
                 e.currentTarget.style.borderColor = '#3b82f6';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = '#e5e7eb';
+                e.currentTarget.style.borderColor = 'var(--border-color)';
               }}
             />
           </div>
 
           {/* End Date */}
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
               End Date *
             </label>
             <input
@@ -226,7 +226,7 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 outline: 'none',
@@ -235,7 +235,7 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
                 e.currentTarget.style.borderColor = '#3b82f6';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = '#e5e7eb';
+                e.currentTarget.style.borderColor = 'var(--border-color)';
               }}
             />
           </div>
@@ -249,7 +249,7 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
                 gap: '10px',
                 cursor: 'pointer',
                 fontSize: '14px',
-                color: '#374151',
+                color: 'var(--text-secondary)',
               }}
             >
               <input
@@ -265,7 +265,7 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
               />
               <span style={{ fontWeight: '500' }}>Set as active cycle</span>
             </label>
-            <p style={{ fontSize: '13px', color: '#6b7280', marginTop: '6px', marginLeft: '28px' }}>
+            <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '6px', marginLeft: '28px' }}>
               This will mark this cycle as the current active review cycle. Any previously active cycle will be deactivated.
             </p>
           </div>
@@ -278,8 +278,8 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
               style={{
                 padding: '10px 20px',
                 background: 'var(--bg-primary)',
-                color: '#374151',
-                border: '1px solid #e5e7eb',
+                color: 'var(--text-secondary)',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 cursor: 'pointer',
                 fontSize: '14px',
@@ -287,10 +287,10 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
                 transition: 'all 0.15s',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#f9fafb';
+                e.currentTarget.style.background = 'var(--bg-tertiary)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#ffffff';
+                e.currentTarget.style.background = 'var(--bg-primary)';
               }}
             >
               Cancel
@@ -300,7 +300,7 @@ export default function CreateReviewCycleModal({ onClose, onCreated }: CreateRev
               disabled={isSubmitting}
               style={{
                 padding: '10px 20px',
-                background: isSubmitting ? '#9ca3af' : '#3b82f6',
+                background: isSubmitting ? 'var(--text-faint)' : '#3b82f6',
                 color: '#ffffff',
                 border: 'none',
                 borderRadius: '8px',

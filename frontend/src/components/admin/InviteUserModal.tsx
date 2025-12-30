@@ -57,7 +57,7 @@ export default function InviteUserModal({ onClose, onSuccess, departments, users
   const inputStyle = {
     width: '100%',
     padding: '10px 12px',
-    border: '1px solid #e5e7eb',
+    border: '1px solid var(--border-color)',
     borderRadius: '8px',
     fontSize: '14px',
     boxSizing: 'border-box' as const,
@@ -68,7 +68,7 @@ export default function InviteUserModal({ onClose, onSuccess, departments, users
     marginBottom: '6px',
     fontSize: '14px',
     fontWeight: '500' as const,
-    color: '#374151',
+    color: 'var(--text-secondary)',
   };
 
   return (
@@ -115,10 +115,10 @@ export default function InviteUserModal({ onClose, onSuccess, departments, users
               <Mail size={20} color="#3b82f6" />
             </div>
             <div>
-              <h2 style={{ margin: 0, fontSize: '20px', fontWeight: '600', color: '#111827' }}>
+              <h2 style={{ margin: 0, fontSize: '20px', fontWeight: '600', color: 'var(--text-primary)' }}>
                 Invite New User
               </h2>
-              <p style={{ margin: 0, fontSize: '14px', color: '#6b7280' }}>
+              <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-muted)' }}>
                 Send an invitation email
               </p>
             </div>
@@ -130,7 +130,7 @@ export default function InviteUserModal({ onClose, onSuccess, departments, users
               background: 'transparent',
               border: 'none',
               cursor: 'pointer',
-              color: '#6b7280',
+              color: 'var(--text-muted)',
               borderRadius: '6px',
             }}
           >
@@ -242,10 +242,10 @@ export default function InviteUserModal({ onClose, onSuccess, departments, users
           <div style={{
             marginTop: '24px',
             padding: '16px',
-            background: '#f9fafb',
+            background: 'var(--bg-tertiary)',
             borderRadius: '8px',
             fontSize: '13px',
-            color: '#6b7280',
+            color: 'var(--text-muted)',
           }}>
             The user will receive an email invitation to join the organization. They'll set their own password when they accept the invitation.
           </div>
@@ -257,12 +257,12 @@ export default function InviteUserModal({ onClose, onSuccess, departments, users
               style={{
                 padding: '10px 20px',
                 background: 'var(--bg-primary)',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 fontWeight: '500',
                 cursor: 'pointer',
-                color: '#374151',
+                color: 'var(--text-secondary)',
               }}
             >
               Cancel
@@ -272,7 +272,7 @@ export default function InviteUserModal({ onClose, onSuccess, departments, users
               disabled={isSubmitting}
               style={{
                 padding: '10px 20px',
-                background: isSubmitting ? '#9ca3af' : '#3b82f6',
+                background: isSubmitting ? 'var(--text-faint)' : '#3b82f6',
                 color: 'white',
                 border: 'none',
                 borderRadius: '8px',

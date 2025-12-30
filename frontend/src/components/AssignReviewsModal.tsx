@@ -89,7 +89,7 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
         }}
       >
         <div style={{ background: 'var(--bg-primary)', padding: '40px', borderRadius: '12px' }}>
-          <p style={{ margin: 0, color: '#374151' }}>Loading employees...</p>
+          <p style={{ margin: 0, color: 'var(--text-secondary)' }}>Loading employees...</p>
         </div>
       </div>
     );
@@ -127,17 +127,17 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
         <div
           style={{
             padding: '24px',
-            borderBottom: '1px solid #e5e7eb',
+            borderBottom: '1px solid var(--border-color)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
         >
           <div>
-            <h2 style={{ fontSize: '24px', fontWeight: '600', color: '#111827', margin: '0 0 4px 0' }}>
+            <h2 style={{ fontSize: '24px', fontWeight: '600', color: 'var(--text-primary)', margin: '0 0 4px 0' }}>
               Assign Reviews
             </h2>
-            <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>
+            <p style={{ fontSize: '14px', color: 'var(--text-muted)', margin: 0 }}>
               {cycle.name}
             </p>
           </div>
@@ -155,13 +155,13 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
               transition: 'all 0.15s',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#f3f4f6';
+              e.currentTarget.style.background = 'var(--bg-tertiary)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = 'transparent';
             }}
           >
-            <X size={20} color="#6b7280" />
+            <X size={20} color="var(--text-muted)" />
           </button>
         </div>
 
@@ -174,12 +174,12 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
           )}
 
           {/* Selection Info */}
-          <div className="modal-selection-info" style={{ padding: '20px 24px', borderBottom: '1px solid #e5e7eb', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+          <div className="modal-selection-info" style={{ padding: '20px 24px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
             <div>
-              <p style={{ margin: 0, fontSize: '14px', color: '#374151' }}>
+              <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-secondary)' }}>
                 <strong>{selectedEmployeeIds.size}</strong> of <strong>{employees.filter(e => e.managerId).length}</strong> assignable employees selected
               </p>
-              <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#6b7280' }}>
+              <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: 'var(--text-muted)' }}>
                 Reviews will be assigned with each employee's manager as the reviewer
                 {employees.filter(e => !e.managerId).length > 0 && (
                   <span style={{ color: '#f59e0b' }}> • {employees.filter(e => !e.managerId).length} employee(s) without managers</span>
@@ -192,8 +192,8 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
               style={{
                 padding: '8px 16px',
                 background: 'var(--bg-primary)',
-                color: '#374151',
-                border: '1px solid #e5e7eb',
+                color: 'var(--text-secondary)',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 cursor: 'pointer',
                 fontSize: '14px',
@@ -201,10 +201,10 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
                 transition: 'all 0.15s',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#f9fafb';
+                e.currentTarget.style.background = 'var(--bg-tertiary)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#ffffff';
+                e.currentTarget.style.background = 'var(--bg-primary)';
               }}
             >
               {selectedEmployeeIds.size === employees.filter(e => e.managerId).length ? 'Deselect All' : 'Select All'}
@@ -218,7 +218,7 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
                 style={{
                   textAlign: 'center',
                   padding: '40px 20px',
-                  color: '#6b7280',
+                  color: 'var(--text-muted)',
                 }}
               >
                 <p style={{ margin: 0, fontSize: '14px' }}>
@@ -239,10 +239,10 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
                       onClick={() => canSelect && toggleEmployee(employee.id)}
                       style={{
                         padding: '16px',
-                        border: `2px solid ${isSelected ? '#3b82f6' : '#e5e7eb'}`,
+                        border: `2px solid ${isSelected ? '#3b82f6' : 'var(--border-color)'}`,
                         borderRadius: '8px',
                         cursor: canSelect ? 'pointer' : 'not-allowed',
-                        background: isSelected ? '#eff6ff' : !canSelect ? '#f9fafb' : '#ffffff',
+                        background: isSelected ? '#eff6ff' : !canSelect ? 'var(--bg-tertiary)' : 'var(--bg-primary)',
                         transition: 'all 0.15s',
                         display: 'flex',
                         alignItems: 'center',
@@ -256,20 +256,20 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
                       }}
                       onMouseLeave={(e) => {
                         if (canSelect && !isSelected) {
-                          e.currentTarget.style.borderColor = '#e5e7eb';
+                          e.currentTarget.style.borderColor = 'var(--border-color)';
                         }
                       }}
                     >
                       {isSelected ? (
                         <CheckSquare size={20} color="#3b82f6" style={{ flexShrink: 0 }} />
                       ) : (
-                        <Square size={20} color="#9ca3af" style={{ flexShrink: 0 }} />
+                        <Square size={20} color="var(--text-faint)" style={{ flexShrink: 0 }} />
                       )}
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: '14px', fontWeight: '500', color: '#111827', marginBottom: '2px' }}>
+                        <div style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-primary)', marginBottom: '2px' }}>
                           {employee.name}
                         </div>
-                        <div style={{ fontSize: '13px', color: '#6b7280' }}>
+                        <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
                           {employee.title || 'No title'} • Manager: {hasManager ? (manager?.name || 'Unknown') : <span style={{ color: '#ef4444' }}>No manager assigned</span>}
                         </div>
                       </div>
@@ -281,15 +281,15 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
           </div>
 
           {/* Actions */}
-          <div className="modal-actions" style={{ padding: '16px 24px', borderTop: '1px solid #e5e7eb', display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+          <div className="modal-actions" style={{ padding: '16px 24px', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
             <button
               type="button"
               onClick={onClose}
               style={{
                 padding: '10px 20px',
                 background: 'var(--bg-primary)',
-                color: '#374151',
-                border: '1px solid #e5e7eb',
+                color: 'var(--text-secondary)',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 cursor: 'pointer',
                 fontSize: '14px',
@@ -297,10 +297,10 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
                 transition: 'all 0.15s',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#f9fafb';
+                e.currentTarget.style.background = 'var(--bg-tertiary)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#ffffff';
+                e.currentTarget.style.background = 'var(--bg-primary)';
               }}
             >
               Cancel
@@ -310,7 +310,7 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
               disabled={isSubmitting || selectedEmployeeIds.size === 0}
               style={{
                 padding: '10px 20px',
-                background: isSubmitting || selectedEmployeeIds.size === 0 ? '#9ca3af' : '#3b82f6',
+                background: isSubmitting || selectedEmployeeIds.size === 0 ? 'var(--text-faint)' : '#3b82f6',
                 color: '#ffffff',
                 border: 'none',
                 borderRadius: '8px',

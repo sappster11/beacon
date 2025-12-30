@@ -117,7 +117,7 @@ export default function Dashboard() {
       description: 'System administration',
       icon: Settings,
       path: '/admin',
-      color: '#6b7280',
+      color: 'var(--text-muted)',
     });
   }
 

@@ -33,7 +33,7 @@ const getRatingColor = (rating: number) => {
     3: '#10b981',
     4: '#3b82f6',
   };
-  return colors[rating as keyof typeof colors] || '#6b7280';
+  return colors[rating as keyof typeof colors] || 'var(--text-muted)';
 };
 
 export default function GoalWithStatus({ goal, reviewId, isManager, weight, onStatusChange, onDelete }: GoalWithStatusProps) {
@@ -141,7 +141,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
         padding: '16px',
         background: 'var(--bg-primary)',
         borderRadius: '8px',
-        border: '1px solid #e5e7eb',
+        border: '1px solid var(--border-color)',
         marginBottom: '12px',
       }}
     >
@@ -188,7 +188,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
               </div>
             ) : (
               <>
-                <h4 style={{ margin: '0', fontSize: '15px', fontWeight: '600', color: '#111827' }}>
+                <h4 style={{ margin: '0', fontSize: '15px', fontWeight: '600', color: 'var(--text-primary)' }}>
                   {goal.title}
                 </h4>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -211,14 +211,14 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                     transition: 'all 0.15s',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = '#f3f4f6';
+                    e.currentTarget.style.background = 'var(--bg-tertiary)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.background = 'transparent';
                   }}
                   title="Options"
                 >
-                  <MoreVertical size={16} color="#6b7280" />
+                  <MoreVertical size={16} color="var(--text-muted)" />
                 </button>
 
                 {/* Dropdown Menu */}
@@ -229,7 +229,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                     right: '0',
                     marginTop: '4px',
                     background: 'var(--bg-primary)',
-                    border: '1px solid #e5e7eb',
+                    border: '1px solid var(--border-color)',
                     borderRadius: '6px',
                     boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
                     zIndex: 10,
@@ -251,11 +251,11 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                         display: 'flex',
                         alignItems: 'center',
                         gap: '8px',
-                        color: '#374151',
+                        color: 'var(--text-secondary)',
                         transition: 'background 0.15s',
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = '#f9fafb';
+                        e.currentTarget.style.background = 'var(--bg-tertiary)';
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.background = 'transparent';
@@ -274,7 +274,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                         padding: '8px 12px',
                         background: 'transparent',
                         border: 'none',
-                        borderTop: '1px solid #f3f4f6',
+                        borderTop: '1px solid var(--bg-tertiary)',
                         cursor: 'pointer',
                         fontSize: '14px',
                         textAlign: 'left',
@@ -334,7 +334,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                   style={{
                     padding: '6px 12px',
                     background: 'var(--bg-primary)',
-                    color: '#374151',
+                    color: 'var(--text-secondary)',
                     border: '1px solid #d1d5db',
                     borderRadius: '6px',
                     cursor: 'pointer',
@@ -343,10 +343,10 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                     transition: 'all 0.15s',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = '#f3f4f6';
+                    e.currentTarget.style.background = 'var(--bg-tertiary)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = '#ffffff';
+                    e.currentTarget.style.background = 'var(--bg-primary)';
                   }}
                 >
                   Cancel
@@ -356,7 +356,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                   disabled={!editTitle.trim()}
                   style={{
                     padding: '6px 12px',
-                    background: !editTitle.trim() ? '#9ca3af' : '#3b82f6',
+                    background: !editTitle.trim() ? 'var(--text-faint)' : '#3b82f6',
                     color: '#ffffff',
                     border: 'none',
                     borderRadius: '6px',
@@ -382,7 +382,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
             </div>
           ) : (
             goal.description && (
-              <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: '#6b7280', lineHeight: '1.5' }}>
+              <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: 'var(--text-muted)', lineHeight: '1.5' }}>
                 {goal.description}
               </p>
             )
@@ -393,7 +393,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
             {/* Employee Rating */}
             {!isManager && (
               <div style={{ marginBottom: '12px' }}>
-                <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
                   Your Rating
                 </label>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
@@ -401,7 +401,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                     const isSelfSelected = goal.selfRating === rating;
                     const isManagerSelected = goal.managerRating === rating;
                     const isBothSelected = isSelfSelected && isManagerSelected;
-                    const borderColor = (isSelfSelected || isManagerSelected) ? '#1e40af' : '#e5e7eb';
+                    const borderColor = (isSelfSelected || isManagerSelected) ? '#1e40af' : 'var(--border-color)';
                     const isSelected = isSelfSelected || isManagerSelected;
 
                     return (
@@ -411,8 +411,8 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                           style={{
                             width: '100%',
                             padding: '10px 8px',
-                            background: isSelected ? '#f9fafb' : '#ffffff',
-                            color: '#374151',
+                            background: isSelected ? 'var(--bg-tertiary)' : 'var(--bg-primary)',
+                            color: 'var(--text-secondary)',
                             border: `2px solid ${borderColor}`,
                             borderRadius: '6px',
                             cursor: 'pointer',
@@ -425,10 +425,10 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                             gap: '2px',
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.background = '#f9fafb';
+                            e.currentTarget.style.background = 'var(--bg-tertiary)';
                           }}
                           onMouseLeave={(e) => {
-                            e.currentTarget.style.background = isSelected ? '#f9fafb' : '#ffffff';
+                            e.currentTarget.style.background = isSelected ? 'var(--bg-tertiary)' : 'var(--bg-primary)';
                           }}
                         >
                           <span style={{ fontSize: '18px', fontWeight: '600' }}>{rating}</span>
@@ -451,7 +451,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
             {/* View-only Employee Rating */}
             {isManager && goal.selfRating && (
               <div style={{ marginBottom: '12px' }}>
-                <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
                   Employee Rating
                 </label>
                 <div
@@ -473,7 +473,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
             {/* Manager Rating */}
             {isManager && (
               <div style={{ marginBottom: '12px' }}>
-                <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
                   Manager Rating
                 </label>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
@@ -481,7 +481,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                     const isSelfSelected = goal.selfRating === rating;
                     const isManagerSelected = goal.managerRating === rating;
                     const isBothSelected = isSelfSelected && isManagerSelected;
-                    const borderColor = (isSelfSelected || isManagerSelected) ? '#1e40af' : '#e5e7eb';
+                    const borderColor = (isSelfSelected || isManagerSelected) ? '#1e40af' : 'var(--border-color)';
                     const isSelected = isSelfSelected || isManagerSelected;
 
                     return (
@@ -491,8 +491,8 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                           style={{
                             width: '100%',
                             padding: '10px 8px',
-                            background: isSelected ? '#f9fafb' : '#ffffff',
-                            color: '#374151',
+                            background: isSelected ? 'var(--bg-tertiary)' : 'var(--bg-primary)',
+                            color: 'var(--text-secondary)',
                             border: `2px solid ${borderColor}`,
                             borderRadius: '6px',
                             cursor: 'pointer',
@@ -505,10 +505,10 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                             gap: '2px',
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.background = '#f9fafb';
+                            e.currentTarget.style.background = 'var(--bg-tertiary)';
                           }}
                           onMouseLeave={(e) => {
-                            e.currentTarget.style.background = isSelected ? '#f9fafb' : '#ffffff';
+                            e.currentTarget.style.background = isSelected ? 'var(--bg-tertiary)' : 'var(--bg-primary)';
                           }}
                         >
                           <span style={{ fontSize: '18px', fontWeight: '600' }}>{rating}</span>
@@ -531,7 +531,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
             {/* View-only Manager Rating */}
             {!isManager && goal.managerRating && (
               <div>
-                <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
                   Manager Rating
                 </label>
                 <div
@@ -552,7 +552,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
           </div>
 
           {/* Comments Section */}
-          <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '16px', marginTop: '16px' }}>
+          <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px', marginTop: '16px' }}>
             <button
               onClick={() => setShowComments(!showComments)}
               style={{
@@ -564,18 +564,18 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                 cursor: 'pointer',
                 fontSize: '14px',
                 fontWeight: '500',
-                color: '#374151',
+                color: 'var(--text-secondary)',
                 padding: '0',
               }}
             >
-              <MessageSquare size={16} color="#6b7280" />
+              <MessageSquare size={16} color="var(--text-muted)" />
               Comments ({comments.length})
             </button>
 
             {showComments && (
               <div style={{ marginTop: '12px' }}>
                 {isLoadingComments ? (
-                  <p style={{ fontSize: '13px', color: '#6b7280', margin: '12px 0' }}>Loading comments...</p>
+                  <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: '12px 0' }}>Loading comments...</p>
                 ) : (
                   <>
                     {/* Display Comments */}
@@ -586,21 +586,21 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                             key={comment.id}
                             style={{
                               padding: '12px',
-                              background: '#f9fafb',
+                              background: 'var(--bg-tertiary)',
                               borderRadius: '6px',
                               marginBottom: '8px',
                               borderLeft: `3px solid ${comment.authorRole === 'EMPLOYEE' ? '#3b82f6' : '#10b981'}`,
                             }}
                           >
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                              <span style={{ fontSize: '13px', fontWeight: '600', color: '#111827' }}>
+                              <span style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-primary)' }}>
                                 {comment.author?.name} ({comment.authorRole === 'EMPLOYEE' ? 'Employee' : 'Manager'})
                               </span>
-                              <span style={{ fontSize: '12px', color: '#6b7280' }}>
+                              <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
                                 {new Date(comment.createdAt).toLocaleDateString()}
                               </span>
                             </div>
-                            <p style={{ margin: 0, fontSize: '13px', color: '#374151', lineHeight: '1.5' }}>
+                            <p style={{ margin: 0, fontSize: '13px', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
                               {comment.content}
                             </p>
                           </div>
@@ -618,7 +618,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                         style={{
                           width: '100%',
                           padding: '10px 12px',
-                          border: '1px solid #e5e7eb',
+                          border: '1px solid var(--border-color)',
                           borderRadius: '6px',
                           fontSize: '13px',
                           outline: 'none',
@@ -629,7 +629,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                           e.currentTarget.style.borderColor = '#3b82f6';
                         }}
                         onBlur={(e) => {
-                          e.currentTarget.style.borderColor = '#e5e7eb';
+                          e.currentTarget.style.borderColor = 'var(--border-color)';
                         }}
                       />
                       <button
@@ -638,7 +638,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                         style={{
                           marginTop: '8px',
                           padding: '8px 16px',
-                          background: isSubmittingComment || !newComment.trim() ? '#9ca3af' : '#3b82f6',
+                          background: isSubmittingComment || !newComment.trim() ? 'var(--text-faint)' : '#3b82f6',
                           color: '#ffffff',
                           border: 'none',
                           borderRadius: '6px',
@@ -668,7 +668,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
           </div>
 
           {goal.dueDate && (
-            <p style={{ margin: 0, fontSize: '12px', color: '#6b7280' }}>
+            <p style={{ margin: 0, fontSize: '12px', color: 'var(--text-muted)' }}>
               Due: {new Date(goal.dueDate).toLocaleDateString()}
             </p>
           )}
