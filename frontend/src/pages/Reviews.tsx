@@ -1,19 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { reviews, reviewCycles } from '../lib/api';
-import type { Review, ReviewCycle } from '../types';
+import { reviews, reviewCycles, manager } from '../lib/api';
+import type { Review, ReviewCycle, User } from '../types';
 import { ReviewsSkeleton } from '../components/Skeleton';
+import { ChevronDown } from 'lucide-react';
 
 export default function Reviews() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [allReviews, setAllReviews] = useState<any[]>([]);
   const [cycles, setCycles] = useState<ReviewCycle[]>([]);
+  const [subordinates, setSubordinates] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'current' | 'completed'>('current');
   const [roleFilter, setRoleFilter] = useState<'all' | 'reviewee' | 'reviewer'>('all');
+  const [cycleFilter, setCycleFilter] = useState<string>('active');
 
   const isManager = user?.role === 'MANAGER' || user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
 
@@ -28,13 +31,26 @@ export default function Reviews() {
       // HR Admins can see all reviews in the system
       const isHRAdmin = user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN';
 
+      // Get all subordinates (direct + indirect reports) for managers
+      const subordinatesData = isManager ? await manager.getFullOrgTree() : [];
+      setSubordinates(subordinatesData);
+
+      // Get subordinate IDs for filtering
+      const subordinateIds = subordinatesData.map(s => s.id);
+
       const [reviewsData, cyclesData] = await Promise.all([
-        isHRAdmin ? reviews.getAll() : reviews.getMyReviews(),
+        isHRAdmin ? reviews.getAll() : reviews.getMyReviews(subordinateIds),
         reviewCycles.getAll(),
       ]);
 
       setAllReviews(reviewsData);
       setCycles(cyclesData);
+
+      // Set initial cycle filter to active cycle if exists
+      const activeCycle = cyclesData.find((c: ReviewCycle) => c.status === 'active');
+      if (activeCycle) {
+        setCycleFilter(activeCycle.id);
+      }
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to load reviews');
     } finally {
@@ -42,8 +58,13 @@ export default function Reviews() {
     }
   };
 
-  // Filter reviews based on status and role
+  // Filter reviews based on status, role, and cycle
   const filteredReviews = allReviews.filter(review => {
+    // Cycle filter
+    if (cycleFilter !== 'all') {
+      if (review.cycle?.id !== cycleFilter) return false;
+    }
+
     // Status filter - 'current' means any in-progress status, 'completed' means COMPLETED
     if (statusFilter === 'current') {
       // In-progress statuses (not completed)
@@ -217,8 +238,6 @@ export default function Reviews() {
     return <ReviewsSkeleton />;
   }
 
-  const activeCycle = cycles.find((c) => c.status === 'active');
-
   return (
     <div style={{ padding: '48px' }}>
       <div style={{ marginBottom: '30px' }}>
@@ -232,24 +251,48 @@ export default function Reviews() {
         </div>
       )}
 
-      {activeCycle && (
-        <div
-          style={{
-            background: '#eff6ff',
-            border: '1px solid #bfdbfe',
-            borderRadius: '12px',
-            padding: '20px',
-            marginBottom: '30px',
-          }}
-        >
-          <h3 style={{ margin: '0 0 8px 0', color: '#1e40af', fontSize: '16px', fontWeight: '600' }}>Active Review Cycle</h3>
-          <p style={{ margin: '0 0 8px 0', fontWeight: '600', color: 'var(--text-primary)' }}>{activeCycle.name}</p>
-          <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-muted)' }}>
-            {new Date(activeCycle.startDate).toLocaleDateString()} -{' '}
-            {new Date(activeCycle.endDate).toLocaleDateString()}
-          </p>
+      {/* Cycle Selector */}
+      <div style={{ marginBottom: '24px' }}>
+        <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>
+          Review Cycle
+        </label>
+        <div style={{ position: 'relative', display: 'inline-block', minWidth: '280px' }}>
+          <select
+            value={cycleFilter}
+            onChange={(e) => setCycleFilter(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '12px 40px 12px 16px',
+              fontSize: '15px',
+              fontWeight: '500',
+              border: '1px solid var(--border-color)',
+              borderRadius: '10px',
+              background: 'var(--bg-primary)',
+              color: 'var(--text-primary)',
+              cursor: 'pointer',
+              appearance: 'none',
+            }}
+          >
+            <option value="all">All Cycles</option>
+            {cycles.map((cycle) => (
+              <option key={cycle.id} value={cycle.id}>
+                {cycle.name} {cycle.status === 'active' ? '(Active)' : ''}
+              </option>
+            ))}
+          </select>
+          <ChevronDown
+            size={18}
+            style={{
+              position: 'absolute',
+              right: '14px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              pointerEvents: 'none',
+              color: 'var(--text-muted)',
+            }}
+          />
         </div>
-      )}
+      </div>
 
       {(user?.role === 'HR_ADMIN' || user?.role === 'SUPER_ADMIN') && (
         <div
@@ -385,13 +428,10 @@ export default function Reviews() {
           >
             <h3 style={{ margin: '0 0 8px 0', color: 'var(--text-primary)', fontSize: '18px', fontWeight: '600' }}>No reviews found</h3>
             <p style={{ margin: '0', color: 'var(--text-muted)', fontSize: '14px' }}>
-              {statusFilter === 'current' && 'You don\'t have any current reviews.'}
-              {statusFilter === 'completed' && 'You don\'t have any completed reviews yet.'}
-              {statusFilter === 'all' && 'You don\'t have any reviews yet.'}
+              {statusFilter === 'current' && 'No reviews in progress for the selected cycle.'}
+              {statusFilter === 'completed' && 'No completed reviews for the selected cycle.'}
+              {statusFilter === 'all' && 'No reviews found for the selected cycle.'}
             </p>
-            {activeCycle && statusFilter === 'current' && (
-              <p style={{ marginTop: '12px', color: 'var(--text-muted)', fontSize: '14px' }}>Reviews for {activeCycle.name} will appear here.</p>
-            )}
           </div>
         ) : (
           <div style={{ maxWidth: '1400px' }}>

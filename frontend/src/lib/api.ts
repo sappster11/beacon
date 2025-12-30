@@ -1005,8 +1005,16 @@ export const reviews = {
     return data.map(transformReview);
   },
 
-  getMyReviews: async (): Promise<Review[]> => {
+  getMyReviews: async (subordinateIds: string[] = []): Promise<Review[]> => {
     const userId = await getCurrentUserId();
+
+    // Build filter: user's own reviews OR reviews where user is reviewer OR reviews for subordinates
+    let orFilter = `reviewee_id.eq.${userId},reviewer_id.eq.${userId}`;
+    if (subordinateIds.length > 0) {
+      // Include reviews where any subordinate is the reviewee
+      orFilter += `,reviewee_id.in.(${subordinateIds.join(',')})`;
+    }
+
     const { data, error } = await supabase
       .from('reviews')
       .select(`
@@ -1015,7 +1023,7 @@ export const reviews = {
         reviewer:users!reviews_reviewer_id_fkey(id, name, email, title),
         review_cycles(*)
       `)
-      .or(`reviewee_id.eq.${userId},reviewer_id.eq.${userId}`)
+      .or(orFilter)
       .order('created_at', { ascending: false });
     if (error) throw error;
     return data.map(transformReview);
