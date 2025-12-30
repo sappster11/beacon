@@ -33,15 +33,71 @@ const BrandingContext = createContext<BrandingContextType>({
   refresh: async () => {},
 });
 
+// Check if dark mode is active
+function isDarkMode(): boolean {
+  return document.documentElement.classList.contains('dark');
+}
+
+// Get luminance of a hex color (0-1 scale, higher = brighter)
+function getLuminance(hex: string): number {
+  const rgb = parseInt(hex.replace('#', ''), 16);
+  const r = ((rgb >> 16) & 0xff) / 255;
+  const g = ((rgb >> 8) & 0xff) / 255;
+  const b = (rgb & 0xff) / 255;
+  // Relative luminance formula
+  const toLinear = (c: number) => c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  return 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
+}
+
+// Lighten a color to ensure visibility in dark mode
+function ensureVisibleInDarkMode(hex: string, minLuminance = 0.2): string {
+  let luminance = getLuminance(hex);
+  if (luminance >= minLuminance) return hex;
+
+  // Progressively lighten until we reach minimum luminance
+  let color = hex;
+  let iterations = 0;
+  while (luminance < minLuminance && iterations < 20) {
+    color = adjustColor(color, 15);
+    luminance = getLuminance(color);
+    iterations++;
+  }
+  return color;
+}
+
+// Apply branding CSS variables
+function applyBrandingToDOM(settings: BrandingSettings) {
+  const root = document.documentElement;
+  const dark = isDarkMode();
+
+  // In dark mode, ensure brand colors are visible (lighten if too dark)
+  const primary = dark ? ensureVisibleInDarkMode(settings.primaryColor) : settings.primaryColor;
+  const secondary = dark ? ensureVisibleInDarkMode(settings.secondaryColor) : settings.secondaryColor;
+  const accent = dark ? ensureVisibleInDarkMode(settings.accentColor) : settings.accentColor;
+  const success = dark ? ensureVisibleInDarkMode(settings.successColor) : settings.successColor;
+  const danger = dark ? ensureVisibleInDarkMode(settings.dangerColor) : settings.dangerColor;
+  const warning = dark ? ensureVisibleInDarkMode(settings.warningColor) : settings.warningColor;
+
+  root.style.setProperty('--color-primary', primary);
+  root.style.setProperty('--color-secondary', secondary);
+  root.style.setProperty('--color-accent', accent);
+  root.style.setProperty('--color-success', success);
+  root.style.setProperty('--color-danger', danger);
+  root.style.setProperty('--color-warning', warning);
+
+  // Also set hover variants (slightly darker/lighter depending on mode)
+  const hoverAdjust = dark ? 15 : -10;
+  root.style.setProperty('--color-primary-hover', adjustColor(primary, hoverAdjust));
+  root.style.setProperty('--color-secondary-hover', adjustColor(secondary, hoverAdjust));
+  root.style.setProperty('--color-accent-hover', adjustColor(accent, hoverAdjust));
+}
+
+// Store current branding for dark mode toggle re-application
+let currentBranding: BrandingSettings = defaultBranding;
+
 // Apply default branding immediately on module load (before React renders)
 (function applyDefaultBrandingImmediately() {
-  const root = document.documentElement;
-  root.style.setProperty('--color-primary', defaultBranding.primaryColor);
-  root.style.setProperty('--color-secondary', defaultBranding.secondaryColor);
-  root.style.setProperty('--color-accent', defaultBranding.accentColor);
-  root.style.setProperty('--color-success', defaultBranding.successColor);
-  root.style.setProperty('--color-danger', defaultBranding.dangerColor);
-  root.style.setProperty('--color-warning', defaultBranding.warningColor);
+  applyBrandingToDOM(defaultBranding);
 })();
 
 export function BrandingProvider({ children }: { children: ReactNode }) {
@@ -50,18 +106,8 @@ export function BrandingProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const applyBranding = (settings: BrandingSettings) => {
-    const root = document.documentElement;
-    root.style.setProperty('--color-primary', settings.primaryColor);
-    root.style.setProperty('--color-secondary', settings.secondaryColor);
-    root.style.setProperty('--color-accent', settings.accentColor);
-    root.style.setProperty('--color-success', settings.successColor);
-    root.style.setProperty('--color-danger', settings.dangerColor);
-    root.style.setProperty('--color-warning', settings.warningColor);
-
-    // Also set hover variants (slightly darker)
-    root.style.setProperty('--color-primary-hover', adjustColor(settings.primaryColor, -10));
-    root.style.setProperty('--color-secondary-hover', adjustColor(settings.secondaryColor, -10));
-    root.style.setProperty('--color-accent-hover', adjustColor(settings.accentColor, -10));
+    currentBranding = settings;
+    applyBrandingToDOM(settings);
   };
 
   const loadBranding = async () => {
@@ -95,6 +141,20 @@ export function BrandingProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     }
   }, [user]);
+
+  // Re-apply branding when dark mode changes
+  useEffect(() => {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+          applyBrandingToDOM(currentBranding);
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, { attributes: true });
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <BrandingContext.Provider value={{ branding, loading, refresh: loadBranding }}>
