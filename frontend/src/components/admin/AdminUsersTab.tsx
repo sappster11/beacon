@@ -185,8 +185,8 @@ export default function AdminUsersTab() {
     return (
       <div>
         <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
-          <div style={{ width: '120px', height: '40px', background: '#f0f0f0', borderRadius: '8px' }} />
-          <div style={{ width: '120px', height: '40px', background: '#f0f0f0', borderRadius: '8px' }} />
+          <div style={{ width: '120px', height: '40px', background: 'var(--bg-tertiary)', borderRadius: '8px' }} />
+          <div style={{ width: '120px', height: '40px', background: 'var(--bg-tertiary)', borderRadius: '8px' }} />
         </div>
         <SkeletonTable rows={8} columns={6} />
       </div>

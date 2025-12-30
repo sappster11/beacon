@@ -13,7 +13,7 @@ export default function TabNavigation({ tabs, activeTab, onTabChange }: TabNavig
   return (
     <div
       style={{
-        borderBottom: '1px solid #e5e7eb',
+        borderBottom: '1px solid var(--border-color)',
         display: 'flex',
         gap: '8px',
         padding: '0 32px',
@@ -27,22 +27,22 @@ export default function TabNavigation({ tabs, activeTab, onTabChange }: TabNavig
             padding: '12px 24px',
             background: 'transparent',
             border: 'none',
-            borderBottom: `2px solid ${activeTab === tab.id ? '#3b82f6' : 'transparent'}`,
+            borderBottom: `2px solid ${activeTab === tab.id ? 'var(--color-primary)' : 'transparent'}`,
             marginBottom: '-1px',
             cursor: 'pointer',
             fontSize: '14px',
             fontWeight: activeTab === tab.id ? '600' : '500',
-            color: activeTab === tab.id ? '#3b82f6' : '#6b7280',
+            color: activeTab === tab.id ? 'var(--color-primary)' : 'var(--text-muted)',
             transition: 'all 0.2s',
           }}
           onMouseEnter={(e) => {
             if (activeTab !== tab.id) {
-              e.currentTarget.style.color = '#374151';
+              e.currentTarget.style.color = 'var(--text-secondary)';
             }
           }}
           onMouseLeave={(e) => {
             if (activeTab !== tab.id) {
-              e.currentTarget.style.color = '#6b7280';
+              e.currentTarget.style.color = 'var(--text-muted)';
             }
           }}
         >

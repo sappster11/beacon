@@ -493,7 +493,7 @@ export default function Help() {
                           {isExpanded ? (
                             <ChevronDown size={18} style={{ color: 'var(--color-primary)', flexShrink: 0 }} />
                           ) : (
-                            <ChevronRight size={18} style={{ color: '#9ca3af', flexShrink: 0 }} />
+                            <ChevronRight size={18} style={{ color: 'var(--text-faint)', flexShrink: 0 }} />
                           )}
                           <span
                             style={{
@@ -580,7 +580,7 @@ export default function Help() {
                           {isExpanded ? (
                             <ChevronDown size={18} style={{ color: 'var(--color-primary)', flexShrink: 0, marginTop: '2px' }} />
                           ) : (
-                            <ChevronRight size={18} style={{ color: '#9ca3af', flexShrink: 0, marginTop: '2px' }} />
+                            <ChevronRight size={18} style={{ color: 'var(--text-faint)', flexShrink: 0, marginTop: '2px' }} />
                           )}
                           <div>
                             <div

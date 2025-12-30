@@ -152,7 +152,7 @@ export default function Library() {
   if (!isManager) {
     return (
       <div style={{ padding: '48px' }}>
-        <div style={{ textAlign: 'center', padding: '60px 20px', background: '#f9fafb', borderRadius: '12px', border: '1px solid #e5e7eb' }}>
+        <div style={{ textAlign: 'center', padding: '60px 20px', background: 'var(--bg-tertiary)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
           <h3 style={{ margin: '0 0 8px 0', color: 'var(--text-primary)', fontSize: '18px', fontWeight: '600' }}>Access Denied</h3>
           <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '14px' }}>Only managers and admins can access the library.</p>
         </div>
@@ -164,7 +164,7 @@ export default function Library() {
     return (
       <div style={{ padding: '48px' }}>
         <h1 style={{ fontSize: '32px', marginBottom: '8px' }}>Goals & Competencies Library</h1>
-        <p style={{ color: '#6b7280' }}>Loading...</p>
+        <p style={{ color: 'var(--text-muted)' }}>Loading...</p>
       </div>
     );
   }
@@ -243,7 +243,7 @@ export default function Library() {
             <option key={cat} value={cat}>{cat}</option>
           ))}
         </select>
-        <span style={{ fontSize: '14px', color: '#6b7280' }}>
+        <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}>
           {activeTab === 'goals' ? filteredGoals.length : filteredCompetencies.length} items
         </span>
       </div>
@@ -252,7 +252,7 @@ export default function Library() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '16px' }}>
         {activeTab === 'goals' ? (
           filteredGoals.length === 0 ? (
-            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '60px 20px', background: '#f9fafb', borderRadius: '12px', border: '1px solid #e5e7eb' }}>
+            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '60px 20px', background: 'var(--bg-tertiary)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
               <Target size={32} color="#9ca3af" style={{ marginBottom: '12px' }} />
               <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '14px' }}>No goals in library. Add your first goal template.</p>
             </div>
@@ -272,7 +272,7 @@ export default function Library() {
                   {goal.isPlatformDefault && (
                     <span style={{
                       padding: '4px 10px',
-                      background: '#f3f4f6',
+                      background: 'var(--bg-tertiary)',
                       color: 'var(--text-muted)',
                       borderRadius: '4px',
                       fontSize: '11px',
@@ -370,7 +370,7 @@ export default function Library() {
                       whiteSpace: 'nowrap',
                     }}>{goal.title}</h3>
                     {goal.category && (
-                      <span style={{ fontSize: '12px', color: 'var(--text-muted)', background: '#f3f4f6', padding: '2px 8px', borderRadius: '4px', display: 'inline-block' }}>
+                      <span style={{ fontSize: '12px', color: 'var(--text-muted)', background: 'var(--bg-tertiary)', padding: '2px 8px', borderRadius: '4px', display: 'inline-block' }}>
                         {goal.category}
                       </span>
                     )}
@@ -386,7 +386,7 @@ export default function Library() {
           )
         ) : (
           filteredCompetencies.length === 0 ? (
-            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '60px 20px', background: '#f9fafb', borderRadius: '12px', border: '1px solid #e5e7eb' }}>
+            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '60px 20px', background: 'var(--bg-tertiary)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
               <TrendingUp size={32} color="#9ca3af" style={{ marginBottom: '12px' }} />
               <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '14px' }}>No competencies in library. Add your first competency template.</p>
             </div>
@@ -406,7 +406,7 @@ export default function Library() {
                   {comp.isPlatformDefault && (
                     <span style={{
                       padding: '4px 10px',
-                      background: '#f3f4f6',
+                      background: 'var(--bg-tertiary)',
                       color: 'var(--text-muted)',
                       borderRadius: '4px',
                       fontSize: '11px',
@@ -504,7 +504,7 @@ export default function Library() {
                       whiteSpace: 'nowrap',
                     }}>{comp.name}</h3>
                     {comp.category && (
-                      <span style={{ fontSize: '12px', color: 'var(--text-muted)', background: '#f3f4f6', padding: '2px 8px', borderRadius: '4px', display: 'inline-block' }}>
+                      <span style={{ fontSize: '12px', color: 'var(--text-muted)', background: 'var(--bg-tertiary)', padding: '2px 8px', borderRadius: '4px', display: 'inline-block' }}>
                         {comp.category}
                       </span>
                     )}
@@ -549,7 +549,7 @@ export default function Library() {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 style={{ margin: '0 0 20px 0', fontSize: '20px', fontWeight: '600', color: '#111827' }}>
+            <h2 style={{ margin: '0 0 20px 0', fontSize: '20px', fontWeight: '600', color: 'var(--text-primary)' }}>
               {editingItem ? 'Edit' : 'Add'} {activeTab === 'goals' ? 'Goal' : 'Competency'}
             </h2>
 
@@ -564,7 +564,7 @@ export default function Library() {
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #d1d5db',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '6px',
                   fontSize: '14px',
                   outline: 'none',
@@ -616,7 +616,7 @@ export default function Library() {
                     }}
                     style={{
                       padding: '10px 12px',
-                      background: '#f3f4f6',
+                      background: 'var(--bg-tertiary)',
                       color: 'var(--text-secondary)',
                       border: 'none',
                       borderRadius: '6px',
@@ -641,7 +641,7 @@ export default function Library() {
                   style={{
                     width: '100%',
                     padding: '10px 12px',
-                    border: '1px solid #d1d5db',
+                    border: '1px solid var(--border-color)',
                     borderRadius: '6px',
                     fontSize: '14px',
                     outline: 'none',
@@ -669,7 +669,7 @@ export default function Library() {
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #d1d5db',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '6px',
                   fontSize: '14px',
                   outline: 'none',
@@ -687,7 +687,7 @@ export default function Library() {
                   padding: '10px 20px',
                   background: 'var(--bg-primary)',
                   color: 'var(--text-secondary)',
-                  border: '1px solid #d1d5db',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   cursor: 'pointer',
                   fontSize: '14px',

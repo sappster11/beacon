@@ -32,8 +32,8 @@ html.dark {
   --border-color-light: #3a3a3a;
   --text-primary: #ffffff;
   --text-secondary: #e5e5e5;
-  --text-muted: #a0a0a0;
-  --text-faint: #666666;
+  --text-muted: #b3b3b3;
+  --text-faint: #808080;
 }
 
 html.dark body {
