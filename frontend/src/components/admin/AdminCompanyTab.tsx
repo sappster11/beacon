@@ -3,6 +3,50 @@ import { Save, Building2, Upload, Palette } from 'lucide-react';
 import { settings as settingsApi } from '../../lib/api';
 import { useBranding } from '../../hooks/useBranding';
 
+const US_STATES = [
+  'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut',
+  'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa',
+  'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan',
+  'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
+  'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio',
+  'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota',
+  'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia',
+  'Wisconsin', 'Wyoming', 'District of Columbia'
+];
+
+const COUNTRIES = [
+  'United States',
+  'Canada',
+  'United Kingdom',
+  'Australia',
+  'Germany',
+  'France',
+  'Netherlands',
+  'Ireland',
+  'Singapore',
+  'India',
+  'Japan',
+  'South Korea',
+  'Brazil',
+  'Mexico',
+  'Spain',
+  'Italy',
+  'Sweden',
+  'Norway',
+  'Denmark',
+  'Finland',
+  'Switzerland',
+  'Austria',
+  'Belgium',
+  'Poland',
+  'Portugal',
+  'New Zealand',
+  'South Africa',
+  'Israel',
+  'United Arab Emirates',
+  'Philippines',
+];
+
 export default function AdminCompanyTab() {
   const { refresh: refreshBranding } = useBranding();
   const [loading, setLoading] = useState(true);
@@ -224,9 +268,7 @@ export default function AdminCompanyTab() {
                     fontSize: '14px'
                   }}
                 />
-                <input
-                  type="text"
-                  placeholder="State"
+                <select
                   value={companyInfo.address.state}
                   onChange={(e) => setCompanyInfo({
                     ...companyInfo,
@@ -236,9 +278,15 @@ export default function AdminCompanyTab() {
                     padding: '10px 12px',
                     border: '1px solid #e5e7eb',
                     borderRadius: '8px',
-                    fontSize: '14px'
+                    fontSize: '14px',
+                    background: 'white'
                   }}
-                />
+                >
+                  <option value="">State</option>
+                  {US_STATES.map(state => (
+                    <option key={state} value={state}>{state}</option>
+                  ))}
+                </select>
                 <input
                   type="text"
                   placeholder="ZIP"
@@ -255,9 +303,7 @@ export default function AdminCompanyTab() {
                   }}
                 />
               </div>
-              <input
-                type="text"
-                placeholder="Country"
+              <select
                 value={companyInfo.address.country}
                 onChange={(e) => setCompanyInfo({
                   ...companyInfo,
@@ -268,9 +314,15 @@ export default function AdminCompanyTab() {
                   padding: '10px 12px',
                   border: '1px solid #e5e7eb',
                   borderRadius: '8px',
-                  fontSize: '14px'
+                  fontSize: '14px',
+                  background: 'white'
                 }}
-              />
+              >
+                <option value="">Select Country</option>
+                {COUNTRIES.map(country => (
+                  <option key={country} value={country}>{country}</option>
+                ))}
+              </select>
             </div>
           </div>
 
