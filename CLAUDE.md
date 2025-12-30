@@ -251,7 +251,7 @@ git add -A && git commit -m "message" && git push
 
 ## Known Issues / TODOs
 
-- [x] Email sending for invitations (Resend - from: noreply@beacon.homesteadapps.net)
+- [x] Email sending for invitations (Resend - from: noreply@trybeacon.cc)
 - [x] Google Calendar integration (edge functions created, needs OAuth credentials)
 - [ ] File uploads for transcripts
 - [ ] Real-time notifications

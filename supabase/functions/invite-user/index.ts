@@ -161,7 +161,7 @@ serve(async (req) => {
     if (resendApiKey) {
       const resend = new Resend(resendApiKey)
       const { error: emailError } = await resend.emails.send({
-        from: 'Beacon <noreply@beacon.homesteadapps.net>',
+        from: 'Beacon <noreply@trybeacon.cc>',
         to: email,
         subject: `You're invited to join ${organizationName} on Beacon`,
         html: `
