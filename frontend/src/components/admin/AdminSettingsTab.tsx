@@ -64,9 +64,16 @@ export default function AdminSettingsTab() {
       setLoading(true);
       const allSettings = await settingsApi.getAll();
 
-      if (allSettings.review) setReviewSettings(allSettings.review);
-      if (allSettings.notifications) setNotificationSettings(allSettings.notifications);
-      if (allSettings.features) setFeatureFlags(allSettings.features);
+      // Merge with defaults to ensure all fields exist
+      if (allSettings.review) {
+        setReviewSettings(prev => ({ ...prev, ...allSettings.review, scaleLabels: { ...prev.scaleLabels, ...(allSettings.review as any)?.scaleLabels } }));
+      }
+      if (allSettings.notifications) {
+        setNotificationSettings(prev => ({ ...prev, ...allSettings.notifications }));
+      }
+      if (allSettings.features) {
+        setFeatureFlags(prev => ({ ...prev, ...allSettings.features }));
+      }
     } catch (error) {
       console.error('Failed to load settings:', error);
     } finally {
@@ -142,7 +149,7 @@ export default function AdminSettingsTab() {
               Scale Labels
             </label>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {Object.entries(reviewSettings.scaleLabels).map(([key, value]) => (
+              {Object.entries(reviewSettings.scaleLabels || {}).map(([key, value]) => (
                 <div key={key} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <span style={{ fontSize: '14px', color: '#6b7280', width: '20px' }}>{key}:</span>
                   <input
