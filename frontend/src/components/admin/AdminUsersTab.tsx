@@ -274,7 +274,7 @@ export default function AdminUsersTab() {
           onClick={() => setShowImportModal(true)}
           style={{
             padding: '10px 16px',
-            background: 'white',
+            background: 'var(--bg-primary)',
             color: 'var(--text-secondary)',
             border: '1px solid var(--border-color)',
             borderRadius: '8px',
@@ -425,7 +425,7 @@ export default function AdminUsersTab() {
       </div>
 
       {/* Users Table */}
-      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)', overflow: 'hidden' }}>
+      <div style={{ background: 'var(--bg-primary)', borderRadius: '12px', border: '1px solid var(--border-color)', overflow: 'hidden' }}>
         <table className="responsive-table admin-users-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ background: 'var(--bg-tertiary)', borderBottom: '1px solid var(--border-color)' }}>
@@ -521,7 +521,7 @@ export default function AdminUsersTab() {
                           right: 0,
                           top: '100%',
                           marginTop: '4px',
-                          background: 'white',
+                          background: 'var(--bg-primary)',
                           border: '1px solid var(--border-color)',
                           borderRadius: '8px',
                           boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
@@ -624,7 +624,7 @@ export default function AdminUsersTab() {
       )}
 
       {activeTab === 'invitations' && (
-        <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)', overflow: 'visible' }}>
+        <div style={{ background: 'var(--bg-primary)', borderRadius: '12px', border: '1px solid var(--border-color)', overflow: 'visible' }}>
           {pendingInvitations.length === 0 ? (
             <div style={{ padding: '60px 40px', textAlign: 'center' }}>
               <Mail size={48} style={{ marginBottom: '16px', color: 'var(--border-color)' }} />
@@ -732,7 +732,7 @@ export default function AdminUsersTab() {
                               right: 0,
                               bottom: '100%',
                               marginBottom: '4px',
-                              background: 'white',
+                              background: 'var(--bg-primary)',
                               border: '1px solid var(--border-color)',
                               borderRadius: '8px',
                               boxShadow: '0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06)',
@@ -919,7 +919,7 @@ function BulkEditModal({
       <div
         className="modal-content"
         style={{
-          background: 'white',
+          background: 'var(--bg-primary)',
           borderRadius: '12px',
           padding: '32px',
           maxWidth: '500px',
@@ -1046,7 +1046,7 @@ function BulkEditModal({
               onClick={onClose}
               style={{
                 padding: '10px 20px',
-                background: 'white',
+                background: 'var(--bg-primary)',
                 border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px',

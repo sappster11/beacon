@@ -68,7 +68,7 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
     >
       <div
         style={{
-          background: '#ffffff',
+          background: 'var(--bg-primary)',
           borderRadius: '16px',
           maxWidth: '600px',
           width: '100%',
@@ -196,7 +196,7 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
                 borderRadius: '8px',
                 fontSize: '14px',
                 outline: 'none',
-                background: '#ffffff',
+                background: 'var(--bg-primary)',
               }}
               onFocus={(e) => {
                 e.currentTarget.style.borderColor = '#3b82f6';
@@ -331,7 +331,7 @@ export default function CreateGoalTemplateModal({ onClose, onCreated }: CreateGo
               onClick={onClose}
               style={{
                 padding: '10px 20px',
-                background: '#ffffff',
+                background: 'var(--bg-primary)',
                 color: '#374151',
                 border: '1px solid #e5e7eb',
                 borderRadius: '8px',

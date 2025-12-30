@@ -148,7 +148,7 @@ export default function ReviewManagement() {
                 top: '100%',
                 left: 0,
                 marginTop: '4px',
-                background: 'white',
+                background: 'var(--bg-primary)',
                 border: '1px solid #e5e7eb',
                 borderRadius: '8px',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
@@ -220,7 +220,7 @@ export default function ReviewManagement() {
           borderRadius: '12px',
           padding: '24px',
           marginBottom: '16px',
-          background: '#ffffff',
+          background: 'var(--bg-primary)',
           transition: 'all 0.2s',
         }}
       >

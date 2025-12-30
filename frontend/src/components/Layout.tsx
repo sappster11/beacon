@@ -489,7 +489,7 @@ export default function Layout() {
                   width: '16px',
                   height: '16px',
                   borderRadius: '50%',
-                  background: '#ffffff',
+                  background: 'var(--bg-primary)',
                   position: 'absolute',
                   top: '2px',
                   left: isDarkMode ? '18px' : '2px',

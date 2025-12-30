@@ -37,7 +37,7 @@ export default function SelfReflectionSection({
             key={index}
             style={{
               padding: '16px',
-              background: '#ffffff',
+              background: 'var(--bg-primary)',
               borderRadius: '8px',
               border: '1px solid #e5e7eb',
             }}

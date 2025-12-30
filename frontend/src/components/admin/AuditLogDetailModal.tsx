@@ -54,7 +54,7 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
     >
       <div
         style={{
-          background: 'white',
+          background: 'var(--bg-primary)',
           borderRadius: '12px',
           maxWidth: '900px',
           width: '100%',
@@ -160,7 +160,7 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
           {/* User Info */}
           <div
             style={{
-              background: 'white',
+              background: 'var(--bg-primary)',
               border: '1px solid #e5e7eb',
               borderRadius: '8px',
               padding: '16px',
@@ -185,7 +185,7 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
           {/* Resource ID */}
           <div
             style={{
-              background: 'white',
+              background: 'var(--bg-primary)',
               border: '1px solid #e5e7eb',
               borderRadius: '8px',
               padding: '16px',
@@ -232,7 +232,7 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
           {metadata && (
             <div
               style={{
-                background: 'white',
+                background: 'var(--bg-primary)',
                 border: '1px solid #e5e7eb',
                 borderRadius: '8px',
                 padding: '16px',
@@ -275,7 +275,7 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
           {changes && Object.keys(changes).length > 0 && (
             <div
               style={{
-                background: 'white',
+                background: 'var(--bg-primary)',
                 border: '1px solid #e5e7eb',
                 borderRadius: '8px',
                 padding: '16px'

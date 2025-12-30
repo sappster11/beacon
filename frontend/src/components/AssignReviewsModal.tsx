@@ -88,7 +88,7 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
           zIndex: 1000,
         }}
       >
-        <div style={{ background: '#ffffff', padding: '40px', borderRadius: '12px' }}>
+        <div style={{ background: 'var(--bg-primary)', padding: '40px', borderRadius: '12px' }}>
           <p style={{ margin: 0, color: '#374151' }}>Loading employees...</p>
         </div>
       </div>
@@ -112,7 +112,7 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
       <div
         className="modal-content"
         style={{
-          background: '#ffffff',
+          background: 'var(--bg-primary)',
           borderRadius: '16px',
           maxWidth: '700px',
           width: '100%',
@@ -191,7 +191,7 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
               onClick={toggleAll}
               style={{
                 padding: '8px 16px',
-                background: '#ffffff',
+                background: 'var(--bg-primary)',
                 color: '#374151',
                 border: '1px solid #e5e7eb',
                 borderRadius: '8px',
@@ -287,7 +287,7 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
               onClick={onClose}
               style={{
                 padding: '10px 20px',
-                background: '#ffffff',
+                background: 'var(--bg-primary)',
                 color: '#374151',
                 border: '1px solid #e5e7eb',
                 borderRadius: '8px',

@@ -235,7 +235,7 @@ export default function Library() {
             fontSize: '14px',
             outline: 'none',
             cursor: 'pointer',
-            background: '#ffffff',
+            background: 'var(--bg-primary)',
           }}
         >
           <option value="all">All Categories</option>
@@ -261,7 +261,7 @@ export default function Library() {
               <div
                 key={goal.id}
                 style={{
-                  background: '#ffffff',
+                  background: 'var(--bg-primary)',
                   border: '1px solid #e5e7eb',
                   borderRadius: '12px',
                   padding: '20px',
@@ -305,7 +305,7 @@ export default function Library() {
                         top: '100%',
                         right: 0,
                         marginTop: '4px',
-                        background: '#ffffff',
+                        background: 'var(--bg-primary)',
                         border: '1px solid #e5e7eb',
                         borderRadius: '8px',
                         boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
@@ -395,7 +395,7 @@ export default function Library() {
               <div
                 key={comp.id}
                 style={{
-                  background: '#ffffff',
+                  background: 'var(--bg-primary)',
                   border: '1px solid #e5e7eb',
                   borderRadius: '12px',
                   padding: '20px',
@@ -439,7 +439,7 @@ export default function Library() {
                         top: '100%',
                         right: 0,
                         marginTop: '4px',
-                        background: '#ffffff',
+                        background: 'var(--bg-primary)',
                         border: '1px solid #e5e7eb',
                         borderRadius: '8px',
                         boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
@@ -541,7 +541,7 @@ export default function Library() {
         >
           <div
             style={{
-              background: '#ffffff',
+              background: 'var(--bg-primary)',
               borderRadius: '12px',
               padding: '24px',
               maxWidth: '500px',
@@ -645,7 +645,7 @@ export default function Library() {
                     borderRadius: '6px',
                     fontSize: '14px',
                     outline: 'none',
-                    background: '#ffffff',
+                    background: 'var(--bg-primary)',
                     cursor: 'pointer',
                   }}
                 >
@@ -685,7 +685,7 @@ export default function Library() {
                 onClick={() => setShowAddModal(false)}
                 style={{
                   padding: '10px 20px',
-                  background: '#ffffff',
+                  background: 'var(--bg-primary)',
                   color: '#374151',
                   border: '1px solid #d1d5db',
                   borderRadius: '8px',

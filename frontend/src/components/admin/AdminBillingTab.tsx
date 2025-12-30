@@ -189,7 +189,7 @@ export default function AdminBillingTab() {
       {/* Current Plan Section */}
       <div
         style={{
-          background: 'white',
+          background: 'var(--bg-primary)',
           borderRadius: '12px',
           border: '1px solid var(--border-color)',
           padding: '24px',
@@ -228,7 +228,7 @@ export default function AdminBillingTab() {
               disabled={managingBilling}
               style={{
                 padding: '10px 20px',
-                background: 'white',
+                background: 'var(--bg-primary)',
                 color: 'var(--text-secondary)',
                 border: '1px solid var(--border-color)',
                 borderRadius: '8px',
@@ -271,7 +271,7 @@ export default function AdminBillingTab() {
       {/* Billing Email Section */}
       <div
         style={{
-          background: 'white',
+          background: 'var(--bg-primary)',
           borderRadius: '12px',
           border: '1px solid var(--border-color)',
           padding: '24px',
@@ -348,7 +348,7 @@ export default function AdminBillingTab() {
       {!hasActiveSubscription && (
         <div
           style={{
-            background: 'white',
+            background: 'var(--bg-primary)',
             borderRadius: '12px',
             border: '1px solid var(--border-color)',
             padding: '24px',

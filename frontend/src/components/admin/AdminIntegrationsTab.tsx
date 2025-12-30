@@ -78,7 +78,7 @@ export default function AdminIntegrationsTab() {
               key={type}
               style={{
                 padding: '24px',
-                background: 'white',
+                background: 'var(--bg-primary)',
                 border: '1px solid #e5e7eb',
                 borderRadius: '12px'
               }}
@@ -267,7 +267,7 @@ function IntegrationConfigModal({ type, onClose, onSuccess }: IntegrationConfigM
     >
       <div
         style={{
-          background: 'white',
+          background: 'var(--bg-primary)',
           borderRadius: '12px',
           width: '100%',
           maxWidth: '500px',
@@ -316,7 +316,7 @@ function IntegrationConfigModal({ type, onClose, onSuccess }: IntegrationConfigM
               onClick={onClose}
               style={{
                 padding: '10px 20px',
-                background: 'white',
+                background: 'var(--bg-primary)',
                 border: '1px solid #e5e7eb',
                 borderRadius: '8px',
                 fontSize: '14px',

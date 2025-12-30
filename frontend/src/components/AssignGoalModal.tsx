@@ -140,7 +140,7 @@ export default function AssignGoalModal({ onClose, onCreated, templateId }: Assi
           zIndex: 1000,
         }}
       >
-        <div style={{ background: '#ffffff', padding: '40px', borderRadius: '12px' }}>
+        <div style={{ background: 'var(--bg-primary)', padding: '40px', borderRadius: '12px' }}>
           <p style={{ margin: 0, color: '#374151' }}>Loading template...</p>
         </div>
       </div>
@@ -163,7 +163,7 @@ export default function AssignGoalModal({ onClose, onCreated, templateId }: Assi
     >
       <div
         style={{
-          background: '#ffffff',
+          background: 'var(--bg-primary)',
           borderRadius: '16px',
           maxWidth: '600px',
           width: '100%',
@@ -234,7 +234,7 @@ export default function AssignGoalModal({ onClose, onCreated, templateId }: Assi
                 borderRadius: '8px',
                 fontSize: '14px',
                 outline: 'none',
-                background: '#ffffff',
+                background: 'var(--bg-primary)',
               }}
               onFocus={(e) => {
                 e.currentTarget.style.borderColor = '#3b82f6';
@@ -410,7 +410,7 @@ export default function AssignGoalModal({ onClose, onCreated, templateId }: Assi
                   borderRadius: '8px',
                   fontSize: '14px',
                   outline: 'none',
-                  background: '#ffffff',
+                  background: 'var(--bg-primary)',
                 }}
                 onFocus={(e) => {
                   e.currentTarget.style.borderColor = '#3b82f6';
@@ -456,7 +456,7 @@ export default function AssignGoalModal({ onClose, onCreated, templateId }: Assi
                       borderRadius: '8px',
                       fontSize: '14px',
                       outline: 'none',
-                      background: '#ffffff',
+                      background: 'var(--bg-primary)',
                     }}
                   >
                     {categories.map((cat) => (
@@ -477,7 +477,7 @@ export default function AssignGoalModal({ onClose, onCreated, templateId }: Assi
               onClick={onClose}
               style={{
                 padding: '10px 20px',
-                background: '#ffffff',
+                background: 'var(--bg-primary)',
                 color: '#374151',
                 border: '1px solid #e5e7eb',
                 borderRadius: '8px',

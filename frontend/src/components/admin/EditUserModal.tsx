@@ -66,7 +66,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
     >
       <div
         style={{
-          background: 'white',
+          background: 'var(--bg-primary)',
           borderRadius: '12px',
           width: '100%',
           maxWidth: '500px',
@@ -257,7 +257,7 @@ export default function EditUserModal({ user, onClose, onSuccess, departments, u
               onClick={onClose}
               style={{
                 padding: '10px 20px',
-                background: 'white',
+                background: 'var(--bg-primary)',
                 border: '1px solid #e5e7eb',
                 borderRadius: '8px',
                 fontSize: '14px',

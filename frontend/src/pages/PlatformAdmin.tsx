@@ -336,7 +336,7 @@ export default function PlatformAdmin() {
           </div>
 
           {/* Organizations Table */}
-          <div style={{ background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '12px', overflow: 'hidden' }}>
+          <div style={{ background: 'var(--bg-primary)', border: '1px solid #e5e7eb', borderRadius: '12px', overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr style={{ background: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
@@ -434,7 +434,7 @@ export default function PlatformAdmin() {
                               position: 'absolute',
                               right: '16px',
                               top: '100%',
-                              background: 'white',
+                              background: 'var(--bg-primary)',
                               border: '1px solid #e5e7eb',
                               borderRadius: '8px',
                               boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
@@ -508,7 +508,7 @@ export default function PlatformAdmin() {
                     disabled={pagination.page <= 1}
                     style={{
                       padding: '8px 12px',
-                      background: '#ffffff',
+                      background: 'var(--bg-primary)',
                       border: '1px solid #e5e7eb',
                       borderRadius: '6px',
                       cursor: pagination.page <= 1 ? 'not-allowed' : 'pointer',
@@ -522,7 +522,7 @@ export default function PlatformAdmin() {
                     disabled={pagination.page >= pagination.totalPages}
                     style={{
                       padding: '8px 12px',
-                      background: '#ffffff',
+                      background: 'var(--bg-primary)',
                       border: '1px solid #e5e7eb',
                       borderRadius: '6px',
                       cursor: pagination.page >= pagination.totalPages ? 'not-allowed' : 'pointer',
@@ -605,7 +605,7 @@ export default function PlatformAdmin() {
         >
           <div
             style={{
-              background: '#ffffff',
+              background: 'var(--bg-primary)',
               borderRadius: '12px',
               maxWidth: '800px',
               width: '100%',
@@ -751,7 +751,7 @@ export default function PlatformAdmin() {
         >
           <div
             style={{
-              background: '#ffffff',
+              background: 'var(--bg-primary)',
               borderRadius: '12px',
               maxWidth: '450px',
               width: '100%',
@@ -818,7 +818,7 @@ export default function PlatformAdmin() {
                 onClick={() => setEditingOrg(null)}
                 style={{
                   padding: '10px 20px',
-                  background: 'white',
+                  background: 'var(--bg-primary)',
                   border: '1px solid #e5e7eb',
                   borderRadius: '8px',
                   fontSize: '14px',
@@ -867,7 +867,7 @@ export default function PlatformAdmin() {
         >
           <div
             style={{
-              background: '#ffffff',
+              background: 'var(--bg-primary)',
               borderRadius: '12px',
               maxWidth: '400px',
               width: '100%',
@@ -903,7 +903,7 @@ export default function PlatformAdmin() {
                 onClick={() => setConfirmDeactivate(null)}
                 style={{
                   padding: '10px 20px',
-                  background: 'white',
+                  background: 'var(--bg-primary)',
                   border: '1px solid #e5e7eb',
                   borderRadius: '8px',
                   fontSize: '14px',
@@ -951,7 +951,7 @@ function MetricCard({
   return (
     <div
       style={{
-        background: '#ffffff',
+        background: 'var(--bg-primary)',
         border: '1px solid #e5e7eb',
         borderRadius: '12px',
         padding: '24px',

@@ -699,7 +699,7 @@ export default function OneOnOneDetail() {
                   alignItems: 'center',
                   gap: '6px',
                   padding: '8px 16px',
-                  background: '#ffffff',
+                  background: 'var(--bg-primary)',
                   border: '1px solid #d1d5db',
                   borderRadius: '6px',
                   color: '#374151',
@@ -758,7 +758,7 @@ export default function OneOnOneDetail() {
                   style={{
                     minHeight: '120px',
                     padding: '16px',
-                    background: '#ffffff',
+                    background: 'var(--bg-primary)',
                     outline: 'none',
                   }}
                 />
@@ -824,7 +824,7 @@ export default function OneOnOneDetail() {
                         padding: '12px',
                         border: '1px solid #d1d5db',
                         borderRadius: '6px',
-                        background: '#ffffff',
+                        background: 'var(--bg-primary)',
                       }}
                     >
                       <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -918,7 +918,7 @@ export default function OneOnOneDetail() {
                   style={{
                     minHeight: '200px',
                     padding: '16px',
-                    background: '#ffffff',
+                    background: 'var(--bg-primary)',
                     outline: 'none',
                   }}
                 />
@@ -1208,7 +1208,7 @@ export default function OneOnOneDetail() {
                   Competencies to Develop
                 </h4>
                 <div style={{
-                  background: '#ffffff',
+                  background: 'var(--bg-primary)',
                   border: '1px solid #e5e7eb',
                   borderRadius: '8px',
                   padding: '16px',
@@ -1281,7 +1281,7 @@ export default function OneOnOneDetail() {
                 Active Goals
               </h4>
               <div style={{
-                background: '#ffffff',
+                background: 'var(--bg-primary)',
                 border: '1px solid #e5e7eb',
                 borderRadius: '8px',
                 padding: '16px',
@@ -1354,7 +1354,7 @@ export default function OneOnOneDetail() {
         >
           <div
             style={{
-              background: '#ffffff',
+              background: 'var(--bg-primary)',
               borderRadius: '12px',
               padding: '32px',
               maxWidth: '500px',

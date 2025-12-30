@@ -36,7 +36,7 @@ export default function SummaryCommentsSection({
         <div
           style={{
             padding: '16px',
-            background: '#ffffff',
+            background: 'var(--bg-primary)',
             borderRadius: '8px',
             border: '1px solid #e5e7eb',
           }}
@@ -79,7 +79,7 @@ export default function SummaryCommentsSection({
         <div
           style={{
             padding: '16px',
-            background: '#ffffff',
+            background: 'var(--bg-primary)',
             borderRadius: '8px',
             border: '1px solid #e5e7eb',
           }}

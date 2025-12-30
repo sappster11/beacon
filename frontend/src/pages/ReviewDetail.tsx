@@ -46,7 +46,7 @@ export default function ReviewDetail() {
           onClick={() => navigate('/reviews')}
           style={{
             padding: '8px 16px',
-            background: '#ffffff',
+            background: 'var(--bg-primary)',
             color: '#374151',
             border: '1px solid #e5e7eb',
             borderRadius: '8px',
@@ -98,7 +98,7 @@ export default function ReviewDetail() {
         onClick={() => navigate('/reviews')}
         style={{
           padding: '8px 16px',
-          background: '#ffffff',
+          background: 'var(--bg-primary)',
           color: '#374151',
           border: '1px solid #e5e7eb',
           borderRadius: '8px',

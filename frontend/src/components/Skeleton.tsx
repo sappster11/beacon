@@ -55,7 +55,7 @@ export function SkeletonText({ lines = 3, style }: { lines?: number; style?: CSS
 export function SkeletonCard({ style }: { style?: CSSProperties }) {
   return (
     <div style={{
-      background: 'white',
+      background: 'var(--bg-primary)',
       borderRadius: '12px',
       border: '1px solid #e5e7eb',
       padding: '24px',
@@ -91,7 +91,7 @@ export function SkeletonTableRow({ columns = 5 }: { columns?: number }) {
 
 export function SkeletonTable({ rows = 5, columns = 5 }: { rows?: number; columns?: number }) {
   return (
-    <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', overflow: 'hidden' }}>
+    <div style={{ background: 'var(--bg-primary)', borderRadius: '12px', border: '1px solid #e5e7eb', overflow: 'hidden' }}>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr style={{ background: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
@@ -160,7 +160,7 @@ export function TeamSkeleton() {
       }}>
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} style={{
-            background: 'white',
+            background: 'var(--bg-primary)',
             borderRadius: '12px',
             border: '1px solid #e5e7eb',
             padding: '24px',

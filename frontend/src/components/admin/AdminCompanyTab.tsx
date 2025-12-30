@@ -131,7 +131,7 @@ export default function AdminCompanyTab() {
   return (
     <div style={{ maxWidth: '800px' }}>
       {/* Company Information */}
-      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '24px', marginBottom: '20px' }}>
+      <div style={{ background: 'var(--bg-primary)', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '24px', marginBottom: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
           <Building2 size={20} style={{ color: '#3b82f6' }} />
           <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>
@@ -279,7 +279,7 @@ export default function AdminCompanyTab() {
                     border: '1px solid var(--border-color)',
                     borderRadius: '8px',
                     fontSize: '14px',
-                    background: 'white'
+                    background: 'var(--bg-primary)'
                   }}
                 >
                   <option value="">State</option>
@@ -315,7 +315,7 @@ export default function AdminCompanyTab() {
                   border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '14px',
-                  background: 'white'
+                  background: 'var(--bg-primary)'
                 }}
               >
                 <option value="">Select Country</option>
@@ -352,7 +352,7 @@ export default function AdminCompanyTab() {
       </div>
 
       {/* Brand Customization */}
-      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '24px', marginBottom: '20px' }}>
+      <div style={{ background: 'var(--bg-primary)', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '24px', marginBottom: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
           <Palette size={20} style={{ color: '#3b82f6' }} />
           <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>

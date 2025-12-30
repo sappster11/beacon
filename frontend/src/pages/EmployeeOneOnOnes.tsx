@@ -243,7 +243,7 @@ export default function EmployeeOneOnOnes() {
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   padding: '12px 16px',
-                  background: '#ffffff',
+                  background: 'var(--bg-primary)',
                   borderRadius: '8px',
                   border: '1px solid #e5e7eb',
                 }}
@@ -374,7 +374,7 @@ export default function EmployeeOneOnOnes() {
                 onClick={() => navigate(`/one-on-ones/${meeting.id}${isUsingPlaceholderMeetings ? '?preview=true' : ''}`)}
                 style={{
                   padding: '16px 20px',
-                  background: '#ffffff',
+                  background: 'var(--bg-primary)',
                   border: '1px solid #e5e7eb',
                   borderRadius: '8px',
                   cursor: 'pointer',
@@ -436,7 +436,7 @@ export default function EmployeeOneOnOnes() {
         >
           <div
             style={{
-              background: '#ffffff',
+              background: 'var(--bg-primary)',
               borderRadius: '12px',
               padding: '24px',
               maxWidth: '450px',
@@ -499,7 +499,7 @@ export default function EmployeeOneOnOnes() {
                 }}
                 style={{
                   padding: '10px 16px',
-                  background: '#ffffff',
+                  background: 'var(--bg-primary)',
                   color: '#374151',
                   border: '1px solid #d1d5db',
                   borderRadius: '6px',

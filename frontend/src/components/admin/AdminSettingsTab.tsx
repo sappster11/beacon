@@ -100,7 +100,7 @@ export default function AdminSettingsTab() {
   return (
     <div style={{ maxWidth: '800px' }}>
       {/* Review Settings */}
-      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '24px', marginBottom: '20px' }}>
+      <div style={{ background: 'var(--bg-primary)', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '24px', marginBottom: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
           <SettingsIcon size={20} style={{ color: '#3b82f6' }} />
           <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>
@@ -197,7 +197,7 @@ export default function AdminSettingsTab() {
       </div>
 
       {/* Notification Settings */}
-      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '24px', marginBottom: '20px' }}>
+      <div style={{ background: 'var(--bg-primary)', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '24px', marginBottom: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
           <SettingsIcon size={20} style={{ color: '#3b82f6' }} />
           <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>
@@ -512,7 +512,7 @@ export default function AdminSettingsTab() {
 
       {/* Feature Flags (SUPER_ADMIN only) */}
       {isSuperAdmin && (
-        <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '24px' }}>
+        <div style={{ background: 'var(--bg-primary)', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
             <SettingsIcon size={20} style={{ color: '#3b82f6' }} />
             <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>

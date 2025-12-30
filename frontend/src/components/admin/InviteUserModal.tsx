@@ -91,7 +91,7 @@ export default function InviteUserModal({ onClose, onSuccess, departments, users
       <div
         className="modal-content"
         style={{
-          background: 'white',
+          background: 'var(--bg-primary)',
           borderRadius: '12px',
           padding: '32px',
           maxWidth: '500px',
@@ -256,7 +256,7 @@ export default function InviteUserModal({ onClose, onSuccess, departments, users
               onClick={onClose}
               style={{
                 padding: '10px 20px',
-                background: 'white',
+                background: 'var(--bg-primary)',
                 border: '1px solid #e5e7eb',
                 borderRadius: '8px',
                 fontSize: '14px',

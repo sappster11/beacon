@@ -134,7 +134,7 @@ export default function CompetencyCard({
     <div
       style={{
         padding: '20px',
-        background: '#ffffff',
+        background: 'var(--bg-primary)',
         borderRadius: '8px',
         border: '1px solid #e5e7eb',
         marginBottom: '16px',
@@ -194,7 +194,7 @@ export default function CompetencyCard({
                 onClick={handleCancelEdit}
                 style={{
                   padding: '6px 12px',
-                  background: '#ffffff',
+                  background: 'var(--bg-primary)',
                   color: '#374151',
                   border: '1px solid #d1d5db',
                   borderRadius: '6px',
@@ -284,7 +284,7 @@ export default function CompetencyCard({
                         top: '100%',
                         right: '0',
                         marginTop: '4px',
-                        background: '#ffffff',
+                        background: 'var(--bg-primary)',
                         border: '1px solid #e5e7eb',
                         borderRadius: '6px',
                         boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',

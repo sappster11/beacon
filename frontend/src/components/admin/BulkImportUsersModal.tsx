@@ -156,7 +156,7 @@ Jane Smith,jane@example.com,Engineering Manager,Engineering,,MANAGER`;
     >
       <div
         style={{
-          background: 'white',
+          background: 'var(--bg-primary)',
           borderRadius: '12px',
           width: '100%',
           maxWidth: '600px',
@@ -297,7 +297,7 @@ Jane Smith,jane@example.com,Engineering Manager,Engineering,,MANAGER`;
               onClick={onClose}
               style={{
                 padding: '10px 20px',
-                background: 'white',
+                background: 'var(--bg-primary)',
                 border: '1px solid #e5e7eb',
                 borderRadius: '8px',
                 fontSize: '14px',

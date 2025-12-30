@@ -470,7 +470,7 @@ export default function Help() {
                       <div
                         key={index}
                         style={{
-                          background: '#ffffff',
+                          background: 'var(--bg-primary)',
                           border: '1px solid #e5e7eb',
                           borderRadius: '8px',
                           overflow: 'hidden',
@@ -557,7 +557,7 @@ export default function Help() {
                       <div
                         key={index}
                         style={{
-                          background: '#ffffff',
+                          background: 'var(--bg-primary)',
                           border: '1px solid #e5e7eb',
                           borderRadius: '8px',
                           overflow: 'hidden',

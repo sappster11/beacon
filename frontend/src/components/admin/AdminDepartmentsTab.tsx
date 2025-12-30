@@ -102,7 +102,7 @@ export default function AdminDepartmentsTab() {
               key={topDept.id}
               style={{
                 padding: '20px',
-                background: 'white',
+                background: 'var(--bg-primary)',
                 border: '1px solid var(--border-color)',
                 borderRadius: '12px'
               }}
@@ -150,7 +150,7 @@ export default function AdminDepartmentsTab() {
                       right: 0,
                       top: '100%',
                       marginTop: '4px',
-                      background: 'white',
+                      background: 'var(--bg-primary)',
                       border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
@@ -231,7 +231,7 @@ export default function AdminDepartmentsTab() {
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           padding: '8px 12px',
-                          background: 'white',
+                          background: 'var(--bg-primary)',
                           borderRadius: '6px',
                           border: '1px solid var(--border-color)'
                         }}
@@ -262,7 +262,7 @@ export default function AdminDepartmentsTab() {
                               right: 0,
                               top: '100%',
                               marginTop: '4px',
-                              background: 'white',
+                              background: 'var(--bg-primary)',
                               border: '1px solid var(--border-color)',
                               borderRadius: '8px',
                               boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
@@ -332,7 +332,7 @@ export default function AdminDepartmentsTab() {
       </div>
 
       {departments.length === 0 && (
-        <div style={{ padding: '60px', textAlign: 'center', background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+        <div style={{ padding: '60px', textAlign: 'center', background: 'var(--bg-primary)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
           <Building2 size={48} style={{ margin: '0 auto 16px', color: 'var(--text-faint)' }} />
           <div style={{ fontSize: '16px', fontWeight: '500', color: 'var(--text-primary)', marginBottom: '8px' }}>
             No departments yet
@@ -438,7 +438,7 @@ function DepartmentModal({ department, departments, onClose, onSuccess }: Depart
       <div
         className="modal-content"
         style={{
-          background: 'white',
+          background: 'var(--bg-primary)',
           borderRadius: '12px',
           width: '100%',
           maxWidth: '400px',
@@ -507,7 +507,7 @@ function DepartmentModal({ department, departments, onClose, onSuccess }: Depart
               onClick={onClose}
               style={{
                 padding: '10px 20px',
-                background: 'white',
+                background: 'var(--bg-primary)',
                 border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '14px',

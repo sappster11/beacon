@@ -65,7 +65,7 @@ export default function Employees() {
 
       {/* View Toggle & Search */}
       <div style={{ display: 'flex', gap: '16px', marginBottom: '24px', alignItems: 'center' }}>
-        <div style={{ display: 'flex', gap: '8px', background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '4px' }}>
+        <div style={{ display: 'flex', gap: '8px', background: 'var(--bg-primary)', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '4px' }}>
           <button
             onClick={() => setViewMode('list')}
             style={{
@@ -141,7 +141,7 @@ export default function Employees() {
       </div>
 
       {/* Employee Table */}
-      <div style={{ background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '12px', overflow: 'hidden' }}>
+      <div style={{ background: 'var(--bg-primary)', border: '1px solid #e5e7eb', borderRadius: '12px', overflow: 'hidden' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ background: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>

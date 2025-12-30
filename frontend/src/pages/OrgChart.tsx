@@ -118,7 +118,7 @@ export default function OrgChart() {
             alignItems: 'center',
             gap: '12px',
             padding: '12px 16px',
-            background: '#ffffff',
+            background: 'var(--bg-primary)',
             border: '1px solid #e5e7eb',
             borderRadius: '8px',
             marginBottom: '8px',
@@ -211,7 +211,7 @@ export default function OrgChart() {
             position: 'relative',
             width: '260px',
             padding: '14px',
-            background: '#ffffff',
+            background: 'var(--bg-primary)',
             border: '2px solid #e5e7eb',
             borderRadius: '12px',
             marginBottom: '8px',
@@ -402,7 +402,7 @@ export default function OrgChart() {
 
       {/* View Toggle */}
       <div style={{ display: 'flex', gap: '16px', marginBottom: '24px', alignItems: 'center', flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', gap: '8px', background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '4px' }}>
+        <div style={{ display: 'flex', gap: '8px', background: 'var(--bg-primary)', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '4px' }}>
           <button
             onClick={() => {
               setViewMode('list');
@@ -449,7 +449,7 @@ export default function OrgChart() {
         </div>
 
         {/* Chart Style Toggle */}
-        <div style={{ display: 'flex', gap: '8px', background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '4px' }}>
+        <div style={{ display: 'flex', gap: '8px', background: 'var(--bg-primary)', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '4px' }}>
           <button
             onClick={() => setChartStyle('modern')}
             style={{
@@ -485,7 +485,7 @@ export default function OrgChart() {
         </div>
 
         {/* Zoom Controls */}
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '4px' }}>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', background: 'var(--bg-primary)', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '4px' }}>
           <button
             onClick={() => setZoom(Math.max(0.25, zoom - 0.1))}
             disabled={zoom <= 0.25}

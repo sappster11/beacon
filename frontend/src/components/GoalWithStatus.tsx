@@ -139,7 +139,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
     <div
       style={{
         padding: '16px',
-        background: '#ffffff',
+        background: 'var(--bg-primary)',
         borderRadius: '8px',
         border: '1px solid #e5e7eb',
         marginBottom: '12px',
@@ -228,7 +228,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                     top: '100%',
                     right: '0',
                     marginTop: '4px',
-                    background: '#ffffff',
+                    background: 'var(--bg-primary)',
                     border: '1px solid #e5e7eb',
                     borderRadius: '6px',
                     boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
@@ -333,7 +333,7 @@ export default function GoalWithStatus({ goal, reviewId, isManager, weight, onSt
                   onClick={handleCancelEdit}
                   style={{
                     padding: '6px 12px',
-                    background: '#ffffff',
+                    background: 'var(--bg-primary)',
                     color: '#374151',
                     border: '1px solid #d1d5db',
                     borderRadius: '6px',

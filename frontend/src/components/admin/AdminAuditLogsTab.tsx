@@ -179,7 +179,7 @@ export default function AdminAuditLogsTab() {
       </div>
 
       {/* Filters */}
-      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '20px', marginBottom: '20px' }}>
+      <div style={{ background: 'var(--bg-primary)', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '20px', marginBottom: '20px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
           {/* User Filter */}
           <div>
@@ -359,7 +359,7 @@ export default function AdminAuditLogsTab() {
         {/* Unified Date Range Picker */}
         <div
           style={{
-            background: 'white',
+            background: 'var(--bg-primary)',
             border: '1px solid var(--border-color)',
             borderRadius: '8px',
             padding: '12px',
@@ -461,7 +461,7 @@ export default function AdminAuditLogsTab() {
       </div>
 
       {/* Logs Table */}
-      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border-color)', overflow: 'hidden' }}>
+      <div style={{ background: 'var(--bg-primary)', borderRadius: '12px', border: '1px solid var(--border-color)', overflow: 'hidden' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ background: 'var(--bg-tertiary)', borderBottom: '1px solid var(--border-color)' }}>

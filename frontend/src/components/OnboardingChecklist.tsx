@@ -211,7 +211,7 @@ export default function OnboardingChecklist({ userRole }: OnboardingChecklistPro
         position: 'relative',
       }}>
         <div style={{
-          background: 'white',
+          background: 'var(--bg-primary)',
           height: '100%',
           width: `${progress}%`,
           borderRadius: '8px',
