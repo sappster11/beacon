@@ -10,8 +10,7 @@ import {
   Calendar,
   Search,
   Mail,
-  Building,
-  TrendingUp
+  Building
 } from 'lucide-react';
 import Avatar from '../components/Avatar';
 import EmployeeDetailModal from '../components/EmployeeDetailModal';
@@ -362,76 +361,7 @@ export default function Team() {
         </table>
       </div>
 
-      {/* Team Activity Feed */}
-      {isManager && teamActivity.length > 0 && (
-        <div
-          style={{
-            background: '#ffffff',
-            border: '1px solid #e5e7eb',
-            borderRadius: '12px',
-            padding: '24px',
-          }}
-        >
-          <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#111827', marginBottom: '16px', margin: '0 0 16px 0' }}>
-            Recent Team Activity
-          </h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {teamActivity.map((activity: any) => (
-              <div
-                key={activity.id}
-                style={{
-                  padding: '12px 16px',
-                  background: '#ffffff',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px',
-                }}
-              >
-                <div
-                  style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '50%',
-                    background: activity.type === 'review' ? '#dbeafe' : activity.type === 'goal' ? '#dcfce7' : '#fef3c7',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                  }}
-                >
-                  {activity.type === 'review' && <ClipboardList size={16} color="#3b82f6" />}
-                  {activity.type === 'goal' && <Target size={16} color="#10b981" />}
-                  {activity.type === 'one_on_one' && <Users size={16} color="#f59e0b" />}
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: '14px', color: '#111827', marginBottom: '2px' }}>
-                    <strong>{activity.employee.name}</strong>{' '}
-                    {activity.action === 'completed' && 'completed'}
-                    {activity.action === 'updated' && 'updated'}
-                    {activity.action === 'created' && 'created'}
-                    {activity.action === 'notes_added' && 'added notes to'}
-                    {' '}
-                    {activity.type === 'review' && `their ${activity.details.cycleName} review`}
-                    {activity.type === 'goal' && activity.details.title}
-                    {activity.type === 'one_on_one' && 'a 1:1 meeting'}
-                  </div>
-                  <div style={{ fontSize: '12px', color: '#6b7280' }}>
-                    {new Date(activity.timestamp).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      hour: 'numeric',
-                      minute: '2-digit'
-                    })}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
+      
       {/* Employee Detail Modal */}
       {selectedEmployee && (
         <EmployeeDetailModal
