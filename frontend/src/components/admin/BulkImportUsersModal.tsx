@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { X, Download, Upload } from 'lucide-react';
 import type { BulkImportResult } from '../../types/index';
-import { users as usersApi, departments as departmentsApi } from '../../lib/api';
+import { invitations as invitationsApi, departments as departmentsApi, users as usersApi } from '../../lib/api';
 
 interface BulkImportUsersModalProps {
   onClose: () => void;
@@ -62,12 +62,17 @@ export default function BulkImportUsersModal({ onClose, onSuccess }: BulkImportU
         return;
       }
 
-      // Load departments for matching
-      const departments = await departmentsApi.getAll();
+      // Load departments and existing users for matching
+      const [departments, existingUsers] = await Promise.all([
+        departmentsApi.getAll(),
+        usersApi.getAll()
+      ]);
       const deptMap = new Map(departments.map(d => [d.name.toLowerCase(), d.id]));
+      const managerMap = new Map(existingUsers.map(u => [u.email.toLowerCase(), u.id]));
 
       const errors: { row: number; error: string }[] = [];
       let successCount = 0;
+      const managerIdx = headers.indexOf('manager');
 
       // Process each row
       for (let i = 1; i < lines.length && i <= 1000; i++) {
@@ -76,6 +81,7 @@ export default function BulkImportUsersModal({ onClose, onSuccess }: BulkImportU
         const email = values[emailIdx];
         const title = titleIdx !== -1 ? values[titleIdx] : undefined;
         const deptName = deptIdx !== -1 ? values[deptIdx] : undefined;
+        const managerEmail = managerIdx !== -1 ? values[managerIdx] : undefined;
         const role = roleIdx !== -1 ? values[roleIdx]?.toUpperCase() : 'EMPLOYEE';
 
         if (!name || !email) {
@@ -90,18 +96,20 @@ export default function BulkImportUsersModal({ onClose, onSuccess }: BulkImportU
         }
 
         const departmentId = deptName ? deptMap.get(deptName.toLowerCase()) : undefined;
+        const managerId = managerEmail ? managerMap.get(managerEmail.toLowerCase()) : undefined;
 
         try {
-          await usersApi.create({
+          await invitationsApi.create({
             name,
             email,
             title,
             role: role as any,
             departmentId,
+            managerId,
           });
           successCount++;
         } catch (err: any) {
-          errors.push({ row: i + 1, error: err.message || 'Failed to create user' });
+          errors.push({ row: i + 1, error: err.message || 'Failed to send invitation' });
         }
       }
 
@@ -120,9 +128,9 @@ export default function BulkImportUsersModal({ onClose, onSuccess }: BulkImportU
   };
 
   const downloadSample = () => {
-    const csvContent = `name,email,title,department,manager,role,hireDate
-John Doe,john@example.com,Software Engineer,Engineering,jane@example.com,EMPLOYEE,2024-01-15
-Jane Smith,jane@example.com,Engineering Manager,Engineering,,MANAGER,2023-06-01`;
+    const csvContent = `name,email,title,department,manager,role
+John Doe,john@example.com,Software Engineer,Engineering,jane@example.com,EMPLOYEE
+Jane Smith,jane@example.com,Engineering Manager,Engineering,,MANAGER`;
 
     const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
@@ -159,7 +167,7 @@ Jane Smith,jane@example.com,Engineering Manager,Engineering,,MANAGER,2023-06-01`
       >
         {/* Header */}
         <div style={{ padding: '24px', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#111827' }}>Bulk Import Users</h2>
+          <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#111827' }}>Bulk Invite Users</h2>
           <button
             onClick={onClose}
             style={{
@@ -184,11 +192,12 @@ Jane Smith,jane@example.com,Engineering Manager,Engineering,,MANAGER,2023-06-01`
             </div>
             <div style={{ fontSize: '13px', color: '#0c4a6e', lineHeight: '1.5' }}>
               <div>Required columns: <strong>name, email</strong></div>
-              <div>Optional columns: title, department, manager, role, hireDate</div>
+              <div>Optional columns: title, department, manager, role</div>
               <div style={{ marginTop: '8px' }}>
-                - Department and manager should match existing records by name/email<br />
+                - Each user will receive an invitation email<br />
+                - Manager should match an existing user's email<br />
                 - Role must be one of: EMPLOYEE, MANAGER, HR_ADMIN, SUPER_ADMIN<br />
-                - Maximum 1000 rows per import
+                - Maximum 1000 invitations per import
               </div>
             </div>
           </div>
@@ -260,7 +269,7 @@ Jane Smith,jane@example.com,Engineering Manager,Engineering,,MANAGER,2023-06-01`
             <div style={{ marginBottom: '16px' }}>
               <div style={{ padding: '16px', background: '#f0fdf4', border: '1px solid #86efac', borderRadius: '8px', marginBottom: '12px' }}>
                 <div style={{ fontSize: '14px', fontWeight: '600', color: '#065f46' }}>
-                  Successfully imported {result.success} user{result.success !== 1 ? 's' : ''}
+                  Successfully sent {result.success} invitation{result.success !== 1 ? 's' : ''}
                 </div>
               </div>
 
@@ -314,7 +323,7 @@ Jane Smith,jane@example.com,Engineering Manager,Engineering,,MANAGER,2023-06-01`
                   cursor: !file || loading ? 'not-allowed' : 'pointer'
                 }}
               >
-                {loading ? 'Importing...' : 'Import Users'}
+                {loading ? 'Sending Invitations...' : 'Send Invitations'}
               </button>
             )}
           </div>

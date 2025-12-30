@@ -466,6 +466,27 @@ export const invitations = {
     if (error) throw error;
   },
 
+  create: async (invitation: {
+    email: string;
+    name: string;
+    title?: string;
+    role: string;
+    departmentId?: string;
+    managerId?: string;
+  }): Promise<void> => {
+    const { data, error } = await supabase.functions.invoke('invite-user', {
+      body: invitation,
+    });
+
+    if (error) {
+      throw new Error(error.message || 'Failed to send invitation');
+    }
+
+    if (!data?.success) {
+      throw new Error(data?.error || 'Failed to send invitation');
+    }
+  },
+
   resend: async (id: string): Promise<void> => {
     const { data, error } = await supabase.functions.invoke('resend-invitation', {
       body: { invitationId: id },
