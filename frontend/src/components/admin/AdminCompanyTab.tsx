@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Save, Building2, Upload, Palette, CreditCard } from 'lucide-react';
+import { Save, Building2, Upload, Palette, Mail } from 'lucide-react';
 import { settings as settingsApi } from '../../lib/api';
 
 export default function AdminCompanyTab() {
@@ -29,12 +29,7 @@ export default function AdminCompanyTab() {
     warningColor: '#f59e0b'
   });
 
-  const [billingInfo, setBillingInfo] = useState({
-    billingEmail: '',
-    paymentMethod: '',
-    planType: 'professional',
-    billingCycle: 'monthly'
-  });
+  const [billingEmail, setBillingEmail] = useState('');
 
   useEffect(() => {
     loadSettings();
@@ -47,7 +42,7 @@ export default function AdminCompanyTab() {
 
       if (allSettings.company) setCompanyInfo(allSettings.company as typeof companyInfo);
       if (allSettings.branding) setBrandSettings(allSettings.branding as typeof brandSettings);
-      if (allSettings.billing) setBillingInfo(allSettings.billing as typeof billingInfo);
+      if ((allSettings.billing as any)?.billingEmail) setBillingEmail((allSettings.billing as any).billingEmail);
       if ((allSettings.branding as any)?.logo) setLogoPreview((allSettings.branding as any).logo);
     } catch (error) {
       console.error('Failed to load company settings:', error);
@@ -274,10 +269,38 @@ export default function AdminCompanyTab() {
               />
             </div>
           </div>
+
+          <div style={{ marginTop: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+              <Mail size={16} style={{ color: '#6b7280' }} />
+              <label style={{ fontSize: '14px', fontWeight: '500', color: '#374151' }}>
+                Billing Email
+              </label>
+            </div>
+            <input
+              type="email"
+              placeholder="billing@company.com"
+              value={billingEmail}
+              onChange={(e) => setBillingEmail(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                border: '1px solid #e5e7eb',
+                borderRadius: '8px',
+                fontSize: '14px'
+              }}
+            />
+            <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '6px' }}>
+              Invoices and billing notifications will be sent to this email
+            </p>
+          </div>
         </div>
 
         <button
-          onClick={() => saveSettings('company', companyInfo)}
+          onClick={() => {
+            saveSettings('company', companyInfo);
+            saveSettings('billing', { billingEmail });
+          }}
           disabled={saving === 'company'}
           style={{
             marginTop: '20px',
@@ -601,111 +624,6 @@ export default function AdminCompanyTab() {
         >
           <Save size={16} />
           {saving === 'branding' ? 'Saving...' : 'Save Brand Settings'}
-        </button>
-      </div>
-
-      {/* Billing Information */}
-      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', padding: '24px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
-          <CreditCard size={20} style={{ color: '#10b981' }} />
-          <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', margin: 0 }}>
-            Billing Information
-          </h3>
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
-              Billing Email
-            </label>
-            <input
-              type="email"
-              placeholder="billing@company.com"
-              value={billingInfo.billingEmail}
-              onChange={(e) => setBillingInfo({ ...billingInfo, billingEmail: e.target.value })}
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                border: '1px solid #e5e7eb',
-                borderRadius: '8px',
-                fontSize: '14px'
-              }}
-            />
-          </div>
-
-          <div>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
-              Plan Type
-            </label>
-            <select
-              value={billingInfo.planType}
-              onChange={(e) => setBillingInfo({ ...billingInfo, planType: e.target.value })}
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                border: '1px solid #e5e7eb',
-                borderRadius: '8px',
-                fontSize: '14px'
-              }}
-            >
-              <option value="starter">Starter</option>
-              <option value="professional">Professional</option>
-              <option value="enterprise">Enterprise</option>
-            </select>
-          </div>
-
-          <div>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '6px' }}>
-              Billing Cycle
-            </label>
-            <select
-              value={billingInfo.billingCycle}
-              onChange={(e) => setBillingInfo({ ...billingInfo, billingCycle: e.target.value })}
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                border: '1px solid #e5e7eb',
-                borderRadius: '8px',
-                fontSize: '14px'
-              }}
-            >
-              <option value="monthly">Monthly</option>
-              <option value="annual">Annual</option>
-            </select>
-          </div>
-
-          <div style={{
-            padding: '16px',
-            background: '#f9fafb',
-            borderRadius: '8px',
-            border: '1px solid #e5e7eb'
-          }}>
-            <p style={{ fontSize: '13px', color: '#6b7280', margin: 0 }}>
-              Payment method and detailed billing history will be available in a future update.
-            </p>
-          </div>
-        </div>
-
-        <button
-          onClick={() => saveSettings('billing', billingInfo)}
-          disabled={saving === 'billing'}
-          style={{
-            marginTop: '20px',
-            padding: '10px 20px',
-            background: saving === 'billing' ? '#9ca3af' : '#10b981',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '14px',
-            fontWeight: '500',
-            cursor: saving === 'billing' ? 'not-allowed' : 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px'
-          }}
-        >
-          <Save size={16} />
-          {saving === 'billing' ? 'Saving...' : 'Save Billing Information'}
         </button>
       </div>
     </div>
