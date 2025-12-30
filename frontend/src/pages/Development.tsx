@@ -5,10 +5,7 @@ export default function Development() {
     <div style={{ padding: '48px' }}>
       {/* Header */}
       <div style={{ marginBottom: '32px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <Rocket size={28} color="#8b5cf6" />
-          <h1 style={{ fontSize: '32px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>Development Plans</h1>
-        </div>
+        <h1 style={{ fontSize: '32px', fontWeight: '600', color: 'var(--text-primary)', margin: '0 0 8px 0' }}>Development Plans</h1>
         <p style={{ fontSize: '16px', color: 'var(--text-muted)', margin: 0 }}>
           Track your career growth and skill development
         </p>

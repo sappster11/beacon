@@ -109,10 +109,7 @@ export default function Goals() {
     <div style={{ padding: '48px' }}>
       {/* Header */}
       <div style={{ marginBottom: '32px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <Target size={28} color="#f59e0b" />
-          <h1 style={{ fontSize: '32px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>My Goals</h1>
-        </div>
+        <h1 style={{ fontSize: '32px', fontWeight: '600', color: 'var(--text-primary)', margin: '0 0 8px 0' }}>My Goals</h1>
         <p style={{ fontSize: '16px', color: 'var(--text-muted)', margin: 0 }}>
           Goals assigned to you from performance reviews
         </p>
