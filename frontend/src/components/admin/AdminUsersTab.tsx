@@ -624,7 +624,7 @@ export default function AdminUsersTab() {
       )}
 
       {activeTab === 'invitations' && (
-        <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', overflow: 'hidden' }}>
+        <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', overflow: 'visible' }}>
           {pendingInvitations.length === 0 ? (
             <div style={{ padding: '60px 40px', textAlign: 'center' }}>
               <Mail size={48} color="#d1d5db" style={{ marginBottom: '16px' }} />
@@ -707,7 +707,7 @@ export default function AdminUsersTab() {
                           </span>
                         )}
                       </td>
-                      <td data-label="Actions" style={{ padding: '12px 16px', textAlign: 'center' }}>
+                      <td data-label="Actions" style={{ padding: '12px 16px', textAlign: 'center', overflow: 'visible' }}>
                         <div style={{ position: 'relative', display: 'inline-block' }} ref={openInviteDropdownId === invite.id ? inviteDropdownRef : null}>
                           <button
                             onClick={() => setOpenInviteDropdownId(openInviteDropdownId === invite.id ? null : invite.id)}
@@ -730,14 +730,14 @@ export default function AdminUsersTab() {
                             <div style={{
                               position: 'absolute',
                               right: 0,
-                              top: '100%',
-                              marginTop: '4px',
+                              bottom: '100%',
+                              marginBottom: '4px',
                               background: 'white',
                               border: '1px solid #e5e7eb',
                               borderRadius: '8px',
-                              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                              boxShadow: '0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06)',
                               minWidth: '160px',
-                              zIndex: 10,
+                              zIndex: 50,
                               overflow: 'hidden'
                             }}>
                               <button
