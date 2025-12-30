@@ -2044,33 +2044,24 @@ export const manager = {
     return [];
   },
 
-  getTeamSummary: async (): Promise<any> => {
+  getTeamSummary: async (allReportIds: string[]): Promise<any> => {
     const userId = await getCurrentUserId();
 
-    // Get direct reports
-    const { data: directReports } = await supabase
-      .from('users')
-      .select('id')
-      .eq('manager_id', userId)
-      .eq('is_active', true);
-
-    const reportIds = directReports?.map(r => r.id) || [];
-
-    // Get active goals for team members
+    // Get active goals for all team members (direct and indirect)
     const { count: activeGoals } = await supabase
       .from('goals')
       .select('id', { count: 'exact', head: true })
-      .in('owner_id', reportIds.length > 0 ? reportIds : ['none'])
+      .in('owner_id', allReportIds.length > 0 ? allReportIds : ['none'])
       .eq('status', 'ACTIVE');
 
-    // Get completed reviews for team members
+    // Get completed reviews for all team members
     const { count: completedReviews } = await supabase
       .from('reviews')
       .select('id', { count: 'exact', head: true })
-      .in('reviewee_id', reportIds.length > 0 ? reportIds : ['none'])
+      .in('reviewee_id', allReportIds.length > 0 ? allReportIds : ['none'])
       .eq('status', 'COMPLETED');
 
-    // Get upcoming 1:1s
+    // Get upcoming 1:1s (only direct 1:1s with the manager)
     const { count: upcomingOneOnOnes } = await supabase
       .from('one_on_ones')
       .select('id', { count: 'exact', head: true })
@@ -2079,12 +2070,49 @@ export const manager = {
       .gte('scheduled_at', new Date().toISOString());
 
     return {
-      totalTeamMembers: directReports?.length || 0,
-      totalReports: directReports?.length || 0,
+      totalTeamMembers: allReportIds.length,
       activeGoals: activeGoals || 0,
       completedReviews: completedReviews || 0,
       upcomingOneOnOnes: upcomingOneOnOnes || 0,
     };
+  },
+
+  // Get all reports (direct and indirect) for the current user
+  getFullOrgTree: async (): Promise<User[]> => {
+    const userId = await getCurrentUserId();
+    const { data: currentUser } = await supabase
+      .from('users')
+      .select('organization_id')
+      .eq('id', userId)
+      .single();
+
+    if (!currentUser?.organization_id) return [];
+
+    // Get all users in the org to build the tree
+    const { data: allUsers } = await supabase
+      .from('users')
+      .select('*, department:departments(id, name)')
+      .eq('organization_id', currentUser.organization_id)
+      .eq('is_active', true)
+      .order('name');
+
+    if (!allUsers) return [];
+
+    // Recursively find all reports
+    const findAllReports = (managerId: string, users: any[]): any[] => {
+      const directReports = users.filter(u => u.manager_id === managerId);
+      let allReports = [...directReports];
+
+      for (const report of directReports) {
+        const indirectReports = findAllReports(report.id, users);
+        allReports = [...allReports, ...indirectReports];
+      }
+
+      return allReports;
+    };
+
+    const reports = findAllReports(userId, allUsers);
+    return reports.map(transformUser);
   },
 };
 

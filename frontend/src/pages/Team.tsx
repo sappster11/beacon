@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { useTeam } from '../hooks/useTeam';
 import { manager } from '../lib/api';
 import type { User } from '../types';
 import {
@@ -21,52 +20,49 @@ import { TeamSkeleton } from '../components/Skeleton';
 export default function Team() {
   const { user: currentUser } = useAuth();
   const navigate = useNavigate();
-  const { employees, isLoading: isLoadingEmployees, error: employeesError } = useTeam();
+  const [teamMembers, setTeamMembers] = useState<User[]>([]);
   const [filteredEmployees, setFilteredEmployees] = useState<User[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedEmployee, setSelectedEmployee] = useState<User | null>(null);
   const [teamStats, setTeamStats] = useState<any>(null);
-  const [teamActivity, setTeamActivity] = useState<any[]>([]);
-  const [isLoadingStats, setIsLoadingStats] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const isManager = currentUser?.role === 'MANAGER' || currentUser?.role === 'HR_ADMIN' || currentUser?.role === 'SUPER_ADMIN';
 
   useEffect(() => {
-    if (isManager) {
-      loadManagerData();
-    } else {
-      setIsLoadingStats(false);
-    }
-  }, [isManager]);
+    loadTeamData();
+  }, []);
 
   useEffect(() => {
     filterEmployees();
-  }, [searchQuery, employees]);
+  }, [searchQuery, teamMembers]);
 
-  const loadManagerData = async () => {
+  const loadTeamData = async () => {
     try {
-      setIsLoadingStats(true);
-      const [stats, activity] = await Promise.all([
-        manager.getTeamSummary(),
-        manager.getTeamActivity(15),
-      ]);
+      setIsLoading(true);
+      // Get full org tree (all direct and indirect reports)
+      const reports = await manager.getFullOrgTree();
+      setTeamMembers(reports);
+
+      // Get stats based on all report IDs
+      const reportIds = reports.map(r => r.id);
+      const stats = await manager.getTeamSummary(reportIds);
       setTeamStats(stats);
-      setTeamActivity(activity);
     } catch (error) {
-      console.error('Failed to load manager data:', error);
+      console.error('Failed to load team data:', error);
     } finally {
-      setIsLoadingStats(false);
+      setIsLoading(false);
     }
   };
 
   const filterEmployees = () => {
     if (!searchQuery.trim()) {
-      setFilteredEmployees(employees);
+      setFilteredEmployees(teamMembers);
       return;
     }
 
     const query = searchQuery.toLowerCase();
-    const filtered = employees.filter(
+    const filtered = teamMembers.filter(
       (emp) =>
         emp.name.toLowerCase().includes(query) ||
         emp.email.toLowerCase().includes(query) ||
@@ -75,7 +71,15 @@ export default function Team() {
     setFilteredEmployees(filtered);
   };
 
-  if (isLoadingEmployees || isLoadingStats) {
+  // Find who each person reports to from the team members list
+  const getManagerName = (managerId?: string) => {
+    if (!managerId) return null;
+    if (managerId === currentUser?.id) return 'You';
+    const mgr = teamMembers.find(m => m.id === managerId);
+    return mgr?.name || null;
+  };
+
+  if (isLoading) {
     return <TeamSkeleton />;
   }
 
@@ -249,12 +253,7 @@ export default function Team() {
         />
       </div>
 
-      {employeesError && (
-        <div style={{ padding: '12px', background: '#fee', color: '#c00', borderRadius: '4px', marginBottom: '20px' }}>
-          {employeesError}
-        </div>
-      )}
-
+      
       {/* Team Members Table */}
       <div style={{ background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '12px', overflow: 'hidden', marginBottom: '32px' }}>
         <div style={{ padding: '20px 24px', borderBottom: '1px solid #e5e7eb', background: '#f9fafb' }}>
@@ -275,7 +274,7 @@ export default function Team() {
                 Department
               </th>
               <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Manager
+                Reports To
               </th>
               <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 Email
@@ -333,8 +332,8 @@ export default function Team() {
                       {!(employee as any).department && '—'}
                     </div>
                   </td>
-                  <td data-label="Manager" style={{ padding: '16px', fontSize: '14px', color: '#374151' }}>
-                    {(employee as any).manager?.name || '—'}
+                  <td data-label="Reports To" style={{ padding: '16px', fontSize: '14px', color: '#374151' }}>
+                    {getManagerName(employee.managerId) || '—'}
                   </td>
                   <td data-label="Email" style={{ padding: '16px', fontSize: '14px', color: '#374151' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
