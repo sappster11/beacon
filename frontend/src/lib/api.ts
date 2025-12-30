@@ -488,7 +488,7 @@ export const invitations = {
         organization:organizations(id, name)
       `)
       .eq('token', token)
-      .eq('status', 'pending')
+      .eq('status', 'PENDING')
       .single();
 
     if (error || !data) {
@@ -516,7 +516,7 @@ export const invitations = {
       .from('invitations')
       .select('*, organization:organizations(id, name)')
       .eq('token', token)
-      .eq('status', 'pending')
+      .eq('status', 'PENDING')
       .single();
 
     if (inviteError || !invitation) {
