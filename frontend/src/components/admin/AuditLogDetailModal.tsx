@@ -10,8 +10,24 @@ interface Props {
 export default function AuditLogDetailModal({ log, onClose }: Props) {
   const [copied, setCopied] = useState(false);
 
-  const changes = log.changes ? JSON.parse(log.changes) : null;
-  const metadata = log.metadata ? JSON.parse(log.metadata) : null;
+  // Handle both string and object formats (Supabase returns JSON columns as objects)
+  const parseJsonSafe = (data: unknown): Record<string, unknown> | null => {
+    if (!data) return null;
+    if (typeof data === 'string') {
+      try {
+        return JSON.parse(data);
+      } catch {
+        return null;
+      }
+    }
+    if (typeof data === 'object') {
+      return data as Record<string, unknown>;
+    }
+    return null;
+  };
+
+  const changes = parseJsonSafe(log.changes);
+  const metadata = parseJsonSafe(log.metadata);
 
   const handleCopyResourceId = () => {
     navigator.clipboard.writeText(log.resourceId);
@@ -255,8 +271,8 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
             </div>
           )}
 
-          {/* Changes - Before/After Comparison */}
-          {changes && (changes.before || changes.after) && (
+          {/* Changes - Before/After Comparison or Raw JSON */}
+          {changes && Object.keys(changes).length > 0 && (
             <div
               style={{
                 background: 'white',
@@ -268,71 +284,92 @@ export default function AuditLogDetailModal({ log, onClose }: Props) {
               <div style={{ fontSize: '14px', fontWeight: '600', color: '#111827', marginBottom: '12px' }}>
                 Changes
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                {/* Before State */}
-                <div>
-                  <div
-                    style={{
-                      fontSize: '13px',
-                      fontWeight: '600',
-                      color: '#6b7280',
-                      marginBottom: '8px',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
-                    }}
-                  >
-                    Before
+              {/* Check if this is a before/after structure */}
+              {(changes.before !== undefined || changes.after !== undefined) ? (
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                  {/* Before State */}
+                  <div>
+                    <div
+                      style={{
+                        fontSize: '13px',
+                        fontWeight: '600',
+                        color: '#6b7280',
+                        marginBottom: '8px',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                      }}
+                    >
+                      Before
+                    </div>
+                    <pre
+                      style={{
+                        background: '#f9fafb',
+                        padding: '12px',
+                        borderRadius: '6px',
+                        overflow: 'auto',
+                        maxHeight: '400px',
+                        fontSize: '12px',
+                        lineHeight: '1.6',
+                        color: '#374151',
+                        margin: 0,
+                        border: '1px solid #e5e7eb'
+                      }}
+                    >
+                      {changes.before ? JSON.stringify(changes.before, null, 2) : 'null'}
+                    </pre>
                   </div>
-                  <pre
-                    style={{
-                      background: '#f9fafb',
-                      padding: '12px',
-                      borderRadius: '6px',
-                      overflow: 'auto',
-                      maxHeight: '400px',
-                      fontSize: '12px',
-                      lineHeight: '1.6',
-                      color: '#374151',
-                      margin: 0,
-                      border: '1px solid #e5e7eb'
-                    }}
-                  >
-                    {changes.before ? JSON.stringify(changes.before, null, 2) : 'null'}
-                  </pre>
-                </div>
 
-                {/* After State */}
-                <div>
-                  <div
-                    style={{
-                      fontSize: '13px',
-                      fontWeight: '600',
-                      color: '#6b7280',
-                      marginBottom: '8px',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
-                    }}
-                  >
-                    After
+                  {/* After State */}
+                  <div>
+                    <div
+                      style={{
+                        fontSize: '13px',
+                        fontWeight: '600',
+                        color: '#6b7280',
+                        marginBottom: '8px',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                      }}
+                    >
+                      After
+                    </div>
+                    <pre
+                      style={{
+                        background: '#f9fafb',
+                        padding: '12px',
+                        borderRadius: '6px',
+                        overflow: 'auto',
+                        maxHeight: '400px',
+                        fontSize: '12px',
+                        lineHeight: '1.6',
+                        color: '#374151',
+                        margin: 0,
+                        border: '1px solid #e5e7eb'
+                      }}
+                    >
+                      {changes.after ? JSON.stringify(changes.after, null, 2) : 'null'}
+                    </pre>
                   </div>
-                  <pre
-                    style={{
-                      background: '#f9fafb',
-                      padding: '12px',
-                      borderRadius: '6px',
-                      overflow: 'auto',
-                      maxHeight: '400px',
-                      fontSize: '12px',
-                      lineHeight: '1.6',
-                      color: '#374151',
-                      margin: 0,
-                      border: '1px solid #e5e7eb'
-                    }}
-                  >
-                    {changes.after ? JSON.stringify(changes.after, null, 2) : 'null'}
-                  </pre>
                 </div>
-              </div>
+              ) : (
+                /* Raw JSON display for flat change objects */
+                <pre
+                  style={{
+                    background: '#f9fafb',
+                    padding: '12px',
+                    borderRadius: '6px',
+                    overflow: 'auto',
+                    maxHeight: '400px',
+                    fontSize: '12px',
+                    lineHeight: '1.6',
+                    color: '#374151',
+                    margin: 0,
+                    border: '1px solid #e5e7eb'
+                  }}
+                >
+                  {JSON.stringify(changes, null, 2)}
+                </pre>
+              )}
             </div>
           )}
         </div>

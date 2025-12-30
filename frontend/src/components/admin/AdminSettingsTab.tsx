@@ -199,7 +199,7 @@ export default function AdminSettingsTab() {
       {/* Notification Settings */}
       <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', padding: '24px', marginBottom: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
-          <SettingsIcon size={20} style={{ color: '#10b981' }} />
+          <SettingsIcon size={20} style={{ color: '#3b82f6' }} />
           <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', margin: 0 }}>
             Notification Settings
           </h3>
@@ -217,7 +217,7 @@ export default function AdminSettingsTab() {
                   type="checkbox"
                   checked={notificationSettings.reviewDeadlineReminder}
                   onChange={(e) => setNotificationSettings({ ...notificationSettings, reviewDeadlineReminder: e.target.checked })}
-                  style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#10b981' }}
+                  style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
                 />
                 <span style={{ fontSize: '14px', color: '#374151' }}>
                   Review deadline reminders
@@ -251,7 +251,7 @@ export default function AdminSettingsTab() {
                   type="checkbox"
                   checked={notificationSettings.selfReviewSubmissionReminder}
                   onChange={(e) => setNotificationSettings({ ...notificationSettings, selfReviewSubmissionReminder: e.target.checked })}
-                  style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#10b981' }}
+                  style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
                 />
                 <span style={{ fontSize: '14px', color: '#374151' }}>
                   Self-review submission reminders
@@ -285,7 +285,7 @@ export default function AdminSettingsTab() {
                   type="checkbox"
                   checked={notificationSettings.managerPendingReviewReminder}
                   onChange={(e) => setNotificationSettings({ ...notificationSettings, managerPendingReviewReminder: e.target.checked })}
-                  style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#10b981' }}
+                  style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
                 />
                 <span style={{ fontSize: '14px', color: '#374151' }}>
                   Manager pending review reminders
@@ -317,7 +317,7 @@ export default function AdminSettingsTab() {
                 type="checkbox"
                 checked={notificationSettings.overdueReviewReminder}
                 onChange={(e) => setNotificationSettings({ ...notificationSettings, overdueReviewReminder: e.target.checked })}
-                style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#10b981' }}
+                style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
               />
               <span style={{ fontSize: '14px', color: '#374151' }}>
                 Overdue review notifications
@@ -338,7 +338,7 @@ export default function AdminSettingsTab() {
                   type="checkbox"
                   checked={notificationSettings.oneOnOneReminder}
                   onChange={(e) => setNotificationSettings({ ...notificationSettings, oneOnOneReminder: e.target.checked })}
-                  style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#10b981' }}
+                  style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
                 />
                 <span style={{ fontSize: '14px', color: '#374151' }}>
                   Upcoming meeting reminders
@@ -371,7 +371,7 @@ export default function AdminSettingsTab() {
                 type="checkbox"
                 checked={notificationSettings.oneOnOneSummaryReminder}
                 onChange={(e) => setNotificationSettings({ ...notificationSettings, oneOnOneSummaryReminder: e.target.checked })}
-                style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#10b981' }}
+                style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
               />
               <span style={{ fontSize: '14px', color: '#374151' }}>
                 Meeting summary reminders (for incomplete summaries)
@@ -392,7 +392,7 @@ export default function AdminSettingsTab() {
                   type="checkbox"
                   checked={notificationSettings.goalReminder}
                   onChange={(e) => setNotificationSettings({ ...notificationSettings, goalReminder: e.target.checked })}
-                  style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#10b981' }}
+                  style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
                 />
                 <span style={{ fontSize: '14px', color: '#374151' }}>
                   Goal progress reminders
@@ -425,7 +425,7 @@ export default function AdminSettingsTab() {
                   type="checkbox"
                   checked={notificationSettings.goalDeadlineReminder}
                   onChange={(e) => setNotificationSettings({ ...notificationSettings, goalDeadlineReminder: e.target.checked })}
-                  style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#10b981' }}
+                  style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
                 />
                 <span style={{ fontSize: '14px', color: '#374151' }}>
                   Goal deadline reminders
@@ -466,7 +466,7 @@ export default function AdminSettingsTab() {
                 type="checkbox"
                 checked={notificationSettings.feedbackRequestNotification}
                 onChange={(e) => setNotificationSettings({ ...notificationSettings, feedbackRequestNotification: e.target.checked })}
-                style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#10b981' }}
+                style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
               />
               <span style={{ fontSize: '14px', color: '#374151' }}>
                 Feedback request notifications
@@ -478,7 +478,7 @@ export default function AdminSettingsTab() {
                 type="checkbox"
                 checked={notificationSettings.newFeedbackNotification}
                 onChange={(e) => setNotificationSettings({ ...notificationSettings, newFeedbackNotification: e.target.checked })}
-                style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#10b981' }}
+                style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#3b82f6' }}
               />
               <span style={{ fontSize: '14px', color: '#374151' }}>
                 New feedback received notifications
@@ -493,7 +493,7 @@ export default function AdminSettingsTab() {
           style={{
             marginTop: '24px',
             padding: '10px 20px',
-            background: saving === 'notifications' ? '#9ca3af' : '#10b981',
+            background: saving === 'notifications' ? '#9ca3af' : '#3b82f6',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
@@ -514,7 +514,7 @@ export default function AdminSettingsTab() {
       {isSuperAdmin && (
         <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', padding: '24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
-            <SettingsIcon size={20} style={{ color: '#8b5cf6' }} />
+            <SettingsIcon size={20} style={{ color: '#3b82f6' }} />
             <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', margin: 0 }}>
               Feature Flags
             </h3>
@@ -552,7 +552,7 @@ export default function AdminSettingsTab() {
             style={{
               marginTop: '20px',
               padding: '10px 20px',
-              background: saving === 'features' ? '#9ca3af' : '#8b5cf6',
+              background: saving === 'features' ? '#9ca3af' : '#3b82f6',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
