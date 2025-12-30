@@ -19,12 +19,12 @@ export default function Layout() {
         setIsPlatformAdmin(false);
         return;
       }
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('platform_admins')
         .select('id')
         .eq('user_id', user.id)
-        .single();
-      setIsPlatformAdmin(!error && !!data);
+        .maybeSingle();
+      setIsPlatformAdmin(!!data);
     };
     checkPlatformAdmin();
   }, [user]);
