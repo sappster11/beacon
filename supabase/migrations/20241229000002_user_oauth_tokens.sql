@@ -20,21 +20,26 @@ CREATE INDEX IF NOT EXISTS idx_user_oauth_tokens_user_provider ON user_oauth_tok
 ALTER TABLE user_oauth_tokens ENABLE ROW LEVEL SECURITY;
 
 -- Users can only see their own tokens
+DROP POLICY IF EXISTS "Users can view own tokens" ON user_oauth_tokens;
 CREATE POLICY "Users can view own tokens" ON user_oauth_tokens
   FOR SELECT USING (auth.uid() = user_id);
 
 -- Users can insert their own tokens
+DROP POLICY IF EXISTS "Users can insert own tokens" ON user_oauth_tokens;
 CREATE POLICY "Users can insert own tokens" ON user_oauth_tokens
   FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 -- Users can update their own tokens
+DROP POLICY IF EXISTS "Users can update own tokens" ON user_oauth_tokens;
 CREATE POLICY "Users can update own tokens" ON user_oauth_tokens
   FOR UPDATE USING (auth.uid() = user_id);
 
 -- Users can delete their own tokens
+DROP POLICY IF EXISTS "Users can delete own tokens" ON user_oauth_tokens;
 CREATE POLICY "Users can delete own tokens" ON user_oauth_tokens
   FOR DELETE USING (auth.uid() = user_id);
 
 -- Service role can do everything (for edge functions)
+DROP POLICY IF EXISTS "Service role full access" ON user_oauth_tokens;
 CREATE POLICY "Service role full access" ON user_oauth_tokens
   FOR ALL USING (auth.jwt() ->> 'role' = 'service_role');
