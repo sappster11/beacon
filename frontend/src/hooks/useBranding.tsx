@@ -33,6 +33,17 @@ const BrandingContext = createContext<BrandingContextType>({
   refresh: async () => {},
 });
 
+// Apply default branding immediately on module load (before React renders)
+(function applyDefaultBrandingImmediately() {
+  const root = document.documentElement;
+  root.style.setProperty('--color-primary', defaultBranding.primaryColor);
+  root.style.setProperty('--color-secondary', defaultBranding.secondaryColor);
+  root.style.setProperty('--color-accent', defaultBranding.accentColor);
+  root.style.setProperty('--color-success', defaultBranding.successColor);
+  root.style.setProperty('--color-danger', defaultBranding.dangerColor);
+  root.style.setProperty('--color-warning', defaultBranding.warningColor);
+})();
+
 export function BrandingProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
   const [branding, setBranding] = useState<BrandingSettings>(defaultBranding);
