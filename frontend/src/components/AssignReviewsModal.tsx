@@ -24,10 +24,9 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
     try {
       setIsLoading(true);
       const data = await users.getAll();
-      // Only show employees who have managers
+      setEmployees(data);
+      // Only pre-select employees who have managers
       const employeesWithManagers = data.filter(emp => emp.managerId);
-      setEmployees(employeesWithManagers);
-      // Select all by default
       setSelectedEmployeeIds(new Set(employeesWithManagers.map(emp => emp.id)));
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to load employees');
@@ -47,10 +46,11 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
   };
 
   const toggleAll = () => {
-    if (selectedEmployeeIds.size === employees.length) {
+    const assignableEmployees = employees.filter(emp => emp.managerId);
+    if (selectedEmployeeIds.size === assignableEmployees.length) {
       setSelectedEmployeeIds(new Set());
     } else {
-      setSelectedEmployeeIds(new Set(employees.map(emp => emp.id)));
+      setSelectedEmployeeIds(new Set(assignableEmployees.map(emp => emp.id)));
     }
   };
 
@@ -177,10 +177,13 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
           <div className="modal-selection-info" style={{ padding: '20px 24px', borderBottom: '1px solid #e5e7eb', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
             <div>
               <p style={{ margin: 0, fontSize: '14px', color: '#374151' }}>
-                <strong>{selectedEmployeeIds.size}</strong> of <strong>{employees.length}</strong> employees selected
+                <strong>{selectedEmployeeIds.size}</strong> of <strong>{employees.filter(e => e.managerId).length}</strong> assignable employees selected
               </p>
               <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#6b7280' }}>
                 Reviews will be assigned with each employee's manager as the reviewer
+                {employees.filter(e => !e.managerId).length > 0 && (
+                  <span style={{ color: '#f59e0b' }}> • {employees.filter(e => !e.managerId).length} employee(s) without managers</span>
+                )}
               </p>
             </div>
             <button
@@ -204,7 +207,7 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
                 e.currentTarget.style.background = '#ffffff';
               }}
             >
-              {selectedEmployeeIds.size === employees.length ? 'Deselect All' : 'Select All'}
+              {selectedEmployeeIds.size === employees.filter(e => e.managerId).length ? 'Deselect All' : 'Select All'}
             </button>
           </div>
 
@@ -219,37 +222,40 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
                 }}
               >
                 <p style={{ margin: 0, fontSize: '14px' }}>
-                  No employees with managers found. Employees need a manager assigned to receive reviews.
+                  No employees found in the organization.
                 </p>
               </div>
             ) : (
               <div style={{ display: 'grid', gap: '8px' }}>
                 {employees.map((employee) => {
-                  const manager = employees.find(e => e.id === employee.managerId);
+                  const manager = employee.manager || employees.find(e => e.id === employee.managerId);
+                  const hasManager = !!employee.managerId;
                   const isSelected = selectedEmployeeIds.has(employee.id);
+                  const canSelect = hasManager;
 
                   return (
                     <div
                       key={employee.id}
-                      onClick={() => toggleEmployee(employee.id)}
+                      onClick={() => canSelect && toggleEmployee(employee.id)}
                       style={{
                         padding: '16px',
                         border: `2px solid ${isSelected ? '#3b82f6' : '#e5e7eb'}`,
                         borderRadius: '8px',
-                        cursor: 'pointer',
-                        background: isSelected ? '#eff6ff' : '#ffffff',
+                        cursor: canSelect ? 'pointer' : 'not-allowed',
+                        background: isSelected ? '#eff6ff' : !canSelect ? '#f9fafb' : '#ffffff',
                         transition: 'all 0.15s',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '12px',
+                        opacity: canSelect ? 1 : 0.6,
                       }}
                       onMouseEnter={(e) => {
-                        if (!isSelected) {
+                        if (canSelect && !isSelected) {
                           e.currentTarget.style.borderColor = '#d1d5db';
                         }
                       }}
                       onMouseLeave={(e) => {
-                        if (!isSelected) {
+                        if (canSelect && !isSelected) {
                           e.currentTarget.style.borderColor = '#e5e7eb';
                         }
                       }}
@@ -264,7 +270,7 @@ export default function AssignReviewsModal({ cycle, onClose, onAssigned }: Assig
                           {employee.name}
                         </div>
                         <div style={{ fontSize: '13px', color: '#6b7280' }}>
-                          {employee.title || 'No title'} • Manager: {manager?.name || 'Unknown'}
+                          {employee.title || 'No title'} • Manager: {hasManager ? (manager?.name || 'Unknown') : <span style={{ color: '#ef4444' }}>No manager assigned</span>}
                         </div>
                       </div>
                     </div>

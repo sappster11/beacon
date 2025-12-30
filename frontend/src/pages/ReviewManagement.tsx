@@ -68,7 +68,6 @@ export default function ReviewManagement() {
 
   const statusConfig: Record<string, { label: string; color: string }> = {
     active: { label: 'Active', color: '#10b981' },
-    scheduled: { label: 'Scheduled', color: '#3b82f6' },
     completed: { label: 'Completed', color: '#6b7280' },
     cancelled: { label: 'Cancelled', color: '#ef4444' },
   };
