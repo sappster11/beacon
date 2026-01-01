@@ -948,15 +948,16 @@ export const reviewCycles = {
   },
 
   update: async (id: string, updates: Partial<ReviewCycle>): Promise<ReviewCycle> => {
+    const updateData: Record<string, any> = {};
+    if (updates.name !== undefined) updateData.name = updates.name;
+    if (updates.type !== undefined) updateData.type = updates.type;
+    if (updates.startDate !== undefined) updateData.start_date = updates.startDate;
+    if (updates.endDate !== undefined) updateData.end_date = updates.endDate;
+    if (updates.status !== undefined) updateData.status = updates.status;
+
     const { data, error } = await supabase
       .from('review_cycles')
-      .update({
-        name: updates.name,
-        type: updates.type,
-        start_date: updates.startDate,
-        end_date: updates.endDate,
-        status: updates.status,
-      })
+      .update(updateData)
       .eq('id', id)
       .select()
       .single();

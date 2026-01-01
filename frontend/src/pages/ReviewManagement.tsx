@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { reviewCycles } from '../lib/api';
 import type { ReviewCycle } from '../types';
-import { Plus, Calendar, Users, CheckCircle, Star, ChevronDown } from 'lucide-react';
+import { Plus, Calendar, Users, CheckCircle, Star, ChevronDown, ArrowUpDown } from 'lucide-react';
 import CreateReviewCycleModal from '../components/CreateReviewCycleModal';
 import AssignReviewsModal from '../components/AssignReviewsModal';
 
@@ -16,8 +16,15 @@ export default function ReviewManagement() {
   const [selectedCycle, setSelectedCycle] = useState<ReviewCycle | null>(null);
   const [statusDropdownOpen, setStatusDropdownOpen] = useState<string | null>(null);
   const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
+  const [sortNewestFirst, setSortNewestFirst] = useState(true);
 
   const isAdmin = user?.role === 'ADMIN';
+
+  const sortedCycles = [...cycles].sort((a, b) => {
+    const dateA = new Date(a.startDate).getTime();
+    const dateB = new Date(b.startDate).getTime();
+    return sortNewestFirst ? dateB - dateA : dateA - dateB;
+  });
 
   useEffect(() => {
     loadCycles();
@@ -370,6 +377,37 @@ export default function ReviewManagement() {
         </div>
       )}
 
+      {cycles.length > 0 && (
+        <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'flex-end' }}>
+          <button
+            onClick={() => setSortNewestFirst(!sortNewestFirst)}
+            style={{
+              padding: '8px 14px',
+              background: 'var(--bg-primary)',
+              color: 'var(--text-secondary)',
+              border: '1px solid var(--border-color)',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontSize: '13px',
+              fontWeight: '500',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              transition: 'all 0.15s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'var(--text-muted)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'var(--border-color)';
+            }}
+          >
+            <ArrowUpDown size={14} />
+            {sortNewestFirst ? 'Newest first' : 'Oldest first'}
+          </button>
+        </div>
+      )}
+
       <div style={{ maxWidth: '1200px' }}>
         {cycles.length === 0 ? (
           <div
@@ -411,7 +449,7 @@ export default function ReviewManagement() {
             </button>
           </div>
         ) : (
-          cycles.map(renderCycleCard)
+          sortedCycles.map(renderCycleCard)
         )}
       </div>
 
