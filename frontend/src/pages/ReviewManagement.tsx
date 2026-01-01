@@ -65,7 +65,10 @@ export default function ReviewManagement() {
       setUpdatingStatus(cycleId);
       setStatusDropdownOpen(null);
       await reviewCycles.update(cycleId, { status: newStatus } as any);
-      await loadCycles();
+      // Update local state instead of reloading
+      setCycles(prev => prev.map(c =>
+        c.id === cycleId ? { ...c, status: newStatus } : c
+      ));
     } catch (err: any) {
       setError(err.message || 'Failed to update status');
     } finally {
