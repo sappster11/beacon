@@ -326,7 +326,7 @@ export default function Reviews() {
             onClick={() => setStatusFilter('current')}
             style={{
               padding: '8px 20px',
-              background: statusFilter === 'current' ? '#3b82f6' : '#ffffff',
+              background: statusFilter === 'current' ? '#3b82f6' : 'var(--bg-primary)',
               color: statusFilter === 'current' ? '#ffffff' : 'var(--text-secondary)',
               border: '1px solid var(--border-color)',
               borderRadius: '8px',
@@ -342,7 +342,7 @@ export default function Reviews() {
             onClick={() => setStatusFilter('completed')}
             style={{
               padding: '8px 20px',
-              background: statusFilter === 'completed' ? '#3b82f6' : '#ffffff',
+              background: statusFilter === 'completed' ? '#3b82f6' : 'var(--bg-primary)',
               color: statusFilter === 'completed' ? '#ffffff' : 'var(--text-secondary)',
               border: '1px solid var(--border-color)',
               borderRadius: '8px',
@@ -363,9 +363,9 @@ export default function Reviews() {
               onClick={() => setRoleFilter(roleFilter === 'reviewee' ? 'all' : 'reviewee')}
               style={{
                 padding: '8px 16px',
-                background: roleFilter === 'reviewee' ? '#dbeafe' : '#ffffff',
+                background: roleFilter === 'reviewee' ? '#dbeafe' : 'var(--bg-primary)',
                 color: roleFilter === 'reviewee' ? '#1e40af' : 'var(--text-secondary)',
-                border: roleFilter === 'reviewee' ? '1px solid #93c5fd' : '1px solid #e5e7eb',
+                border: roleFilter === 'reviewee' ? '1px solid #93c5fd' : '1px solid var(--border-color)',
                 borderRadius: '8px',
                 cursor: 'pointer',
                 fontSize: '14px',
@@ -379,9 +379,9 @@ export default function Reviews() {
               onClick={() => setRoleFilter(roleFilter === 'reviewer' ? 'all' : 'reviewer')}
               style={{
                 padding: '8px 16px',
-                background: roleFilter === 'reviewer' ? '#fef3c7' : '#ffffff',
+                background: roleFilter === 'reviewer' ? '#fef3c7' : 'var(--bg-primary)',
                 color: roleFilter === 'reviewer' ? '#92400e' : 'var(--text-secondary)',
-                border: roleFilter === 'reviewer' ? '1px solid #fcd34d' : '1px solid #e5e7eb',
+                border: roleFilter === 'reviewer' ? '1px solid #fcd34d' : '1px solid var(--border-color)',
                 borderRadius: '8px',
                 cursor: 'pointer',
                 fontSize: '14px',
